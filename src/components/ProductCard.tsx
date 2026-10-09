@@ -2,7 +2,7 @@
 
 import { useState, memo } from "react";
 import Link from "next/link";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 
 interface ProductCardProps {
@@ -24,64 +24,57 @@ function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div
-      className="group flex flex-col bg-[#070707] border border-white/5 p-3 rounded-xl transition-colors duration-200 hover:border-[var(--accent-1)] hover:shadow-[0_0_20px_rgba(207,242,39,0.15)] relative overflow-hidden"
+      className="group flex flex-col bg-transparent border border-transparent p-0 transition-colors duration-200 relative overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-square overflow-hidden bg-zinc-950 mb-3.5 rounded-lg border border-white/5" style={{ position: "relative" }}>
+      <div className="relative aspect-[3/4] overflow-hidden bg-black-deep mb-4 border border-ornamental" style={{ position: "relative" }}>
         {product.isNew && (
-          <span className="absolute top-3 left-3 z-10 bg-[var(--accent-1)] text-black text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-lg">
+          <span className="absolute top-4 left-4 z-10 bg-white-pure text-black-deep text-[9px] font-medium uppercase tracking-[0.15em] px-3 py-1 shadow-sm">
             NEW
           </span>
         )}
         <Link href={`/products/${product.slug || product.id}`} className="relative block w-full h-full">
           <Image
-            src={product.images[0] || "/images/chrono_watch.png"}
+            src={product.images[0] || "https://placehold.co/600x800/080808/B8B8B8?text=Artifact"}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className={`object-cover transition-transform duration-300 ${
-              isHovered ? "scale-105" : "scale-100"
+            className={`object-cover transition-transform duration-[1s] ease-cinematic ${
+              isHovered ? "scale-105 filter grayscale-0" : "scale-100 filter grayscale"
             }`}
             loading="lazy"
           />
         </Link>
         <div
-          className={`absolute bottom-3 right-3 flex gap-2 transition-opacity duration-200 ${
+          className={`absolute bottom-4 right-4 flex gap-2 transition-opacity duration-300 ${
             isHovered ? "opacity-100" : "opacity-0"
           }`}
         >
           <button
             type="button"
             onClick={() => setIsWishlisted(!isWishlisted)}
-            className="p-2 bg-black/80 rounded-full text-white hover:text-red-400 transition-colors"
+            className="p-3 bg-black-deep/90 text-white-pure hover:bg-white-pure hover:text-black-deep transition-cinematic border border-ornamental"
             aria-label="Wishlist"
           >
             <Heart
-              className={`w-4 h-4 ${isWishlisted ? "fill-red-400 text-red-400" : ""}`}
+              className={`w-4 h-4 ${isWishlisted ? "fill-current" : ""}`}
             />
           </button>
-          <Link
-            href={`/products/${product.slug || product.id}`}
-            className="p-2 bg-[var(--accent-1)] rounded-full text-black hover:brightness-110 transition-all"
-            aria-label="View product"
-          >
-            <ShoppingBag className="w-4 h-4" />
-          </Link>
         </div>
       </div>
 
-      <Link href={`/products/${product.slug || product.id}`} className="flex flex-col flex-1">
+      <Link href={`/products/${product.slug || product.id}`} className="flex flex-col flex-1 px-1">
         {product.brand && (
-          <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold mb-1">
+          <span className="text-[9px] uppercase tracking-[0.2em] text-grey-stone font-medium mb-2">
             {product.brand}
           </span>
         )}
-        <h3 className="text-sm font-bold text-white uppercase tracking-wide line-clamp-2 group-hover:text-[var(--accent-1)] transition-colors">
+        <h3 className="text-base font-serif font-medium text-current line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-[var(--accent-1)] font-black text-sm mt-2">
-          ₹{product.price.toLocaleString("en-IN")}
+        <p className="text-current text-sm mt-3 tracking-widest text-xs">
+          INR {product.price.toLocaleString("en-IN")}
         </p>
       </Link>
     </div>

@@ -1,284 +1,169 @@
 "use client";
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, Flame, ShieldCheck, Zap, Award, Truck } from "lucide-react";
-import ProductCard from "@/components/ProductCard";
 import Image from "next/image";
-import { useHomepageContent } from "@/context/HomepageContentContext";
-import { useProducts } from "@/context/ProductContext";
+import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import DeityPortrait from "@/components/DeityPortrait";
+import DevotionalProductCard from "@/components/DevotionalProductCard";
+import { artworks, deities, devotionalAssets, templeCollections } from "@/data/devotional";
+import { devotionalProducts } from "@/data/devotionalProducts";
+
+const reveal = {
+  hidden: { opacity: 0, y: 42 },
+  show: { opacity: 1, y: 0 },
+};
 
 export default function Home() {
-  const { getSection, loaded: contentLoaded } = useHomepageContent();
-  const { products: dynamicProducts } = useProducts();
-  
-  // Grab the 6 key trending products from dynamic products
-  const trendingProducts = dynamicProducts.filter(p => p.isTrending).length > 0
-    ? dynamicProducts.filter(p => p.isTrending).slice(0, 6)
-    : dynamicProducts.slice(0, 6);
-
-  // Fetch homepage content from Supabase
-  const heroContent = getSection("hero") as {
-    left_image?: string;
-    right_image?: string;
-    title?: string;
-    subtitle?: string;
-  } || {};
-  const categoriesContent = getSection("categories") as {
-    enabled?: boolean;
-    title?: string;
-  } || {};
-  const trendingContent = getSection("trending") as {
-    enabled?: boolean;
-    title?: string;
-  } || {};
-  const brandPillarsContent = getSection("brand_pillars") as {
-    enabled?: boolean;
-  } || {};
-
-  // Use Supabase content if available, otherwise use defaults
-  const leftHeroImage = heroContent.left_image || "/images/0816a53b-7f43-45cb-a73e-7d2bd6ef8278.jpg";
-  const rightHeroImage = heroContent.right_image || "/images/0a479a6e-62c8-434f-9312-7d03855c149b.jpg";
-  const heroTitle = heroContent.title || "LEGENDS. STYLE. YOU.";
-  const heroSubtitle = heroContent.subtitle || "CLOTHES | SHOES | ACCESSORIES | WATCHES";
-  const categoriesTitle = categoriesContent.title || "EXPLORE CATEGORIES";
-  const trendingTitle = trendingContent.title || "TRENDING NOW";
-
-  // Split title into parts (e.g. "LEGENDS. STYLE. YOU." -> ["LEGENDS", "STYLE", "YOU"])
-  const titleParts = useMemo(() => {
-    return (heroTitle || "")
-      .split(/[.\s]+/)
-      .map((p) => p.trim().toUpperCase())
-      .filter(Boolean);
-  }, [heroTitle]);
-
-  const word1 = titleParts[0] || "LEGENDS";
-  const word2 = titleParts[1] || "STYLE";
-  const word3 = titleParts[2] || "YOU";
-
-  // Define category cards in the exact requested order: Watches, Shoes, Clothes, Accessories
-  const categoryCards = [
-    {
-      name: "Watches",
-      subtext: "TIMELESS PRECISION",
-      image: "/images/chrono_watch.png",
-      href: "/shop/watches",
-    },
-    {
-      name: "Shoes",
-      subtext: "FOOTWEAR LEGENDS",
-      image: "/images/nike_air_force.png",
-      href: "/shop/shoes",
-    },
-    {
-      name: "Clothing",
-      subtext: "STREETWEAR APPAREL",
-      image: "/images/black_hoodie.png",
-      href: "/shop/clothing",
-    },
-    {
-      name: "Accessories",
-      subtext: "OUTLAW STYLING",
-      image: "/images/baseball_cap.png",
-      href: "/shop/accessories",
-    },
-  ];
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, 150]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.35], [1, 1.08]);
 
   return (
-    <div className="w-full bg-black text-white overflow-hidden">
-      
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] sm:h-[95vh] w-full flex flex-col sm:flex-row items-center justify-between overflow-hidden bg-black px-4 md:px-8 py-12 sm:py-0 border-b border-white/5">
-        
-        {/* Glow Blobs */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-[rgba(207,242,39,0.08)] rounded-full filter blur-[80px] md:blur-[120px] pointer-events-none z-0" />
-
-        {/* LEFT PROFILE: Dhoni Banner */}
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative w-full sm:w-[30%] h-[300px] sm:h-full flex flex-col justify-end pb-8 sm:pb-16 z-10 order-2 sm:order-1 mt-6 sm:mt-0"
-        >
-          <div className="absolute inset-0 z-0" style={{ position: "absolute" }}>
-            <Image
-              src={leftHeroImage}
-              alt="MS Dhoni Colour Seven Banner"
-              fill
-              className="object-cover object-top rounded-2xl sm:rounded-none"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent sm:hidden" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-black hidden sm:block" />
-          </div>
-          
-          <div className="relative z-10 px-4 md:px-6">
-            <h3 className="font-serif text-2xl md:text-4xl xl:text-5xl text-[var(--accent-1)] tracking-widest skew-x-[-10deg] uppercase drop-shadow-lg">
-              DHONI
-            </h3>
-            <p className="text-[8px] md:text-xs tracking-[0.3em] text-zinc-400 font-extrabold mt-1">
-              CALM. FOCUSED. LEGENDARY.
-            </p>
-          </div>
+    <div className="overflow-hidden bg-black-deep text-white-pure">
+      <section className="theme-dark relative min-h-screen overflow-hidden border-b border-ornamental">
+        <motion.div className="absolute inset-0" style={{ y: heroY, scale: heroScale }}>
+          <Image
+            src={devotionalAssets.hero.src}
+            alt={devotionalAssets.hero.alt}
+            fill
+            priority
+            loading="eager"
+            sizes="100vw"
+            className="object-cover opacity-75"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,0.94),rgba(8,8,8,0.52)_42%,rgba(8,8,8,0.15))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_45%,transparent_0,rgba(8,8,8,0.18)_35%,#080808_100%)]" />
         </motion.div>
 
-        {/* CENTER COLUMN: Hero Copy & Revolve Circle */}
-        <div className="relative w-full sm:w-[40%] h-full flex flex-col items-center justify-center text-center z-20 order-1 sm:order-2 px-2 py-8 sm:py-0">
-          
-          {/* Circular Glowing SVG Arc revolving in background */}
-          <div className="absolute w-[280px] sm:w-[350px] md:w-[480px] h-[280px] sm:h-[350px] md:h-[480px] pointer-events-none z-0">
-            <svg className="w-full h-full circle-revolve text-[var(--accent-1)]/10" viewBox="0 0 100 100">
-              <circle
-                cx="50"
-                cy="50"
-                r="46"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeDasharray="4 8"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="42"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="0.5"
-                strokeDasharray="40 10"
-                className="opacity-50"
-              />
-            </svg>
-          </div>
-
-          {/* Heading Text */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-center justify-center font-sans tracking-tighter"
-          >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-black leading-[0.85] text-white uppercase">
-              {word1}.
-            </h1>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-black leading-[0.85] text-[var(--accent-1)] my-2 filter drop-shadow-[0_0_15px_rgba(207,242,39,0.3)] uppercase">
-              {word2}.
-            </h1>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-black leading-[0.85] text-white uppercase">
-              {word3}.
-            </h1>
-          </motion.div>
-
-          {/* List of Main categories */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-[8px] sm:text-[9px] md:text-xs tracking-[0.35em] text-zinc-400 font-black uppercase mt-8"
-          >
-            {heroSubtitle}
-          </motion.p>
-
-          {/* Shop Now Button Pill */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-8 z-30"
-          >
-            <Link
-              href="/shop"
-              className="inline-flex items-center space-x-3 bg-[var(--accent-1)] text-black px-8 py-3.5 uppercase tracking-widest text-xs font-black hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[0_10px_30px_rgba(207,242,39,0.25)] rounded-full"
-            >
-              <span>SHOP NOW</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-4 pb-24 pt-32 md:px-8">
+          <motion.div initial="hidden" animate="show" transition={{ staggerChildren: 0.14 }} className="max-w-4xl">
+            <motion.p variants={reveal} className="mb-5 font-tamil text-xs uppercase tracking-[0.38em] text-grey-stone">
+              தமிழ் தெய்வீக பாரம்பரியம்
+            </motion.p>
+            <motion.h1 variants={reveal} className="font-serif text-5xl font-medium uppercase leading-[0.94] tracking-normal text-white-pure md:text-7xl lg:text-8xl">
+              ETERNAL DIVINITY.
+              <span className="block italic text-white-ivory">TIMELESS HERITAGE.</span>
+            </motion.h1>
+            <motion.p variants={reveal} className="mt-8 max-w-2xl text-base leading-8 text-white-ivory/80 md:text-lg">
+              Discover the sacred beauty of Hindu deities, Tamil temples, and centuries of Dravidian craftsmanship.
+            </motion.p>
+            <motion.div variants={reveal} className="mt-11 flex flex-col gap-4 sm:flex-row">
+              <Link href="/divine-gallery" className="group inline-flex w-fit items-center gap-3 border border-white-pure px-7 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-white-pure hover:text-black-deep">
+                Explore Divine Gallery
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link href="/tamil-temples" className="inline-flex w-fit items-center gap-3 border border-white-pure/25 px-7 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-ivory transition-cinematic hover:border-white-pure">
+                Temple Heritage
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
 
-        {/* RIGHT PROFILE: Ronaldo Banner */}
-        <motion.div 
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative w-full sm:w-[30%] h-[300px] sm:h-full flex flex-col justify-end pb-8 sm:pb-16 z-10 order-3 flex-grow sm:flex-grow-0"
-        >
-          <div className="absolute inset-0 z-0" style={{ position: "absolute" }}>
-            <Image
-              src={rightHeroImage}
-              alt="Cristiano Ronaldo Colour Seven Banner"
-              fill
-              className="object-cover object-top rounded-2xl sm:rounded-none"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent sm:hidden" />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/20 to-black hidden sm:block" />
-          </div>
-          
-          <div className="relative z-10 px-4 md:px-6 sm:text-right">
-            <h3 className="font-serif text-2xl md:text-4xl xl:text-5xl text-[var(--accent-1)] tracking-widest skew-x-[-10deg] uppercase drop-shadow-lg">
-              RONALDO
-            </h3>
-            <p className="text-[8px] md:text-xs tracking-[0.3em] text-zinc-400 font-extrabold mt-1">
-              DISCIPLINE. DRIVE. GREATNESS.
-            </p>
-          </div>
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-white-pure/70">
+          <ChevronDown className="h-7 w-7" />
         </motion.div>
       </section>
 
-      {/* Categories Row (Exact Order: Watches, Shoes, Clothes, Accessories) */}
-      {categoriesContent.enabled !== false && (
-        <section className="py-20 px-4 md:px-8 bg-black relative border-b border-white/5">
-        <div className="container mx-auto">
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col items-center mb-12"
-          >
-            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-widest text-center flex items-center gap-2">
-              <Zap className="w-5 h-5 text-[var(--accent-1)]" />
-              {categoriesTitle}
-            </h2>
-            <div className="h-1 w-20 bg-[var(--accent-1)] mt-3 rounded-full" />
+      <section className="theme-light section-pad border-b border-ornamental">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} transition={{ staggerChildren: 0.12 }} className="mb-14 grid gap-8 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+            <motion.div variants={reveal}>
+              <p className="eyebrow text-grey-stone">Featured Deities</p>
+              <h2 className="section-title text-black-deep">A Living Gallery Of Sacred Forms</h2>
+            </motion.div>
+            <motion.p variants={reveal} className="max-w-2xl text-sm leading-7 text-black-charcoal/70 md:justify-self-end">
+              Explore devotional portraits, temple artwork, and sacred forms through a premium Tamil heritage gallery.
+            </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categoryCards.map((category, index) => (
-              <motion.div
-                key={category.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-              >
-                <Link 
-                  href={category.href}
-                  className="group relative flex flex-col h-[320px] bg-[#070707] border border-white/5 rounded-2xl overflow-hidden hover:border-[var(--accent-1)] hover:shadow-[0_0_25px_rgba(207,242,39,0.15)] transition-all duration-500 cursor-pointer"
-                >
-                  {/* Category Image */}
-                  <div className="absolute inset-0 z-0">
-                    <Image
-                      src={category.image}
-                      alt={category.name}
-                      fill
-                      className="object-cover opacity-30 group-hover:opacity-60 group-hover:scale-115 transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                  </div>
+          <div className="compact-deity-grid">
+              {deities.map((deity, index) => (
+                <motion.div key={deity.slug} initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.68, delay: index * 0.065, ease: [0.65, 0, 0.35, 1] }}>
+                  <Link href={`/hindu-deities/${deity.slug}`} className="gallery-card deity-card group block bg-white-pure">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-black-deep">
+                      <DeityPortrait deity={deity} className="h-full w-full" imageClassName="group-hover:scale-110" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black-deep/86 via-black-deep/12 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white-pure">
+                        <p className="mb-1 font-tamil text-[11px] text-white-ivory/75">{deity.tamilName}</p>
+                        <h3 className="font-serif text-xl leading-tight">{deity.name}</h3>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between border border-t-0 border-black-deep/15 px-4 py-3 text-black-deep transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
+                      <span className="text-[10px] uppercase tracking-[0.24em] text-grey-stone">{String(index + 1).padStart(2, "0")}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+          </div>
+          <div className="mt-12 flex justify-center">
+            <Link href="/hindu-deities" className="inline-flex items-center gap-3 border border-black-deep px-7 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+              View All Sacred Forms <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-                  {/* Category Label */}
-                  <div className="relative z-10 mt-auto p-6 flex flex-col">
-                    <span className="text-[9px] font-black tracking-widest text-zinc-500 group-hover:text-[var(--accent-1)] transition-colors">
-                      {category.subtext}
-                    </span>
-                    <h3 className="font-serif text-3xl text-white tracking-widest skew-x-[-8deg] uppercase mt-1">
-                      {category.name}
-                    </h3>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white mt-4 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                      EXPLORE NOW 
-                      <ArrowRight className="w-3.5 h-3.5 text-[var(--accent-1)]" />
-                    </span>
+      <section className="theme-dark section-pad border-b border-ornamental">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 md:grid-cols-[0.9fr_1.1fr] md:px-8 md:items-center">
+          <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
+            <p className="eyebrow text-grey-stone">Tamil Temple Collections</p>
+            <h2 className="section-title text-white-pure">Gopurams, Yali Pillars, And Processional Corridors</h2>
+            <p className="mt-7 text-sm leading-8 text-white-ivory/70">
+              Temple architecture becomes a visual rhythm: deep shade, towering gateways, stone guardians, carved stories, and the measured silence of mandapam halls.
+            </p>
+            <Link href="/tamil-temples" className="mt-9 inline-flex items-center gap-3 border border-white-pure/40 px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-white-pure hover:text-black-deep">
+              View Temples <ArrowRight className="h-4 w-4" />
+            </Link>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }} whileInView={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }} viewport={{ once: true, margin: "-90px" }} transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }} className="relative min-h-[560px] overflow-hidden border border-ornamental">
+            <Image src={devotionalAssets.temple.src} alt={devotionalAssets.temple.alt} fill sizes="(max-width: 768px) 100vw, 55vw" className="object-cover" />
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="theme-light section-pad border-b border-ornamental">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="eyebrow text-grey-stone">God Photo Shop</p>
+              <h2 className="section-title text-black-deep">Devotional Prints Ready To Buy</h2>
+            </div>
+            <Link href="/shop" className="inline-flex w-fit items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+              Open Shop <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {devotionalProducts.slice(0, 8).map((product) => (
+              <DevotionalProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="theme-light section-pad border-b border-ornamental">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="eyebrow text-grey-stone">Sacred Sculpture Gallery</p>
+              <h2 className="section-title text-black-deep">Carved Stone, Bronze Icons, Living Detail</h2>
+            </div>
+            <Link href="/sacred-sculptures" className="inline-flex w-fit items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+              Open Gallery <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {artworks.map((artwork, index) => (
+              <motion.div key={artwork.slug} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, delay: index * 0.1 }}>
+                <Link href={`/artworks/${artwork.slug}`} className="gallery-card group block bg-white-pure">
+                  <div className="relative aspect-[4/5] overflow-hidden bg-black-deep">
+                    <Image src={artwork.image.src} alt={artwork.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1400ms] ease-cinematic group-hover:scale-110" />
+                  </div>
+                  <div className="border border-t-0 border-black-deep/15 p-5 transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
+                    <p className="mb-2 text-[10px] uppercase tracking-[0.26em] text-grey-stone">{artwork.type}</p>
+                    <h3 className="font-serif text-2xl">{artwork.title}</h3>
                   </div>
                 </Link>
               </motion.div>
@@ -286,76 +171,30 @@ export default function Home() {
           </div>
         </div>
       </section>
-      )}
 
-      {/* Trending Now Section */}
-      {trendingContent.enabled !== false && (
-        <section className="py-24 px-4 md:px-8 bg-zinc-950 relative overflow-hidden">
-        
-        {/* Glow Blobs */}
-        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-[rgba(207,242,39,0.03)] rounded-full filter blur-[100px] pointer-events-none" />
-
-        <div className="container mx-auto">
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex justify-between items-center mb-12 pb-4 border-b border-white/5"
-          >
-            <h2 className="text-xl md:text-2xl font-black tracking-wider uppercase flex items-center gap-2.5">
-              <Flame className="w-5 h-5 text-[var(--accent-1)] animate-pulse" />
-              {trendingTitle}
-            </h2>
-            <Link 
-              href="/shop" 
-              className="text-xs font-black tracking-widest text-zinc-400 hover:text-[var(--accent-1)] uppercase transition-colors flex items-center gap-1.5"
-            >
-              VIEW ALL 
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+      <section className="theme-dark section-pad">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid gap-10 border border-ornamental p-8 md:grid-cols-[1fr_0.9fr] md:p-14">
+            <div>
+              <p className="eyebrow text-grey-stone">Cultural Heritage</p>
+              <h2 className="section-title text-white-pure">A Monochrome Rhythm For Devotional Storytelling</h2>
+            </div>
+            <div className="space-y-6 text-sm leading-8 text-white-ivory/72">
+              <p>
+                The site alternates between black exhibition spaces and warm ivory reading sections, creating a deliberate inversion as visitors move from deity portraits to architecture, sculpture, and heritage narratives.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {templeCollections.map((item) => (
+                  <Link key={item.slug} href="/tamil-temples" className="border border-white-pure/15 p-4 transition-cinematic hover:bg-white-pure hover:text-black-deep">
+                    <span className="block text-[10px] uppercase tracking-[0.22em] opacity-60">{item.kicker}</span>
+                    <span className="mt-2 block font-serif text-xl">{item.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </motion.div>
-          
-          {/* Trending Products Grid (6 Items) */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            {trendingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
         </div>
       </section>
-      )}
-
-      {/* Premium Brand Pillars */}
-      {brandPillarsContent.enabled !== false && (
-        <section className="py-20 px-4 md:px-8 bg-[#030303] border-t border-white/5">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/5">
-            <div className="py-6 md:py-0 flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 text-[var(--accent-1)] shadow-lg">
-                <Truck className="w-5 h-5" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider mb-2 text-white">PAN INDIA FREE SHIPPING</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed max-w-xs px-2">Premium styling delivered directly to your doorstep anywhere in India at zero delivery cost.</p>
-            </div>
-            <div className="py-6 md:py-0 flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 text-[var(--accent-1)] shadow-lg">
-                <Award className="w-5 h-5" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider mb-2 text-white">CASH ON DELIVERY</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed max-w-xs px-2">Shop securely with Cash On Delivery options available. Pay only when you inspect the parcel.</p>
-            </div>
-            <div className="py-6 md:py-0 flex flex-col items-center">
-              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 text-[var(--accent-1)] shadow-lg">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider mb-2 text-white">PREMIUM ASSURANCE</h4>
-              <p className="text-zinc-400 text-xs leading-relaxed max-w-xs px-2">Authentic export surplus items vetted and curated under strict quality controls for premium style.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
     </div>
   );
 }

@@ -1,101 +1,52 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { devotionalAssets } from "@/data/devotional";
 
-const aboutSections = [
+const sections = [
   {
-    id: "a1",
-    title: "Uncompromising Quality",
-    subtitle: "01 / Aesthetic",
-    description: "Every piece in our collection is meticulously sourced from premium export surplus lines. Minimalist design meets bold execution, featuring dark palettes and structured silhouettes. We deliver exceptional fabrics at accessible price points without sacrificing the luxury aesthetic.",
-    image: "/images/black_hoodie.png"
+    title: "Devotional Image",
+    text: "The gallery treats deity imagery with visual restraint, strong framing, and readable context so the site can serve as a premium devotional portfolio.",
   },
   {
-    id: "a2",
-    title: "Sustainability",
-    subtitle: "02 / Responsibility",
-    description: "Repurposing export surplus to reduce fashion waste while maintaining premium standards. We believe in a circular fashion ecosystem where high-quality garments find their rightful place rather than ending up in landfills.",
-    image: "/images/nike_air_force.png"
+    title: "Tamil Temple Craft",
+    text: "Gopurams, yali pillars, mandapam corridors, and sacred stone reliefs shape the visual language across the experience.",
   },
   {
-    id: "a3",
-    title: "Community",
-    subtitle: "03 / Culture",
-    description: "Built for the culture. Colour Seven isn't just a brand, it's a movement of authentic self-expression. Designed for those who lead, not follow. We empower individuals to embrace their unique styling identity.",
-    image: "/images/graphic_tee.png"
-  }
+    title: "Ready For Customization",
+    text: "The content is centralized, route-driven, and asset-backed so additional client images and written histories can be added without rebuilding the site.",
+  },
 ];
 
-export default function About() {
+export default function AboutPage() {
   return (
-    <div className="pt-16 pb-24 bg-black min-h-screen text-white">
-      {/* Header Banner */}
-      <div className="bg-[#030303] border-b border-white/5 py-16 mb-16 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-[rgba(207,242,39,0.03)] rounded-full filter blur-[100px] pointer-events-none" />
-        <div className="container mx-auto px-4 md:px-8 text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-black tracking-widest uppercase mb-4 flex items-center justify-center gap-2">
-            <Zap className="w-6 h-6 text-[var(--accent-1)]" />
-            THE COLOUR SEVEN ETHOS
-          </h1>
-          <p className="text-zinc-500 text-xs md:text-sm tracking-[0.25em] uppercase font-bold">
-            COLOUR SEVEN FASHION &bull; BRAND ETHICS
+    <div className="theme-light min-h-screen pt-28">
+      <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[0.9fr_1.1fr] md:px-8 md:items-center">
+        <div>
+          <p className="eyebrow text-grey-stone">About</p>
+          <h1 className="section-title text-black-deep">A Premium Tamil Devotional Visual Archive</h1>
+          <p className="mt-7 text-sm leading-8 text-black-charcoal/72">
+            Sacred Tamil Gallery presents Hindu deity imagery, South Indian temple architecture, and Dravidian sculpture with a refined black-and-white editorial rhythm.
           </p>
+          <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+            Explore The Gallery <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
-      </div>
-
-      <div className="container mx-auto px-4 md:px-8 max-w-6xl">
-        <div className="flex flex-col space-y-16 md:space-y-28">
-          {aboutSections.map((section, index) => (
-            <motion.div 
-              key={section.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className={`flex flex-col lg:flex-row gap-8 lg:gap-16 items-center ${
-                index % 2 !== 0 ? "lg:flex-row-reverse" : ""
-              }`}
-            >
-              {/* Image Box */}
-              <div className="w-full lg:w-3/5 aspect-[4/3] relative overflow-hidden bg-zinc-950 group rounded-2xl border border-white/10 shadow-2xl" style={{ position: "relative" }}>
-                <Image
-                  src={section.image}
-                  alt={section.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-85"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-              </div>
-
-              {/* Text Box */}
-              <div className="w-full lg:w-2/5 flex flex-col justify-center text-center lg:text-left px-4">
-                <span className="text-[var(--accent-1)] uppercase tracking-[0.25em] text-[10px] font-black mb-3">
-                  {section.subtitle}
-                </span>
-                <h2 className="font-serif text-3xl text-white mb-6 uppercase tracking-wider skew-x-[-8deg] leading-tight">
-                  {section.title}
-                </h2>
-                <p className="text-zinc-400 font-medium leading-relaxed mb-8 text-xs md:text-sm">
-                  {section.description}
-                </p>
-                {index === aboutSections.length - 1 && (
-                  <Link
-                    href="/shop"
-                    className="inline-flex items-center space-x-3 text-black bg-[var(--accent-1)] hover:bg-white hover:text-black transition-all px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg mx-auto lg:mx-0 w-fit"
-                  >
-                    <span>Join the Movement</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-            </motion.div>
+        <div className="relative min-h-[560px] overflow-hidden border border-black-deep/15">
+          <Image src={devotionalAssets.hero.src} alt={devotionalAssets.hero.alt} fill priority sizes="(max-width: 768px) 100vw, 55vw" className="object-cover" />
+        </div>
+      </section>
+      <section className="theme-dark px-4 py-20 md:px-8">
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          {sections.map((section, index) => (
+            <article key={section.title} className="border border-ornamental p-7">
+              <p className="mb-4 text-[10px] uppercase tracking-[0.28em] text-grey-stone">0{index + 1}</p>
+              <h2 className="font-serif text-3xl text-white-pure">{section.title}</h2>
+              <p className="mt-5 text-sm leading-7 text-white-ivory/70">{section.text}</p>
+            </article>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

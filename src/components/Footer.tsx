@@ -2,97 +2,45 @@
 
 import Link from "next/link";
 import Logo from "./Logo";
-import { useCatalog } from "@/context/CatalogContext";
+
+const links = [
+  ["God Photo Shop", "/shop"],
+  ["Divine Gallery", "/divine-gallery"],
+  ["Hindu Deities", "/hindu-deities"],
+  ["Tamil Temples", "/tamil-temples"],
+  ["Sacred Sculptures", "/sacred-sculptures"],
+  ["Tamil Heritage", "/tamil-heritage"],
+  ["About", "/about"],
+  ["Contact", "/contact"],
+];
 
 export default function Footer() {
-  const { categories } = useCatalog();
-  const shopLinks = categories
-    .filter((c) => c.is_active)
-    .sort((a, b) => a.display_order - b.display_order);
   return (
-    <footer className="bg-black pt-16 pb-8 text-white border-t border-white/10">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          <div className="col-span-1 md:col-span-1 flex flex-col items-start">
-            <Logo className="mb-6 -ml-2" />
-            <p className="text-zinc-400 text-sm mb-6 leading-relaxed">
-              Premium modern fashion and luxury streetwear. Elevating everyday styling with bold design and unmatched quality.
-            </p>
-            <div className="flex space-x-6 text-sm font-bold tracking-wider">
-              <a href="#" className="text-zinc-500 hover:text-[var(--accent-1)] transition-luxury">
-                INSTAGRAM
-              </a>
-              <a href="#" className="text-zinc-500 hover:text-[var(--accent-1)] transition-luxury">
-                TWITTER
-              </a>
-              <a href="#" className="text-zinc-500 hover:text-[var(--accent-1)] transition-luxury">
-                FACEBOOK
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-bold uppercase tracking-wider text-xs text-[var(--accent-1)] mb-6">Shop</h3>
-            <ul className="space-y-4 text-sm text-zinc-400">
-              <li>
-                <Link href="/shop" className="hover:text-white transition-luxury">All Products</Link>
-              </li>
-              {shopLinks.map((category) => (
-                <li key={category.id}>
-                  <Link href={`/shop/${category.slug}`} className="hover:text-white transition-luxury">
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold uppercase tracking-wider text-xs text-[var(--accent-1)] mb-6">Customer Care</h3>
-            <ul className="space-y-4 text-sm text-zinc-400">
-              <li>
-                <Link href="/contact" className="hover:text-white transition-luxury">Contact Us</Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition-luxury">FAQ</Link>
-              </li>
-              <li>
-                <Link href="/shipping" className="hover:text-white transition-luxury">Shipping & Returns</Link>
-              </li>
-              <li>
-                <Link href="/track-order" className="hover:text-white transition-luxury">Track Order</Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold uppercase tracking-wider text-xs text-[var(--accent-1)] mb-6">Newsletter</h3>
-            <p className="text-zinc-400 text-sm mb-4">
-              Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
-            </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-zinc-950 border border-white/10 text-white px-4 py-2 w-full focus:outline-none focus:border-[var(--accent-1)] transition-luxury text-sm"
-              />
-              <button
-                type="button"
-                className="bg-[var(--accent-1)] text-black px-4 py-2 text-sm font-black uppercase tracking-wider hover:bg-white hover:text-black transition-luxury"
-              >
-                Join
-              </button>
-            </form>
-          </div>
+    <footer className="theme-dark border-t border-ornamental px-4 py-14 md:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.1fr_1.4fr_0.8fr]">
+        <div>
+          <Logo />
+          <p className="mt-6 max-w-sm text-sm leading-7 text-white-ivory/64">
+            A premium Tamil devotional gallery for Hindu deities, temple architecture, sacred sculpture, and cultural heritage.
+          </p>
         </div>
-
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-zinc-500">
-          <p>&copy; {new Date().getFullYear()} COLOUR SEVEN FASHION. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-white transition-luxury">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition-luxury">Terms of Service</Link>
-          </div>
+        <nav className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {links.map(([label, href]) => (
+            <Link key={href} href={href} className="text-xs uppercase tracking-[0.22em] text-white-ivory/64 transition-colors hover:text-white-pure">
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.28em] text-grey-stone">Studio Note</p>
+          <p className="mt-4 text-sm leading-7 text-white-ivory/64">
+            Built for further client customization with local image assets and reusable editorial sections.
+          </p>
         </div>
+      </div>
+      <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-ornamental pt-6 text-xs text-white-ivory/45 md:flex-row">
+        <p>&copy; {new Date().getFullYear()} Sacred Tamil Gallery. All rights reserved.</p>
+        <p>Black and ivory editorial devotional experience.</p>
       </div>
     </footer>
   );

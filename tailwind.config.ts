@@ -11,18 +11,30 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        "accent-1": "var(--accent-1)",
-        "accent-2": "var(--accent-2)",
-        "accent-3": "var(--accent-3)",
-        black: "#000000",
-        "zinc-900": "#18181b",
-        "zinc-800": "#27272a",
-        white: "#ffffff",
+        black: {
+          DEFAULT: "#000000",
+          deep: "#080808",
+          charcoal: "#171717",
+        },
+        white: {
+          DEFAULT: "#ffffff",
+          pure: "#ffffff",
+          ivory: "#f4f1ea",
+        },
+        grey: {
+          stone: "#b8b8b8",
+          light: "#e5e5e5",
+          border: "#333333",
+          lightBorder: "#d4d4d4",
+        }
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
-        serif: ["var(--font-permanent-marker)", "cursive"],
-        brush: ["var(--font-permanent-marker)", "cursive"],
+        serif: ["var(--font-playfair)", "serif"],
+        tamil: ["var(--font-noto-tamil)", "sans-serif"],
+      },
+      transitionTimingFunction: {
+        'cinematic': 'cubic-bezier(0.65, 0, 0.35, 1)',
       },
     },
   },
