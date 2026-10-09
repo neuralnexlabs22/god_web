@@ -144,7 +144,7 @@ export default function EditProductPage({
     setUploadingImages(uploadingStates);
 
     try {
-      const publicUrl = await uploadAdminImage(file, "product-images", "products");
+      const publicUrl = await uploadAdminImage(file);
       updateImage(index, publicUrl);
     } catch (error) {
       alert(`Upload failed: ${error instanceof Error ? error.message : "Unknown error"}`);

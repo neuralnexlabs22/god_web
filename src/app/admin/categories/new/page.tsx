@@ -43,7 +43,7 @@ export default function AddCategoryPage() {
 
     setUploading(true);
     try {
-      const publicUrl = await uploadAdminImage(file, "category-images", "categories");
+      const publicUrl = await uploadAdminImage(file);
       setFormData(prev => ({ ...prev, imageUrl: publicUrl }));
       setImagePreview(publicUrl);
       setMessage({ text: "✓ Image uploaded successfully!", type: "success" });

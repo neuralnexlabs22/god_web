@@ -10,7 +10,7 @@ import {
   useState,
   ReactNode,
 } from "react";
-import { Brand, Category } from "@/types/database";
+import { Brand, Category } from "@/types/catalog";
 import {
   loadCatalog,
   refreshCatalog,
@@ -22,13 +22,11 @@ import {
   deleteBrand,
   type CatalogData,
 } from "@/lib/catalogStore";
-import { isSupabaseConfigured } from "@/lib/supabase";
 
 interface CatalogContextType {
   categories: Category[];
   brands: Brand[];
   loading: boolean;
-  syncedToCloud: boolean;
   refresh: () => Promise<void>;
   addCategory: typeof addCategory;
   updateCategory: typeof updateCategory;
@@ -129,7 +127,6 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
       categories: catalog.categories,
       brands: catalog.brands,
       loading,
-      syncedToCloud: isSupabaseConfigured,
       refresh,
       addCategory: addCategoryWithRefresh,
       updateCategory: updateCategoryWithRefresh,

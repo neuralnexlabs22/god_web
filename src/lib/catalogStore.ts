@@ -1,14 +1,7 @@
 import { allBrands, categories as defaultCategories } from "@/data/brands";
-import { Brand, Category } from "@/types/database";
-import { isSupabaseConfigured, supabase } from "@/lib/supabase";
-import {
-  adminAddCategory,
-  adminUpdateCategory,
-  adminDeleteCategory,
-  adminAddBrand,
-  adminUpdateBrand,
-  adminDeleteBrand,
-} from "@/app/actions/adminActions";
+import type { Brand, Category } from "@/types/catalog";
+
+const STORAGE_KEY = "colour_seven_catalog";
 
 export type CatalogData = { categories: Category[]; brands: Brand[] };
 
@@ -27,518 +20,226 @@ export function brandOptionKey(brand: { category_id: string; id: string }): stri
 }
 
 function buildDefaultCatalog(): CatalogData {
-  const categories: Category[] = defaultCategories.map((c, index) => ({
-    id: c.slug,
-    slug: c.slug,
-    name: c.name,
-    description: c.description || "",
+  const now = new Date().toISOString();
+  const categories: Category[] = defaultCategories.map((category, index) => ({
+    id: category.slug,
+    slug: category.slug,
+    name: category.name,
+    description: category.description || "",
     image: "",
     icon: "",
     display_order: index,
     is_active: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    created_at: now,
+    updated_at: now,
   }));
 
-  const brands: Brand[] = allBrands.map((b, index) => {
-    const categoryId = b.category.toLowerCase();
+  const brands = allBrands.map((brand, index): Brand => {
+    const categoryId = brand.category.toLowerCase();
     return {
-      id: buildBrandId(categoryId, b.name),
+      id: buildBrandId(categoryId, brand.name),
       category_id: categoryId,
-      name: b.name,
-      slug: slugifyName(b.name),
+      name: brand.name,
+      slug: slugifyName(brand.name),
       logo: "",
       banner: "",
-      description: b.description || `Premium products from ${b.name}`,
+      description: brand.description || `Premium products from ${brand.name}`,
       display_order: index,
       is_active: true,
-      featured: b.featured || false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      featured: brand.featured || false,
+      created_at: now,
+      updated_at: now,
     };
   });
 
-  const sortedBrands = brands.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base', numeric: true }));
+  const seenIds = new Set<string>();
+  for (const brand of brands) {
+    const baseId = brand.id;
+    let suffix = 2;
+    while (seenIds.has(brand.id)) brand.id = `${baseId}-${suffix++}`;
+    seenIds.add(brand.id);
+  }
 
-  return { categories, brands: sortedBrands };
+  brands.sort((first, second) =>
+    first.name.localeCompare(second.name, undefined, { sensitivity: "base", numeric: true })
+  );
+  return { categories, brands };
 }
 
-function normalizeBrands(brands: Brand[]): Brand[] {
-  const seen = new Set<string>();
-  return brands.map((b) => {
-    let id = buildBrandId(b.category_id, b.name);
-    if (seen.has(id)) {
-      let suffix = 2;
-      while (seen.has(`${id}-${suffix}`)) suffix += 1;
-      id = `${id}-${suffix}`;
-    }
-    seen.add(id);
-    return { ...b, id, slug: slugifyName(b.name) };
-  });
-}
-
-function mapRemoteCategory(row: Record<string, unknown>): Category {
-  const slug = String(row.slug);
-  return {
-    id: slug,
-    slug,
-    name: String(row.name),
-    description: String(row.description || ""),
-    image: String(row.image || ""),
-    icon: String(row.icon || ""),
-    display_order: Number(row.display_order) || 0,
-    is_active: row.is_active !== false,
-    created_at: String(row.created_at || new Date().toISOString()),
-    updated_at: String(row.updated_at || new Date().toISOString()),
-  };
-}
-
-async function fetchRemoteCatalog(): Promise<CatalogData | null> {
-  if (!supabase) return null;
+function readCatalog(): CatalogData {
+  if (typeof window === "undefined") return buildDefaultCatalog();
 
   try {
-    const { data: catRows, error: catError } = await supabase
-      .from("categories")
-      .select("*")
-      .order("display_order");
-
-    if (catError) throw catError;
-
-    const { data: brandRows, error: brandError } = await supabase
-      .from("brands")
-      .select("*")
-      .order("display_order");
-
-    if (brandError) throw brandError;
-
-    const uuidToSlug = new Map<string, string>();
-    const categories = (catRows || []).map((row) => {
-      const cat = mapRemoteCategory(row as Record<string, unknown>);
-      uuidToSlug.set(String(row.id), cat.slug);
-      return cat;
-    });
-
-    const brands: Brand[] = (brandRows || []).map((row) => {
-      const r = row as Record<string, unknown>;
-      const categorySlug = uuidToSlug.get(String(r.category_id)) || String(r.category_id);
-      const name = String(r.name);
-      return {
-        id: buildBrandId(categorySlug, name),
-        category_id: categorySlug,
-        name,
-        slug: String(r.slug || slugifyName(name)),
-        logo: String(r.logo || ""),
-        banner: String(r.banner || ""),
-        description: String(r.description || ""),
-        website: r.website ? String(r.website) : undefined,
-        display_order: Number(r.display_order) || 0,
-        is_active: r.is_active !== false,
-        featured: Boolean(r.featured),
-        db_id: String(r.id),
-        created_at: String(r.created_at || new Date().toISOString()),
-        updated_at: String(r.updated_at || new Date().toISOString()),
-      };
-    });
-
-    const filteredBrands = normalizeBrands(brands)
-      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base", numeric: true }));
-
-    return { categories, brands: filteredBrands };
-  } catch (error: any) {
-    console.error("Supabase error:", {
-      message: error?.message,
-      details: error?.details,
-      hint: error?.hint,
-      code: error?.code,
-      fullError: JSON.stringify(error, null, 2)
-    });
-    return null;
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed: unknown = JSON.parse(stored);
+      if (
+        parsed &&
+        typeof parsed === "object" &&
+        Array.isArray((parsed as CatalogData).categories) &&
+        Array.isArray((parsed as CatalogData).brands)
+      ) {
+        return parsed as CatalogData;
+      }
+    }
+  } catch {
+    window.localStorage.removeItem(STORAGE_KEY);
   }
+
+  return buildDefaultCatalog();
 }
 
-  async function seedDefaultCatalogIfEmpty(): Promise<void> {
-    if (!supabase) return;
+function saveCatalog(catalog: CatalogData): void {
+  memoryCache = catalog;
+  if (typeof window === "undefined") return;
 
-    const defaultCatalog = buildDefaultCatalog();
-
-    const { data: existingCategories, error: categoryError } = await supabase
-      .from("categories")
-      .select("id, slug");
-    if (categoryError) {
-      
-      return;
-    }
-
-    const existingCategorySlugs = new Set<string>(
-      (existingCategories || []).map((row) => String(row.slug))
-    );
-
-    const categoriesToInsert = defaultCatalog.categories
-      .filter((category) => !existingCategorySlugs.has(category.slug))
-      .map((category) => ({
-        name: category.name,
-        slug: category.slug,
-        description: category.description,
-        image: category.image || null,
-        icon: category.icon || null,
-        display_order: category.display_order,
-        is_active: category.is_active,
-      }));
-
-    if (categoriesToInsert.length > 0) {
-      const { error } = await supabase.from("categories").insert(categoriesToInsert);
-      if (error) {
-        
-        return;
-      }
-    }
-
-    const { data: categoryRows, error: categoryRowsError } = await supabase
-      .from("categories")
-      .select("id, slug");
-    if (categoryRowsError) {
-      
-      return;
-    }
-
-    const categorySlugToUuid = new Map<string, string>();
-    (categoryRows || []).forEach((row) => {
-      categorySlugToUuid.set(String(row.slug), String(row.id));
-    });
-
-    const { data: existingBrands, error: brandError } = await supabase
-      .from("brands")
-      .select("slug, category_id");
-    if (brandError) {
-      
-      return;
-    }
-
-    const existingBrandKeys = new Set<string>(
-      (existingBrands || []).map((row) => `${String(row.category_id)}::${String(row.slug)}`)
-    );
-
-    const brandsToInsert = defaultCatalog.brands
-      .map((brand) => {
-        const categoryUuid = categorySlugToUuid.get(brand.category_id);
-        if (!categoryUuid) return null;
-        return {
-          category_id: categoryUuid,
-          name: brand.name,
-          slug: brand.slug,
-          logo: brand.logo || null,
-          banner: brand.banner || null,
-          description: brand.description,
-          website: brand.website || null,
-          display_order: brand.display_order,
-          is_active: brand.is_active,
-          featured: brand.featured,
-        };
-      })
-      .filter((item): item is { category_id: string; name: string; slug: string; logo: string | null; banner: string | null; description: string; website: string | null; display_order: number; is_active: boolean; featured: boolean } => item !== null)
-      .filter((brand) => !existingBrandKeys.has(`${brand.category_id}::${brand.slug}`));
-
-    if (brandsToInsert.length > 0) {
-      const { error } = await supabase.from("brands").insert(brandsToInsert);
-      if (error) {
-        
-      }
-    }
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog));
+  } catch {
+    throw new Error("Could not save the catalog in this browser. Check available local storage space.");
   }
-
-let loadPromise: Promise<CatalogData> | null = null;
+}
 
 export async function loadCatalog(force = false): Promise<CatalogData> {
-  // Return from memory cache if available and not forced
   if (memoryCache && !force) return memoryCache;
-
-  if (!force && loadPromise) return loadPromise;
-
-  loadPromise = (async () => {
-    // If Supabase is configured, load from remote
-    if (isSupabaseConfigured && supabase) {
-      try {
-        const remoteCatalog = await fetchRemoteCatalog();
-        if (remoteCatalog && remoteCatalog.categories.length === 0 && remoteCatalog.brands.length === 0) {
-          await seedDefaultCatalogIfEmpty();
-          const seededCatalog = await fetchRemoteCatalog();
-          if (seededCatalog !== null) {
-            memoryCache = seededCatalog;
-            return seededCatalog;
-          }
-        }
-        if (remoteCatalog !== null) {
-          memoryCache = remoteCatalog;
-          return remoteCatalog;
-        }
-      } catch (error) {
-        
-      }
-    }
-
-    // Fallback to defaults only if Supabase fails
-    const defaults = buildDefaultCatalog();
-    memoryCache = defaults;
-    return defaults;
-  })();
-
-  try {
-    const result = await loadPromise;
-    return result;
-  } finally {
-    loadPromise = null;
-  }
+  memoryCache = readCatalog();
+  return memoryCache;
 }
 
 export function getCatalogSync(): CatalogData {
-  return memoryCache || buildDefaultCatalog();
+  return memoryCache || readCatalog();
 }
 
-export function invalidateCatalogCache() {
+export function invalidateCatalogCache(): void {
   memoryCache = null;
 }
 
 export async function refreshCatalog(): Promise<CatalogData> {
-  invalidateCatalogCache();
   return loadCatalog(true);
 }
 
 export function getCategoryBySlug(slug: string): Category | undefined {
-  return getCatalogSync().categories.find((c) => c.slug === slug);
+  return getCatalogSync().categories.find((category) => category.slug === slug);
 }
 
 export function getBrandsForCategorySlug(slug: string): Brand[] {
   return getCatalogSync().brands.filter(
-    (b) => b.category_id === slug && b.is_active !== false
+    (brand) => brand.category_id === slug && brand.is_active !== false
   );
 }
 
-export function getBrandBySlug(
-  categorySlug: string,
-  brandSlug: string
-): Brand | undefined {
+export function getBrandBySlug(categorySlug: string, brandSlug: string): Brand | undefined {
   return getCatalogSync().brands.find(
-    (b) => b.slug === brandSlug && b.category_id === categorySlug
+    (brand) => brand.slug === brandSlug && brand.category_id === categorySlug
   );
 }
 
 export function getBrandById(id: string): Brand | undefined {
-  return getCatalogSync().brands.find((b) => b.id === id);
-}
-
-async function resolveCategoryUuid(slugOrId: string): Promise<string | null> {
-  if (!supabase) return null;
-  
-  // First check if it's already a UUID (match exact id)
-  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slugOrId);
-  if (isUuid) return slugOrId;
-
-  const { data } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("slug", slugOrId)
-    .maybeSingle();
-  return data?.id ? String(data.id) : null;
+  return getCatalogSync().brands.find((brand) => brand.id === id);
 }
 
 export async function addCategory(
   data: Omit<Category, "id" | "created_at" | "updated_at">
 ): Promise<Category> {
-  const category: Category = {
-    ...data,
-    id: data.slug,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  };
-
-  try {
-    await adminAddCategory({
-      name: category.name,
-      slug: category.slug,
-      description: category.description,
-      image: category.image || null,
-      icon: category.icon || null,
-      display_order: category.display_order,
-      is_active: category.is_active,
-    });
-
-    // Refresh cache after successful insert
-    invalidateCatalogCache();
-    const refreshed = await loadCatalog(true);
-    return refreshed.categories.find((c) => c.slug === category.slug) || category;
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
+  const catalog = getCatalogSync();
+  if (catalog.categories.some((category) => category.slug === data.slug)) {
+    throw new Error("A category with this URL slug already exists");
   }
+
+  const now = new Date().toISOString();
+  const category: Category = { ...data, id: data.slug, created_at: now, updated_at: now };
+  saveCatalog({ ...catalog, categories: [...catalog.categories, category] });
+  return category;
 }
 
-export async function updateCategory(
-  id: string,
-  updates: Partial<Category>
-): Promise<void> {
-  try {
-    const payload: Record<string, unknown> = { updated_at: new Date().toISOString() };
-    if (updates.name !== undefined) payload.name = updates.name;
-    if (updates.slug !== undefined) payload.slug = updates.slug;
-    if (updates.description !== undefined) payload.description = updates.description;
-    if (updates.image !== undefined) payload.image = updates.image;
-    if (updates.icon !== undefined) payload.icon = updates.icon;
-    if (updates.display_order !== undefined) payload.display_order = updates.display_order;
-    if (updates.is_active !== undefined) payload.is_active = updates.is_active;
+export async function updateCategory(id: string, updates: Partial<Category>): Promise<void> {
+  const catalog = getCatalogSync();
+  const existing = catalog.categories.find((category) => category.id === id || category.slug === id);
+  if (!existing) throw new Error("Category not found");
 
-    await adminUpdateCategory(id, payload);
-
-    // Refresh cache after successful update
-    invalidateCatalogCache();
-    await loadCatalog(true);
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
+  const updated = { ...existing, ...updates, updated_at: new Date().toISOString() };
+  if (catalog.categories.some((category) => category.id !== existing.id && category.slug === updated.slug)) {
+    throw new Error("A category with this URL slug already exists");
   }
+
+  const categories = catalog.categories.map((category) => category.id === existing.id ? updated : category);
+  const brands = catalog.brands.map((brand) =>
+    brand.category_id === existing.slug ? { ...brand, category_id: updated.slug } : brand
+  );
+  saveCatalog({ categories, brands });
 }
 
 export async function deleteCategory(id: string): Promise<void> {
-  try {
-    // Note: id here represents the category slug or database id. In Server Actions we look it up by slug/id.
-    await adminDeleteCategory(id);
-
-    // Refresh cache after successful delete
-    invalidateCatalogCache();
-    await loadCatalog(true);
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
-  }
+  const catalog = getCatalogSync();
+  const category = catalog.categories.find((entry) => entry.id === id || entry.slug === id);
+  if (!category) throw new Error("Category not found");
+  saveCatalog({
+    categories: catalog.categories.filter((entry) => entry.id !== category.id),
+    brands: catalog.brands.filter((brand) => brand.category_id !== category.slug),
+  });
 }
 
 export async function addBrand(
-  data: Omit<Brand, "id" | "created_at" | "updated_at"> & {
-    name: string;
-    category_id: string;
-  }
+  data: Omit<Brand, "id" | "created_at" | "updated_at"> & { name: string; category_id: string }
 ): Promise<Brand> {
+  const catalog = getCatalogSync();
+  if (!catalog.categories.some((category) => category.slug === data.category_id)) {
+    throw new Error(`Category "${data.category_id}" not found`);
+  }
+
   const brand: Brand = {
+    ...data,
     id: buildBrandId(data.category_id, data.name),
-    category_id: data.category_id,
-    name: data.name,
     slug: data.slug || slugifyName(data.name),
     logo: data.logo || "",
     banner: data.banner || "",
     description: data.description || "",
-    website: data.website,
     display_order: data.display_order ?? 0,
     is_active: data.is_active ?? true,
     featured: data.featured ?? false,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
-
-  try {
-    const categoryUuid = await resolveCategoryUuid(data.category_id);
-    if (!categoryUuid) {
-      throw new Error(`Category "${data.category_id}" not found in database`);
-    }
-
-    await adminAddBrand({
-      category_id: categoryUuid,
-      name: brand.name,
-      slug: brand.slug,
-      logo: brand.logo || null,
-      banner: brand.banner || null,
-      description: brand.description,
-      website: brand.website || null,
-      display_order: brand.display_order,
-      is_active: brand.is_active,
-      featured: brand.featured,
-    });
-
-    // Refresh cache after successful insert
-    invalidateCatalogCache();
-    const refreshed = await loadCatalog(true);
-    return refreshed.brands.find((b) => b.id === brand.id) || brand;
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
+  if (catalog.brands.some((entry) => entry.id === brand.id)) {
+    throw new Error("This brand already exists in the selected category");
   }
+  saveCatalog({ ...catalog, brands: [...catalog.brands, brand] });
+  return brand;
 }
 
-export async function updateBrand(
-  id: string,
-  updates: Partial<Brand>
-): Promise<void> {
-  try {
-    const catalog = getCatalogSync();
-    const brand = catalog.brands.find((b) => b.id === id);
-    if (!brand) {
-      throw new Error("Brand not found locally");
-    }
+export async function updateBrand(id: string, updates: Partial<Brand>): Promise<void> {
+  const catalog = getCatalogSync();
+  const existing = catalog.brands.find((brand) => brand.id === id);
+  if (!existing) throw new Error("Brand not found");
 
-    const payload: Record<string, unknown> = { updated_at: new Date().toISOString() };
-    if (updates.name !== undefined) payload.name = updates.name;
-    if (updates.slug !== undefined) payload.slug = updates.slug;
-    if (updates.description !== undefined) payload.description = updates.description;
-    if (updates.logo !== undefined) payload.logo = updates.logo;
-    if (updates.banner !== undefined) payload.banner = updates.banner;
-    if (updates.website !== undefined) payload.website = updates.website;
-    if (updates.display_order !== undefined) payload.display_order = updates.display_order;
-    if (updates.is_active !== undefined) payload.is_active = updates.is_active;
-    if (updates.featured !== undefined) payload.featured = updates.featured;
-
-    const categoryUuid = await resolveCategoryUuid(brand.category_id);
-    if (!categoryUuid) {
-      throw new Error(`Category "${brand.category_id}" not found in database`);
-    }
-
-    if (updates.category_id !== undefined) {
-      const newUuid = await resolveCategoryUuid(updates.category_id);
-      if (newUuid) payload.category_id = newUuid;
-    }
-
-    await adminUpdateBrand(brand.slug, categoryUuid, payload);
-
-    // Refresh cache after successful update
-    invalidateCatalogCache();
-    await loadCatalog(true);
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
+  const updated = { ...existing, ...updates, updated_at: new Date().toISOString() };
+  if (!catalog.categories.some((category) => category.slug === updated.category_id)) {
+    throw new Error(`Category "${updated.category_id}" not found`);
   }
+  updated.id = buildBrandId(updated.category_id, updated.name);
+  if (catalog.brands.some((brand) => brand.id !== id && brand.id === updated.id)) {
+    throw new Error("This brand already exists in the selected category");
+  }
+  saveCatalog({
+    ...catalog,
+    brands: catalog.brands.map((brand) => brand.id === id ? updated : brand),
+  });
 }
 
 export async function deleteBrand(id: string): Promise<void> {
-  try {
-    const catalog = getCatalogSync();
-    const brand = catalog.brands.find((b) => b.id === id);
-    if (!brand) {
-      throw new Error("Brand not found locally");
-    }
-
-    const categoryUuid = await resolveCategoryUuid(brand.category_id);
-    if (!categoryUuid) {
-      throw new Error(`Category "${brand.category_id}" not found in database`);
-    }
-
-    await adminDeleteBrand(brand.slug, categoryUuid);
-
-    // Refresh cache after successful delete
-    invalidateCatalogCache();
-    await loadCatalog(true);
-  } catch (err: any) {
-    console.error("Supabase error:", err);
-    throw new Error(err?.message || String(err));
-  }
+  const catalog = getCatalogSync();
+  if (!catalog.brands.some((brand) => brand.id === id)) throw new Error("Brand not found");
+  saveCatalog({ ...catalog, brands: catalog.brands.filter((brand) => brand.id !== id) });
 }
 
 export const loadAdminCatalog = getCatalogSync;
 export const getStoredCategories = () => getCatalogSync().categories;
 export const getStoredBrands = () => getCatalogSync().brands;
 export const saveStoredCategories = (categories: Category[]) => {
-  const catalog = memoryCache || buildDefaultCatalog();
-  memoryCache = { categories, brands: catalog.brands };
+  saveCatalog({ ...getCatalogSync(), categories });
 };
 export const saveStoredBrands = (brands: Brand[]) => {
-  const catalog = memoryCache || buildDefaultCatalog();
-  memoryCache = { categories: catalog.categories, brands };
+  saveCatalog({ ...getCatalogSync(), brands });
 };
 export const updateStoredCategory = (id: string, updates: Partial<Category>) => {
   void updateCategory(id, updates);

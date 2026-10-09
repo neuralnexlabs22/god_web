@@ -13,7 +13,7 @@ import {
   ChevronDown,
   Edit2,
 } from "lucide-react";
-import type { Brand } from "@/types/database";
+import type { Brand } from "@/types/catalog";
 import Link from "next/link";
 
 export default function AdminBrandsPage() {

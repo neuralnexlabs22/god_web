@@ -1,5 +1,5 @@
 import type { Product } from "@/context/ProductContext";
-import type { Brand } from "@/types/database";
+import type { Brand } from "@/types/catalog";
 
 export { brandOptionKey } from "@/lib/catalogStore";
 
@@ -27,7 +27,7 @@ const SLUG_TO_CATEGORY: Record<string, ProductCategory> = {
 const CATEGORY_TO_SLUG: Record<ProductCategory, string> = {
   Watches: "watches",
   Shoes: "shoes",
-  Clothes: "clothing",
+  Clothing: "clothing",
   Accessories: "accessories",
 };
 

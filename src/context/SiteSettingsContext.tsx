@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from "react";
-import { supabase } from "@/lib/supabase";
-import type { SiteSettings } from "@/types/database";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+
+const STORAGE_KEY = "colour_seven_site_settings";
+type SettingsMap = Record<string, Record<string, unknown>>;
 
 interface SiteSettingsContextType {
-  settings: Record<string, Record<string, unknown>>;
+  settings: SettingsMap;
   loaded: boolean;
   loading: boolean;
   refresh: () => Promise<void>;
@@ -20,45 +14,21 @@ interface SiteSettingsContextType {
   getSetting: (key: string) => Record<string, unknown> | undefined;
 }
 
-const SiteSettingsContext = createContext<SiteSettingsContextType | undefined>(
-  undefined
-);
+const SiteSettingsContext = createContext<SiteSettingsContextType | undefined>(undefined);
 
 export function SiteSettingsProvider({ children }: { children: ReactNode }) {
-  const [settings, setSettings] = useState<Record<string, Record<string, unknown>>>({});
+  const [settings, setSettings] = useState<SettingsMap>({});
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const refresh = useCallback(async () => {
-    if (!supabase) {
-      setLoaded(true);
-      return;
-    }
-
+    await Promise.resolve();
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("site_settings")
-        .select("setting_key, setting_value");
-
-      if (error) throw error;
-
-      const settingsMap: Record<string, Record<string, unknown>> = {};
-      if (data) {
-        data.forEach((setting) => {
-          settingsMap[setting.setting_key] = setting.setting_value as Record<string, unknown>;
-        });
-      }
-
-      setSettings(settingsMap);
-    } catch (error: any) {
-    console.error("Supabase error:", {
-      message: error?.message,
-      details: error?.details,
-      hint: error?.hint,
-      code: error?.code,
-      fullError: JSON.stringify(error, null, 2)
-    });
+      const stored = typeof window === "undefined" ? null : window.localStorage.getItem(STORAGE_KEY);
+      setSettings(stored ? JSON.parse(stored) as SettingsMap : {});
+    } catch {
+      setSettings({});
     } finally {
       setLoading(false);
       setLoaded(true);
@@ -66,59 +36,23 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    void refresh();
+    void Promise.resolve().then(refresh);
   }, [refresh]);
 
   const updateSetting = useCallback(async (key: string, value: Record<string, unknown>) => {
-    if (!supabase) {
-      throw new Error("Supabase is not configured. Cannot update site setting without database connection.");
-    }
-
+    const next = { ...settings, [key]: value };
     try {
-      const { error } = await supabase
-        .from("site_settings")
-        .upsert({
-          setting_key: key,
-          setting_value: value,
-          updated_at: new Date().toISOString(),
-        });
-
-      if (error)
-    throw new Error(error?.message || JSON.stringify(error) || "Unknown error");
-
-      setSettings((prev) => ({
-        ...prev,
-        [key]: value,
-      }));
-    } catch (error: any) {
-    console.error("Supabase error:", {
-      message: error?.message,
-      details: error?.details,
-      hint: error?.hint,
-      code: error?.code,
-      fullError: JSON.stringify(error, null, 2)
-    });
-    
-    throw new Error(error?.message || JSON.stringify(error) || "Unknown error");
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      setSettings(next);
+    } catch {
+      throw new Error("Could not save settings in this browser");
     }
-  }, []);
+  }, [settings]);
 
-  const getSetting = useCallback(
-    (key: string) => settings[key],
-    [settings]
-  );
-
-  const value = {
-    settings,
-    loaded,
-    loading,
-    refresh,
-    updateSetting,
-    getSetting,
-  };
+  const getSetting = useCallback((key: string) => settings[key], [settings]);
 
   return (
-    <SiteSettingsContext.Provider value={value}>
+    <SiteSettingsContext.Provider value={{ settings, loaded, loading, refresh, updateSetting, getSetting }}>
       {children}
     </SiteSettingsContext.Provider>
   );
@@ -126,8 +60,6 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
 
 export function useSiteSettings() {
   const context = useContext(SiteSettingsContext);
-  if (!context) {
-    throw new Error("useSiteSettings must be used within a SiteSettingsProvider");
-  }
+  if (!context) throw new Error("useSiteSettings must be used within a SiteSettingsProvider");
   return context;
 }

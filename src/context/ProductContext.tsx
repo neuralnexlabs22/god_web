@@ -18,7 +18,6 @@ import {
   deleteProduct as storeDeleteProduct,
   getProductsSync,
 } from "@/lib/productsStore";
-import { isSupabaseConfigured } from "@/lib/supabase";
 
 export interface Product {
   id: string;
@@ -38,7 +37,6 @@ export interface Product {
 interface ProductContextType {
   products: Product[];
   loaded: boolean;
-  syncedToCloud: boolean;
   refresh: () => Promise<void>;
   addProduct: (product: Omit<Product, "id">) => Promise<void>;
   updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
@@ -124,7 +122,6 @@ export function ProductProvider({ children }: { children: ReactNode }) {
     () => ({
       products,
       loaded,
-      syncedToCloud: isSupabaseConfigured,
       refresh,
       addProduct,
       updateProduct,

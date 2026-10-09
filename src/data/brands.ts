@@ -1,4 +1,4 @@
-// All Brands Database - Extracted from User Reference
+// Bundled product catalog brands.
 export const allBrands = [
   { name: "Armani Men", category: "watches", description: "Premium Armani men's timepieces", featured: false },
   { name: "Armani Womens", category: "watches", description: "Elegant Armani women's timepieces", featured: false },

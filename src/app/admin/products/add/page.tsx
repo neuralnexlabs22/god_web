@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { uploadAdminImage, uploadAdminRemoteUrl } from "@/lib/imageUpload";
-import { Category, Brand } from "@/types/database";
+import { Category, Brand } from "@/types/catalog";
 import { useCatalog } from "@/context/CatalogContext";
 import { useProducts } from "@/context/ProductContext";
 import { slugToProductCategory } from "@/lib/catalogHelpers";
@@ -150,7 +150,7 @@ export default function AddProductPage() {
     setUploadingImages(uploadingStates);
 
     try {
-      const publicUrl = await uploadAdminImage(file, "product-images", "products");
+      const publicUrl = await uploadAdminImage(file);
       const newUrls = [...imageUrls];
       newUrls[index] = publicUrl;
       setImageUrls(newUrls);
@@ -552,7 +552,7 @@ export default function AddProductPage() {
                           copy[index] = true;
                           return copy;
                         });
-                        const publicUrl = await uploadAdminRemoteUrl(url, "product-images", "products");
+                        const publicUrl = await uploadAdminRemoteUrl(url);
                         const newUrls = [...imageUrls];
                         newUrls[index] = publicUrl;
                         setImageUrls(newUrls);

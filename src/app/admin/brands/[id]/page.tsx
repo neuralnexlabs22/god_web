@@ -3,7 +3,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { uploadAdminImage } from "@/lib/imageUpload";
-import { Brand } from "@/types/database";
+import { Brand } from "@/types/catalog";
 import { useCatalog } from "@/context/CatalogContext";
 import { useProducts, type Product as StoreProduct } from "@/context/ProductContext";
 import AdminSelect, { AdminSelectOption } from "@/components/AdminSelect";
@@ -96,9 +96,7 @@ export default function EditBrandPage() {
     else setUploadingBanner(true);
 
     try {
-      const bucket: "brand-logos" | "brand-banners" = type === "logo" ? "brand-logos" : "brand-banners";
-      const folder = type === "logo" ? "logos" : "banners";
-      const publicUrl = await uploadAdminImage(file, bucket, folder);
+      const publicUrl = await uploadAdminImage(file);
 
       if (type === "logo") {
         setLogoUrl(publicUrl);

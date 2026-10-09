@@ -58,7 +58,7 @@ export default function AddBrandPage() {
 
     setUploadingLogo(true);
     try {
-      const publicUrl = await uploadAdminImage(file, "brand-logos", "logos");
+      const publicUrl = await uploadAdminImage(file);
       setFormData(prev => ({ ...prev, logoUrl: publicUrl }));
       setLogoPreview(publicUrl);
       setMessage({ text: "✓ Logo uploaded successfully!", type: "success" });
@@ -78,7 +78,7 @@ export default function AddBrandPage() {
 
     setUploadingBanner(true);
     try {
-      const publicUrl = await uploadAdminImage(file, "brand-banners", "banners");
+      const publicUrl = await uploadAdminImage(file);
       setFormData(prev => ({ ...prev, bannerUrl: publicUrl }));
       setBannerPreview(publicUrl);
       setMessage({ text: "✓ Banner uploaded successfully!", type: "success" });
