@@ -36,10 +36,14 @@ export default function DevotionalProductCard({ product }: { product: Devotional
           <span className="inline-flex h-9 w-9 items-center justify-center bg-white-pure text-black-deep"><HelpCircle className="h-4 w-4" /></span>
         </div>
       </div>
-      <div className="p-4 transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
-        <p className="text-[10px] uppercase tracking-[0.22em] text-grey-stone">{product.category}</p>
+      <div className="p-4 text-black-deep transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-grey-stone group-hover:text-white-ivory/60">{product.category}</p>
+          <span className="text-[9px] font-semibold text-black-deep bg-black-deep/5 group-hover:text-white-ivory/60 group-hover:bg-white-pure/10 px-2 py-0.5 rounded-sm">{product.size.split(' / ')[0]}</span>
+        </div>
         <h3 className="mt-2 min-h-[3rem] font-serif text-xl leading-tight">{product.name}</h3>
-        <div className="mt-4 flex items-center justify-between gap-3">
+        <p className="mt-2 text-xs text-grey-stone/80 line-clamp-1">{product.size}</p>
+        <div className="mt-3 flex items-center justify-between gap-3">
           <div>
             <span className="font-semibold">₹{product.price.toLocaleString("en-IN")}</span>
             {product.originalPrice && (

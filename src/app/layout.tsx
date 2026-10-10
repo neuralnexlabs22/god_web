@@ -10,8 +10,8 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 const notoSansTamil = Noto_Sans_Tamil({ subsets: ["tamil"], weight: ["400", "500", "700"], variable: "--font-noto-tamil" });
 
 export const metadata: Metadata = {
-  title: "Colour Seven | Premium Streetwear Store",
-  description: "Shop premium streetwear, sneakers, watches, and accessories from Colour Seven.",
+  title: "Sacred Tamil Gallery | Devotional Art & Prints",
+  description: "Shop premium Hindu devotional photo prints, Tamil temple art, and sacred Dravidian architecture photography.",
 };
 
 export const viewport = {
