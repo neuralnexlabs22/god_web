@@ -63,7 +63,7 @@ export default function EditProductPage({
   const [isCustomBrand, setIsCustomBrand] = useState(false);
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [category, setCategory] = useState<"Watches" | "Shoes" | "Clothing" | "Accessories">("Watches");
+  const [category, setCategory] = useState<any>("Deity Prints");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([""]);
   const [colors, setColors] = useState<string[]>([]);
@@ -315,11 +315,14 @@ export default function EditProductPage({
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight font-serif">
-            Edit Product
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-2xl md:text-3xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Edit Devotional Print
           </h1>
-          <p className="text-zinc-500 text-sm mt-0.5">
-            Update product details
+          <p className="text-zinc-400 text-sm mt-0.5">
+            Update deity print details, pricing, dimensions, and framing options
           </p>
         </div>
       </div>
@@ -328,24 +331,24 @@ export default function EditProductPage({
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Name */}
         <div className="space-y-2">
-          <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-            Product Name *
+          <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+            Print Title / Artwork Name *
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            placeholder="e.g. OVERSIZED HOODIE"
-            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+            placeholder="e.g. Lord Shiva Nataraja Devotional Print"
+            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
           />
         </div>
 
         {/* Brand + Price row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Brand
+            <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Deity / Sacred Theme
             </label>
             <div className="space-y-2">
               <AdminSelect

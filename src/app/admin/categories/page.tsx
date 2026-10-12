@@ -86,16 +86,19 @@ export default function AdminCategoriesPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            Categories
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Devotional Categories
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            {categories.length} categories total
+          <p className="text-zinc-400 mt-1 text-sm">
+            {categories.length} devotional categories for organizing prints and collections
           </p>
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center justify-center gap-2 bg-[var(--accent-1)] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all"
+          className="flex items-center justify-center gap-2 bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all shadow-md shadow-[#c9a227]/20"
         >
           <Plus className="w-4 h-4" />
           Add Category
@@ -108,13 +111,13 @@ export default function AdminCategoriesPage() {
           onSubmit={handleAdd}
           className="bg-[#070707] border border-white/10 rounded-2xl p-6 space-y-4"
         >
-          <h3 className="text-sm font-black uppercase tracking-widest text-white">
-            New Category
+          <h3 className="text-sm font-serif font-bold uppercase tracking-widest text-white">
+            New Devotional Category
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
-                Name *
+              <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                Category Name *
               </label>
               <input
                 type="text"
@@ -129,12 +132,12 @@ export default function AdminCategoriesPage() {
                   );
                 }}
                 required
-                placeholder="e.g. Sunglasses"
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+                placeholder="e.g. Bronze Sculptures or Temple Gopurams"
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
+              <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
                 Slug *
               </label>
               <input
@@ -142,21 +145,21 @@ export default function AdminCategoriesPage() {
                 value={newSlug}
                 onChange={(e) => setNewSlug(e.target.value)}
                 required
-                placeholder="sunglasses"
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+                placeholder="bronze-sculptures"
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
               />
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
+            <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
               Description
             </label>
             <input
               type="text"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
-              placeholder="Short description..."
-              className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+              placeholder="e.g. Archival photographs and fine art reproductions of ancient Tamil temple art..."
+              className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
             />
           </div>
           {addError && (
@@ -167,7 +170,7 @@ export default function AdminCategoriesPage() {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="bg-[var(--accent-1)] text-black font-black uppercase tracking-widest text-xs px-6 py-2.5 rounded-xl hover:brightness-110 transition-all"
+              className="bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs px-6 py-2.5 rounded-xl hover:brightness-110 transition-all shadow-md shadow-[#c9a227]/20"
             >
               Save Category
             </button>

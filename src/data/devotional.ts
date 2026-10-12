@@ -17,8 +17,8 @@ export type Deity = {
 
 export const devotionalAssets = {
   hero: {
-    src: "/assets/devotional/hero-nataraja-temple.png",
-    alt: "Nataraja-inspired bronze Shiva sculpture in a Tamil temple corridor",
+    src: "/images/ganesha_sketch.jpg",
+    alt: "Hand-drawn graphite pencil drawing of Lord Ganesha on authentic textured Indian handmade khadi paper",
   },
   deityMontage: {
     src: "/assets/devotional/deity-gallery-montage.png",

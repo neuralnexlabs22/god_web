@@ -24,7 +24,7 @@ export interface Product {
   name: string;
   brand: string;
   price: number;
-  category: "Watches" | "Shoes" | "Clothing" | "Accessories";
+  category: "Deity Prints" | "Temple Prints" | "Sculpture Prints" | "Premium Sets" | "Watches" | "Shoes" | "Clothing" | "Accessories";
   images: string[];
   description: string;
   sizes: string[];

@@ -4,48 +4,50 @@ import type { Brand } from "@/types/catalog";
 export { brandOptionKey } from "@/lib/catalogStore";
 
 export const PRODUCT_CATEGORIES = [
-  "Watches",
-  "Shoes",
-  "Clothing",
-  "Accessories",
+  "Deity Prints",
+  "Temple Prints",
+  "Sculpture Prints",
+  "Premium Sets",
 ] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
 const SLUG_TO_CATEGORY: Record<string, ProductCategory> = {
-  watches: "Watches",
-  shoes: "Shoes",
-  clothing: "Clothing",
-  clothes: "Clothing",
-  accessories: "Accessories",
-  bags: "Accessories",
-  perfumes: "Accessories",
-  sunglasses: "Accessories",
-  electronics: "Accessories",
+  "deity-prints": "Deity Prints",
+  "temple-prints": "Temple Prints",
+  "sculpture-prints": "Sculpture Prints",
+  "premium-sets": "Premium Sets",
+  watches: "Deity Prints",
+  shoes: "Temple Prints",
+  clothing: "Sculpture Prints",
+  clothes: "Sculpture Prints",
+  accessories: "Premium Sets",
 };
 
 const CATEGORY_TO_SLUG: Record<ProductCategory, string> = {
-  Watches: "watches",
-  Shoes: "shoes",
-  Clothing: "clothing",
-  Accessories: "accessories",
+  "Deity Prints": "deity-prints",
+  "Temple Prints": "temple-prints",
+  "Sculpture Prints": "sculpture-prints",
+  "Premium Sets": "premium-sets",
 };
 
 export function slugToProductCategory(slug: string): ProductCategory {
-  return SLUG_TO_CATEGORY[slug] || "Accessories";
+  return SLUG_TO_CATEGORY[slug] || "Deity Prints";
 }
 
 export function productCategoryToSlug(category: ProductCategory): string {
-  return CATEGORY_TO_SLUG[category];
+  return CATEGORY_TO_SLUG[category] || "deity-prints";
 }
 
 export function getBrandsForProductCategory(
-  category: ProductCategory,
+  category: string,
   brands: Brand[]
 ): Brand[] {
-  const slug = productCategoryToSlug(category);
+  const normalizedSlug =
+    CATEGORY_TO_SLUG[category as ProductCategory] ||
+    SLUG_TO_CATEGORY[category.toLowerCase()] ? productCategoryToSlug(slugToProductCategory(category.toLowerCase())) : "deity-prints";
   return brands.filter(
-    (b) => b.category_id === slug && b.is_active !== false
+    (b) => (b.category_id === normalizedSlug || b.category_id === category.toLowerCase()) && b.is_active !== false
   );
 }
 

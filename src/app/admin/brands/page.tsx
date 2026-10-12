@@ -140,19 +140,22 @@ export default function AdminBrandsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            Brands
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Deities & Themes
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            {brands.length} brands across {categories.length} categories
+          <p className="text-zinc-400 mt-1 text-sm">
+            {brands.length} sacred deities and temple themes across {categories.length} devotional categories
           </p>
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center justify-center gap-2 bg-[var(--accent-1)] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all"
+          className="flex items-center justify-center gap-2 bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all shadow-md shadow-[#c9a227]/20"
         >
           <Plus className="w-4 h-4" />
-          Add Brand
+          Add Deity / Theme
         </button>
       </div>
 
@@ -169,32 +172,32 @@ export default function AdminBrandsPage() {
               onSubmit={handleAddBrand}
               className="bg-[#070707] border border-white/10 rounded-2xl p-6 space-y-4"
             >
-              <h3 className="text-sm font-black uppercase tracking-widest text-white">
-                New Brand
+              <h3 className="text-sm font-serif font-bold uppercase tracking-widest text-white">
+                New Deity / Sacred Theme
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
-                    Brand Name *
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                    Deity / Theme Name *
                   </label>
                   <input
                     type="text"
                     value={newBrandName}
                     onChange={(e) => setNewBrandName(e.target.value)}
                     required
-                    placeholder="e.g. Rolex"
-                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+                    placeholder="e.g. Lord Shiva Nataraja or Brihadisvara Temple"
+                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
-                    Category *
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                    Devotional Category *
                   </label>
                   <select
                     value={newBrandCategory}
                     onChange={(e) => setNewBrandCategory(e.target.value)}
                     required
-                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none transition-colors"
                     style={{ colorScheme: "dark" }}
                   >
                     <option value="">Select category</option>
@@ -207,15 +210,15 @@ export default function AdminBrandsPage() {
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">
-                  Description
+                <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                  Description / Divine Lore
                 </label>
                 <input
                   type="text"
                   value={newBrandDescription}
                   onChange={(e) => setNewBrandDescription(e.target.value)}
-                  placeholder="Short description..."
-                  className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+                  placeholder="Sacred iconography, symbolism, or temple history..."
+                  className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
                 />
               </div>
               {addError && (
@@ -226,9 +229,9 @@ export default function AdminBrandsPage() {
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="bg-[var(--accent-1)] text-black font-black uppercase tracking-widest text-xs px-6 py-2.5 rounded-xl hover:brightness-110 transition-all"
+                  className="bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs px-6 py-2.5 rounded-xl hover:brightness-110 transition-all shadow-md shadow-[#c9a227]/20"
                 >
-                  Save Brand
+                  Save Deity / Theme
                 </button>
                 <button
                   type="button"
@@ -249,10 +252,10 @@ export default function AdminBrandsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
           <input
             type="text"
-            placeholder="Search brands..."
+            placeholder="Search deities or temple themes..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-black border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+            className="w-full bg-black border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
           />
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -260,8 +263,8 @@ export default function AdminBrandsPage() {
             onClick={() => setSelectedCategory("")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
               !selectedCategory
-                ? "bg-[var(--accent-1)] text-black"
-                : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-white/10"
+                ? "bg-[#c9a227] text-black shadow-md shadow-[#c9a227]/20"
+                : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-[#c9a227]/30"
             }`}
           >
             All ({brands.length})
@@ -279,8 +282,8 @@ export default function AdminBrandsPage() {
                   className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                     selectedCategory === cat.slug ||
                     selectedCategory === cat.id
-                      ? "bg-[var(--accent-1)] text-black"
-                      : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-white/10"
+                      ? "bg-[#c9a227] text-black shadow-md shadow-[#c9a227]/20"
+                      : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-[#c9a227]/30"
                   }`}
                 >
                   {cat.name} ({count})
@@ -292,7 +295,7 @@ export default function AdminBrandsPage() {
 
       {/* Results Count */}
       <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">
-        Showing {filteredBrands.length} of {brands.length} brands
+        Showing {filteredBrands.length} of {brands.length} deities & themes
       </p>
 
       {/* Brands Grid */}

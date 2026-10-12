@@ -10,11 +10,11 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" as "success" | "error" | "" });
 
-  const [siteName, setSiteName] = useState("Colour Seven Fashion");
-  const [announcementText, setAnnouncementText] = useState("NEW ARRIVALS DROPPING EVERY WEEK 🛍️ / TRENDING WATCHES & FASHION ACCESSORIES ⌚");
+  const [siteName, setSiteName] = useState("Sacred Tamil Devotional Gallery");
+  const [announcementText, setAnnouncementText] = useState("Traditional God Photo Prints & Devotional Artworks | Customization available | WhatsApp: 8122228386");
   const [announcementEnabled, setAnnouncementEnabled] = useState(true);
-  const [seoTitle, setSeoTitle] = useState("COLOUR SEVEN FASHION");
-  const [seoDescription, setSeoDescription] = useState("Premium modern streetwear, watches, shoes & accessories — Colour Seven Fashion.");
+  const [seoTitle, setSeoTitle] = useState("Sacred Tamil Gallery | Devotional Art & Prints");
+  const [seoDescription, setSeoDescription] = useState("Shop premium Hindu devotional photo prints, Tamil temple art, and sacred Dravidian architecture photography.");
   const [instagram, setInstagram] = useState("");
   const [twitter, setTwitter] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -73,7 +73,7 @@ export default function AdminSettingsPage() {
   if (!loaded) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader className="w-8 h-8 animate-spin text-[var(--accent-1)]" />
+        <Loader className="w-8 h-8 animate-spin text-[#c9a227]" />
       </div>
     );
   }
@@ -88,17 +88,20 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            Site Settings
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Store Settings
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            Manage global site configuration
+          <p className="text-zinc-400 mt-1 text-sm">
+            Manage global site configuration, announcement ticker, and SEO metadata
           </p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 bg-[var(--accent-1)] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-sm hover:brightness-110 disabled:opacity-50 transition-all"
+          className="flex items-center gap-2 bg-[#c9a227] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:brightness-110 disabled:opacity-50 transition-all shadow-md shadow-[#c9a227]/20"
         >
           {saving ? (
             <>

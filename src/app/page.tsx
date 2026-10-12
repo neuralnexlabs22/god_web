@@ -11,7 +11,7 @@ import DevotionalProductCard from "@/components/DevotionalProductCard";
 
 const reveal = {
   hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] as const } },
 };
 
 export default function HomePage() {
@@ -36,11 +36,11 @@ export default function HomePage() {
             priority
             loading="eager"
             sizes="100vw"
-            className="object-cover opacity-100 object-center brightness-[1.8] contrast-[1.1] saturate-[0.8]"
+            className="object-cover opacity-95 object-center contrast-[1.1] brightness-[1.02]"
           />
-          {/* Smoke vignette effect requested by user */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.6)_80%,rgba(0,0,0,0.9)_100%)] mix-blend-overlay" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,transparent_40%,rgba(0,0,0,0.8)_100%)]" />
+          {/* Subtle natural shading to preserve genuine pencil graphite hatchings and paper texture */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black-deep/85 via-black-deep/30 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.5)_85%,rgba(0,0,0,0.85)_100%)]" />
         </motion.div>
 
         <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-4 pb-24 pt-32 md:px-8">

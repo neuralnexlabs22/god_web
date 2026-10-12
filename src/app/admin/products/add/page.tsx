@@ -246,7 +246,7 @@ export default function AddProductPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader className="w-8 h-8 animate-spin text-[var(--accent-1)]" />
+        <Loader className="w-8 h-8 animate-spin text-[#c9a227]" />
       </div>
     );
   }
@@ -262,11 +262,14 @@ export default function AddProductPage() {
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight font-serif">
-            Add Product
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-2xl md:text-3xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Add Devotional Print
           </h1>
-          <p className="text-zinc-500 text-sm mt-0.5">
-            Create a new product with images, variants, and pricing
+          <p className="text-zinc-400 text-sm mt-0.5">
+            Add a new deity photo, temple architecture print, or sacred sculpture artwork
           </p>
         </div>
       </div>
@@ -291,11 +294,11 @@ export default function AddProductPage() {
       <form onSubmit={handleSubmit} className="space-y-6 bg-zinc-900/50 border border-white/5 rounded-2xl p-6">
         {/* Basic Info */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white">Basic Information</h3>
+          <h3 className="text-lg font-serif font-bold text-white">Print Information</h3>
           
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Product Name *
+            <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Print Title / Name *
             </label>
             <input
               type="text"
@@ -303,15 +306,15 @@ export default function AddProductPage() {
               value={formData.name}
               onChange={handleInputChange}
               required
-              placeholder="e.g. PREMIUM LEATHER WATCH"
-              className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+              placeholder="e.g. Lord Shiva Nataraja Devotional Print"
+              className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-                Category *
+              <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+                Devotional Category *
               </label>
               <AdminSelect
                 name="categoryId"
@@ -332,8 +335,8 @@ export default function AddProductPage() {
               </AdminSelect>
             </div>
             <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-                Brand *
+              <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+                Deity / Theme / Temple *
               </label>
               <AdminSelect
                 name="brandId"
@@ -343,7 +346,7 @@ export default function AddProductPage() {
                 required
                 placeholder={
                   formData.categoryId
-                    ? `Select Brand (${brandsForCategory.length} available)`
+                    ? `Select Deity / Theme (${brandsForCategory.length} available)`
                     : "Select a category first"
                 }
               >
@@ -358,8 +361,8 @@ export default function AddProductPage() {
                 ))}
               </AdminSelect>
               {!formData.categoryId && (
-                <p className="text-xs font-bold text-[#c9a227] mt-1">
-                  Select a category first to see brands (Watches, Shoes, etc.)
+                <p className="text-xs font-semibold text-[#c9a227] mt-1">
+                  Select a category first (Deity Prints, Temple Prints, etc.)
                 </p>
               )}
             </div>
@@ -614,18 +617,18 @@ export default function AddProductPage() {
 
         {/* Variants & Specifications */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white">Variants & Specifications</h3>
+          <h3 className="text-lg font-serif font-bold text-white">Print Sizes & Framing Options</h3>
 
-          {/* Colors */}
+          {/* Frames / Finishes */}
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Colors
+            <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Frame / Finish Options (e.g. Matte Gold Frame, Teak Wood, Unframed Archival)
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.colors.map((color) => (
                 <span
                   key={color}
-                  className="flex items-center gap-1.5 text-xs bg-[var(--accent-1)]/10 text-[var(--accent-1)] px-3 py-1.5 rounded-lg font-medium"
+                  className="flex items-center gap-1.5 text-xs bg-[#c9a227]/10 text-[#c9a227] border border-[#c9a227]/30 px-3 py-1.5 rounded-lg font-medium"
                 >
                   {color}
                   <button
@@ -649,35 +652,35 @@ export default function AddProductPage() {
                     addTag(colorInput, setColorInput, "colors");
                   }
                 }}
-                placeholder="Type color and press Enter (e.g. Black, Gold)"
-                className="flex-1 bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors text-sm"
+                placeholder="e.g. Teak Wood Frame, Matte Gold, Acrylic Mount"
+                className="flex-1 bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors text-sm"
               />
               <button
                 type="button"
                 onClick={() => addTag(colorInput, setColorInput, "colors")}
-                className="px-4 py-3 bg-[var(--accent-1)] text-black rounded-lg font-bold hover:brightness-110 transition-all"
+                className="px-4 py-3 bg-[#c9a227] text-black rounded-lg font-bold hover:brightness-110 transition-all"
               >
-                Add
+                Add Frame
               </button>
             </div>
           </div>
 
-          {/* Sizes */}
+          {/* Print Dimensions */}
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Sizes
+            <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Available Dimensions / Sizes (e.g. 12x18 in, 16x24 in, 20x30 in)
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.sizes.map((size) => (
                 <span
                   key={size}
-                  className="flex items-center gap-1.5 text-xs bg-blue-500/10 text-blue-400 px-3 py-1.5 rounded-lg font-medium"
+                  className="flex items-center gap-1.5 text-xs bg-[#c9a227]/10 text-white border border-[#c9a227]/30 px-3 py-1.5 rounded-lg font-medium"
                 >
                   {size}
                   <button
                     type="button"
                     onClick={() => removeTag(size, "sizes")}
-                    className="hover:text-white transition-colors"
+                    className="hover:text-red-400 transition-colors"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -695,29 +698,29 @@ export default function AddProductPage() {
                     addTag(sizeInput, setSizeInput, "sizes");
                   }
                 }}
-                placeholder="Type size and press Enter (e.g. M, L, XL)"
-                className="flex-1 bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors text-sm"
+                placeholder="e.g. 12 x 18 in, 16 x 24 in, 24 x 36 in"
+                className="flex-1 bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors text-sm"
               />
               <button
                 type="button"
                 onClick={() => addTag(sizeInput, setSizeInput, "sizes")}
-                className="px-4 py-3 bg-[var(--accent-1)] text-black rounded-lg font-bold hover:brightness-110 transition-all"
+                className="px-4 py-3 bg-[#c9a227] text-black rounded-lg font-bold hover:brightness-110 transition-all"
               >
-                Add
+                Add Size
               </button>
             </div>
           </div>
 
-          {/* Materials */}
+          {/* Paper & Medium */}
           <div className="space-y-2">
-            <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Materials
+            <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Print Medium & Paper (e.g. 310 GSM Cotton Rag, Archival Canvas)
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.materials.map((material) => (
                 <span
                   key={material}
-                  className="flex items-center gap-1.5 text-xs bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-lg font-medium"
+                  className="flex items-center gap-1.5 text-xs bg-zinc-800 text-zinc-300 border border-white/10 px-3 py-1.5 rounded-lg font-medium"
                 >
                   {material}
                   <button

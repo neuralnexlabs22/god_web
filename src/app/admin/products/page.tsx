@@ -12,7 +12,13 @@ const currency = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
-const categories = ["All", "Watches", "Shoes", "Clothing", "Accessories"] as const;
+const categories = [
+  "All",
+  "Deity Prints",
+  "Temple Prints",
+  "Sculpture Prints",
+  "Premium Sets",
+] as const;
 
 export default function AdminProductsPage() {
   const { products, deleteProduct } = useProducts();
@@ -24,7 +30,13 @@ export default function AdminProductsPage() {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.brand.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = category === "All" || p.category === category;
+    const matchesCategory =
+      category === "All" ||
+      p.category === category ||
+      (category === "Deity Prints" && p.category === "Watches") ||
+      (category === "Temple Prints" && p.category === "Shoes") ||
+      (category === "Sculpture Prints" && p.category === "Clothing") ||
+      (category === "Premium Sets" && p.category === "Accessories");
     return matchesSearch && matchesCategory;
   });
 
@@ -49,19 +61,22 @@ export default function AdminProductsPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            All Products
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Artworks Catalog
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-1">
+            Devotional Prints & Artworks
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            {products.length} products total
+          <p className="text-zinc-400 mt-1 text-sm">
+            {products.length} devotional prints in catalog
           </p>
         </div>
         <Link
           href="/admin/products/add"
-          className="flex items-center justify-center gap-2 bg-[var(--accent-1)] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all"
+          className="flex items-center justify-center gap-2 bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs px-5 py-3 rounded-xl hover:brightness-110 transition-all shadow-md shadow-[#c9a227]/20"
         >
           <Plus className="w-4 h-4" />
-          Add Product
+          Add Print
         </Link>
       </div>
 
@@ -71,10 +86,10 @@ export default function AdminProductsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
           <input
             type="text"
-            placeholder="Search by name or brand..."
+            placeholder="Search by print title, deity, or theme..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-black border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
+            className="w-full bg-black border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
           />
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -84,8 +99,8 @@ export default function AdminProductsPage() {
               onClick={() => setCategory(cat)}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                 category === cat
-                  ? "bg-[var(--accent-1)] text-black"
-                  : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-white/10"
+                  ? "bg-[#c9a227] text-black shadow-md shadow-[#c9a227]/20"
+                  : "bg-[#070707] border border-white/5 text-zinc-400 hover:text-white hover:border-[#c9a227]/30"
               }`}
             >
               {cat}
@@ -98,7 +113,7 @@ export default function AdminProductsPage() {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-zinc-500">
           <Package className="w-12 h-12 mb-4 text-zinc-700" />
-          <p className="text-sm">No products found</p>
+          <p className="text-sm">No devotional prints found</p>
         </div>
       ) : (
         <>
@@ -107,22 +122,22 @@ export default function AdminProductsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5">
-                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
-                    Product
+                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+                    Devotional Print
                   </th>
-                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
-                    Brand
+                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+                    Deity / Theme
                   </th>
-                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
+                  <th className="text-left px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
                     Category
                   </th>
-                  <th className="text-right px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
+                  <th className="text-right px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
                     Price
                   </th>
-                  <th className="text-center px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
-                    Colors
+                  <th className="text-center px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+                    Frames/Sizes
                   </th>
-                  <th className="text-right px-5 py-4 text-xs uppercase tracking-wider text-zinc-500 font-medium">
+                  <th className="text-right px-5 py-4 text-xs uppercase tracking-wider text-zinc-400 font-semibold">
                     Actions
                   </th>
                 </tr>
@@ -155,8 +170,8 @@ export default function AdminProductsPage() {
                             {product.name}
                           </p>
                           {product.isNew && (
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--accent-1)]">
-                              New
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-[#c9a227]">
+                              Featured
                             </span>
                           )}
                         </div>
@@ -166,7 +181,7 @@ export default function AdminProductsPage() {
                       {product.brand}
                     </td>
                     <td className="px-5 py-4">
-                      <span className="text-xs bg-white/5 text-zinc-300 px-2.5 py-1 rounded-lg">
+                      <span className="text-xs bg-[#c9a227]/10 text-[#c9a227] border border-[#c9a227]/20 px-2.5 py-1 rounded-lg">
                         {product.category}
                       </span>
                     </td>
@@ -174,13 +189,13 @@ export default function AdminProductsPage() {
                       {currency.format(product.price)}
                     </td>
                     <td className="px-5 py-4 text-sm text-center text-zinc-400">
-                      {product.colors.length}
+                      {product.sizes?.length ? `${product.sizes.length} sizes` : "Standard"}
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/products/edit/${product.id}`}
-                          className="p-2 rounded-lg text-zinc-400 hover:text-[var(--accent-1)] hover:bg-[var(--accent-1)]/10 transition-all"
+                          className="p-2 rounded-lg text-zinc-400 hover:text-[#c9a227] hover:bg-[#c9a227]/10 transition-all"
                           title="Edit"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -246,18 +261,15 @@ export default function AdminProductsPage() {
                       {product.brand} · {product.category}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-sm font-bold text-[var(--accent-1)]">
+                      <span className="text-sm font-bold text-[#c9a227]">
                         {currency.format(product.price)}
                       </span>
                       {product.isNew && (
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--accent-1)] bg-[var(--accent-1)]/10 px-1.5 py-0.5 rounded">
-                          New
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#c9a227] bg-[#c9a227]/10 px-1.5 py-0.5 rounded">
+                          Featured
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-zinc-500 mt-1">
-                      {product.colors.length} color{product.colors.length !== 1 ? "s" : ""}
-                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/5">

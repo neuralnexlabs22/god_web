@@ -11,20 +11,20 @@ export default function AdminHomepagePage() {
   const [message, setMessage] = useState({ text: "", type: "" as "success" | "error" | "" });
 
   const [heroContent, setHeroContent] = useState({
-    left_image: "/images/0816a53b-7f43-45cb-a73e-7d2bd6ef8278.jpg",
-    right_image: "/images/0a479a6e-62c8-434f-9312-7d03855c149b.jpg",
-    title: "LEGENDS. STYLE. YOU.",
-    subtitle: "CLOTHES | SHOES | ACCESSORIES | WATCHES",
+    left_image: "/assets/devotional/hero-nataraja-temple.png",
+    right_image: "/assets/devotional/deity-gallery-montage.png",
+    title: "ETERNAL DIVINITY. TIMELESS HERITAGE.",
+    subtitle: "DEITY PRINTS | TEMPLE PRINTS | SCULPTURES | SACRED SETS",
   });
 
   const [categoriesContent, setCategoriesContent] = useState({
     enabled: true,
-    title: "EXPLORE CATEGORIES",
+    title: "SHOP BY DEVOTIONAL CATEGORY",
   });
 
   const [trendingContent, setTrendingContent] = useState({
     enabled: true,
-    title: "TRENDING NOW",
+    title: "FEATURED DEVOTIONAL PRINTS",
   });
 
   const [brandPillarsContent, setBrandPillarsContent] = useState({
@@ -59,7 +59,7 @@ export default function AdminHomepagePage() {
         updateSection("brand_pillars", brandPillarsContent),
       ]);
 
-      setMessage({ text: "Homepage content saved successfully!", type: "success" });
+      setMessage({ text: "Homepage devotional content saved successfully!", type: "success" });
       setTimeout(() => setMessage({ text: "", type: "" }), 3000);
     } catch (error) {
       console.error("Failed to save homepage content:", error);
@@ -72,7 +72,7 @@ export default function AdminHomepagePage() {
   if (!loaded) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader className="w-8 h-8 animate-spin text-[var(--accent-1)]" />
+        <Loader className="w-8 h-8 animate-spin text-[#c9a227]" />
       </div>
     );
   }
@@ -87,17 +87,20 @@ export default function AdminHomepagePage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            Homepage Content
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Homepage & Hero Content
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            Manage homepage sections and content
+          <p className="text-zinc-400 mt-1 text-sm">
+            Customize devotional hero titles, featured collection headlines, and banners
           </p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 bg-[var(--accent-1)] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-sm hover:brightness-110 disabled:opacity-50 transition-all"
+          className="flex items-center gap-2 bg-[#c9a227] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:brightness-110 disabled:opacity-50 transition-all shadow-md shadow-[#c9a227]/20"
         >
           {saving ? (
             <>

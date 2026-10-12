@@ -71,7 +71,7 @@ export default function AdminContactPage() {
   if (!loaded) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader className="w-8 h-8 animate-spin text-[var(--accent-1)]" />
+        <Loader className="w-8 h-8 animate-spin text-[#c9a227]" />
       </div>
     );
   }
@@ -86,17 +86,20 @@ export default function AdminContactPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight font-serif">
-            Contact Information
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
+            Sacred Tamil Gallery
+          </span>
+          <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
+            Contact & WhatsApp Ordering
           </h1>
-          <p className="text-zinc-500 mt-1 text-sm">
-            Manage contact details and social media links
+          <p className="text-zinc-400 mt-1 text-sm">
+            Manage WhatsApp contact numbers for custom pooja orders and framing inquiries
           </p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 bg-[var(--accent-1)] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-sm hover:brightness-110 disabled:opacity-50 transition-all"
+          className="flex items-center gap-2 bg-[#c9a227] text-black px-6 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:brightness-110 disabled:opacity-50 transition-all shadow-md shadow-[#c9a227]/20"
         >
           {saving ? (
             <>

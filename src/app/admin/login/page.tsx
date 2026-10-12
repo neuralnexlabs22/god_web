@@ -43,11 +43,14 @@ function LoginForm() {
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-black uppercase tracking-[0.2em] text-white">
-            Colour Seven
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#c9a227]/15 border border-[#c9a227]/30 flex items-center justify-center font-serif font-black text-[#c9a227] text-2xl mb-4">
+            🕉️
+          </div>
+          <h1 className="text-2xl font-serif font-black uppercase tracking-[0.2em] text-white">
+            Sacred Tamil
           </h1>
-          <p className="text-[var(--accent-1)] text-xs font-bold tracking-[0.35em] uppercase mt-2">
-            Admin Panel
+          <p className="text-[#c9a227] text-xs font-bold tracking-[0.35em] uppercase mt-2">
+            Devotional Prints Admin
           </p>
         </div>
 
