@@ -31,7 +31,6 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
         serif: ["var(--font-playfair)", "serif"],
-        tamil: ["var(--font-noto-tamil)", "sans-serif"],
       },
       transitionTimingFunction: {
         'cinematic': 'cubic-bezier(0.65, 0, 0.35, 1)',

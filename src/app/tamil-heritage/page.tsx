@@ -8,10 +8,10 @@ export default function TamilHeritagePage() {
     <div className="theme-dark min-h-screen pt-28">
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[0.9fr_1.1fr] md:px-8 md:items-center">
         <div>
-          <p className="eyebrow text-grey-stone">Tamil Heritage</p>
+          <p className="eyebrow text-grey-stone">Sacred Heritage</p>
           <h1 className="section-title text-white-pure">Devotion Held In Stone, Bronze, Song, And Procession</h1>
           <p className="mt-7 text-sm leading-8 text-white-ivory/72">
-            Tamil sacred culture is not a single object. It is architecture, music, inscription, sculpture, ritual movement,
+            Sacred devotional culture is not a single object. It is architecture, music, inscription, sculpture, ritual movement,
             local memory, and the devotional imagination carried across generations.
           </p>
           <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-white-pure/35 px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-white-pure hover:text-black-deep">

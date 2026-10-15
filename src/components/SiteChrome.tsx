@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import CartDrawer from "./CartDrawer";
+import AnalyticsTracker from "./AnalyticsTracker";
 
 export default function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -14,8 +16,10 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
 
   return (
     <>
+      <AnalyticsTracker />
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-grow">{children}</main>
+      <CartDrawer />
       <Footer />
     </>
   );

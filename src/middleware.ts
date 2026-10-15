@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
   ADMIN_SESSION_COOKIE,
+  LEGACY_ADMIN_SESSION_COOKIE,
   verifyAdminSessionToken,
 } from "@/lib/adminAuth";
 
@@ -13,7 +14,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+  const token =
+    request.cookies.get(ADMIN_SESSION_COOKIE)?.value ||
+    request.cookies.get(LEGACY_ADMIN_SESSION_COOKIE)?.value;
   const isAuthed = await verifyAdminSessionToken(token);
 
   // Login page - redirect to dashboard if already authenticated

@@ -2,6 +2,23 @@ export async function uploadAdminImage(file: File): Promise<string> {
   if (!file.type.startsWith("image/")) throw new Error("Select an image file");
   if (file.size > 10 * 1024 * 1024) throw new Error("Image must be 10 MB or smaller");
 
+  // Attempt server upload for persistent storage
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.url) return data.url;
+    }
+  } catch (err) {
+    console.warn("Server upload failed, falling back to client canvas WebP:", err);
+  }
+
+  // Graceful fallback: optimized WebP data URL
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, 1400 / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");

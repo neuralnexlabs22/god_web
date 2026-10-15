@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import DevotionalProductCard from "@/components/DevotionalProductCard";
+import ShopProductGrid from "@/components/ShopProductGrid";
 import { devotionalCategories, devotionalProducts } from "@/data/devotionalProducts";
 import { devotionalAssets } from "@/data/devotional";
 
@@ -13,7 +14,7 @@ export default function ShopPage() {
           <p className="eyebrow text-grey-stone">God Photo Shop</p>
           <h1 className="section-title text-black-deep">Devotional Prints For Home, Pooja Room, And Gifting</h1>
           <p className="mt-7 max-w-2xl text-sm leading-8 text-black-charcoal/72">
-            Shop premium Hindu deity photos, Tamil temple prints, sacred sculpture artwork, and curated devotional wall sets.
+            Shop premium Hindu deity photos, sacred temple prints, sculpture artwork, and curated devotional wall sets.
           </p>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Link href="#products" className="inline-flex w-fit items-center gap-3 border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
@@ -63,14 +64,13 @@ export default function ShopPage() {
               <h2 className="section-title text-black-deep">Sacred Photo Prints</h2>
             </div>
             <p className="max-w-lg text-sm leading-7 text-black-charcoal/70">
-              Compact, shoppable product cards with pricing, sale labels, and product detail pages.
+              Browse divine deities, architectural temple wonders, and sanctum wall artwork with search, category filtering, and sorting.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {devotionalProducts.map((product) => (
-              <DevotionalProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <ShopProductGrid
+            initialProducts={devotionalProducts}
+            categories={devotionalCategories.map((c) => ({ slug: c.slug, name: c.name }))}
+          />
         </div>
       </section>
     </div>

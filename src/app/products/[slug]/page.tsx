@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, MessageSquare, ShoppingBag } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { devotionalProducts, getDevotionalProduct } from "@/data/devotionalProducts";
+import ProductDetailActions from "@/components/ProductDetailActions";
+import DevotionalProductCard from "@/components/DevotionalProductCard";
 
 export function generateStaticParams() {
   return devotionalProducts.map((product) => ({ slug: product.slug }));
@@ -12,6 +14,11 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
   const { slug } = await props.params;
   const product = getDevotionalProduct(slug);
   if (!product) notFound();
+
+  const relatedProducts = devotionalProducts
+    .filter((p) => p.slug !== slug)
+    .sort((a, b) => (a.category === product.category ? -1 : 1))
+    .slice(0, 4);
 
   return (
     <div className="theme-light min-h-screen pt-28">
@@ -41,18 +48,8 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           <p className="mb-4 text-[10px] uppercase tracking-[0.28em] text-grey-stone">{product.category}</p>
           <h1 className="font-serif text-4xl uppercase leading-none text-black-deep md:text-5xl">{product.name}</h1>
           <p className="mt-6 text-sm leading-8 text-black-charcoal/72">{product.description}</p>
-          <p className="mt-5 text-sm font-semibold text-black-deep">{product.size}</p>
-          <div className="mt-8 flex items-end gap-3">
-            <span className="font-serif text-4xl text-black-deep">₹{product.price.toLocaleString("en-IN")}</span>
-            {product.originalPrice && <span className="pb-1 text-sm text-grey-stone line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>}
-          </div>
-          <div className="mt-8 grid gap-3">
-            <button className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:bg-white-pure hover:text-black-deep">
-              <ShoppingBag className="h-4 w-4" /> Add To Cart
-            </button>
-            <Link href="/contact" className="inline-flex items-center justify-center gap-3 border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-black-deep hover:text-white-pure">
-              <MessageSquare className="h-4 w-4" /> WhatsApp / Custom Order
-            </Link>
+          <div className="mt-6">
+            <ProductDetailActions product={product} />
           </div>
           <div className="mt-8 grid gap-3 text-xs leading-6 text-black-charcoal/65">
             <p>Premium devotional print for home, pooja room, gifting, and wall decor.</p>
@@ -60,6 +57,23 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           </div>
         </div>
       </section>
+
+      {/* Related Products Section */}
+      {relatedProducts.length > 0 && (
+        <section className="border-t border-black-deep/15 bg-white-ivory/20 px-4 py-16 md:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8">
+              <p className="eyebrow text-grey-stone">Sacred Collection</p>
+              <h2 className="font-serif text-3xl uppercase text-black-deep">Related Devotional Prints</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {relatedProducts.map((rel) => (
+                <DevotionalProductCard key={rel.id} product={rel} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

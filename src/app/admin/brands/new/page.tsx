@@ -150,10 +150,10 @@ export default function AddBrandPage() {
         </Link>
         <div>
           <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight font-serif">
-            Add Brand
+            Add Deity or Theme
           </h1>
           <p className="text-zinc-500 text-sm mt-0.5">
-            Create a new brand with logo and banner
+            Add a sacred deity or temple theme to categorize devotional prints
           </p>
         </div>
       </div>
@@ -179,11 +179,11 @@ export default function AddBrandPage() {
         
         {/* Basic Info */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white">Basic Information</h3>
+          <h3 className="text-lg font-bold text-white">Deity / Theme Information</h3>
           
           <div className="space-y-2">
             <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-              Brand Name *
+              Deity / Theme Name *
             </label>
             <input
               type="text"
@@ -191,7 +191,7 @@ export default function AddBrandPage() {
               value={formData.name}
               onChange={handleInputChange}
               required
-              placeholder="e.g. Rolex"
+              placeholder="e.g. Lord Shiva Nataraja"
               className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
             />
           </div>

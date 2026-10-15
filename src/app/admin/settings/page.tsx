@@ -10,11 +10,11 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" as "success" | "error" | "" });
 
-  const [siteName, setSiteName] = useState("Sacred Tamil Devotional Gallery");
-  const [announcementText, setAnnouncementText] = useState("Traditional God Photo Prints & Devotional Artworks | Customization available | WhatsApp: 8122228386");
+  const [siteName, setSiteName] = useState("Frames of Divine");
+  const [announcementText, setAnnouncementText] = useState("Traditional God Photo Prints & Devotional Frames | Customization available | WhatsApp: 8122228386");
   const [announcementEnabled, setAnnouncementEnabled] = useState(true);
-  const [seoTitle, setSeoTitle] = useState("Sacred Tamil Gallery | Devotional Art & Prints");
-  const [seoDescription, setSeoDescription] = useState("Shop premium Hindu devotional photo prints, Tamil temple art, and sacred Dravidian architecture photography.");
+  const [seoTitle, setSeoTitle] = useState("Frames of Divine | Devotional Art & Frames");
+  const [seoDescription, setSeoDescription] = useState("Shop premium Hindu devotional photo prints, framed deities, temple art, and sacred architecture photography.");
   const [instagram, setInstagram] = useState("");
   const [twitter, setTwitter] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -89,7 +89,7 @@ export default function AdminSettingsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Store Settings

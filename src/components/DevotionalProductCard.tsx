@@ -1,9 +1,49 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, HelpCircle, Scale, ShoppingBag, Zap } from "lucide-react";
 import type { DevotionalProduct } from "@/data/devotionalProducts";
+import { useCart } from "@/context/CartContext";
 
 export default function DevotionalProductCard({ product }: { product: DevotionalProduct }) {
+  const { addItem, openCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      size: product.size.split(" / ")[0] || "12 x 18 in",
+      frame: "Fine Art Archival Print",
+      quantity: 1,
+    });
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      size: product.size.split(" / ")[0] || "12 x 18 in",
+      frame: "Fine Art Archival Print",
+      quantity: 1,
+    });
+    openCart();
+  };
+
   return (
     <Link href={`/products/${product.slug}`} className="group block border border-black-deep/15 bg-white-pure">
       <div className="relative aspect-[4/5] overflow-hidden bg-black-deep">
@@ -52,12 +92,20 @@ export default function DevotionalProductCard({ product }: { product: Devotional
           </div>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
-          <span className="inline-flex items-center justify-center gap-2 border border-current px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em]">
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="inline-flex items-center justify-center gap-2 border border-current px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] hover:bg-white-pure hover:text-black-deep transition-colors"
+          >
             <ShoppingBag className="h-3.5 w-3.5" /> Cart
-          </span>
-          <span className="inline-flex items-center justify-center gap-2 bg-black-deep px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white-pure group-hover:bg-white-pure group-hover:text-black-deep">
+          </button>
+          <button
+            type="button"
+            onClick={handleBuyNow}
+            className="inline-flex items-center justify-center gap-2 bg-black-deep px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white-pure group-hover:bg-white-pure group-hover:text-black-deep transition-colors"
+          >
             <Zap className="h-3.5 w-3.5" /> Buy
-          </span>
+          </button>
         </div>
       </div>
     </Link>

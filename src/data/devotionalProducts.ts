@@ -25,7 +25,7 @@ export const devotionalCategories = [
   {
     slug: "temple-prints",
     name: "Temple Prints",
-    description: "Tamil temple gopuram, corridor, and architecture artwork.",
+    description: "Sacred temple gopuram, corridor, and architecture artwork.",
     image: devotionalAssets.temple.src,
   },
   {
@@ -54,17 +54,17 @@ export const devotionalProducts: DevotionalProduct[] = [
     image: deity.image.src,
     imageAlt: deity.name,
     cropPosition: deity.cropPosition,
-    badge: deity.tamilName,
+    badge: deity.sacredTitle || "Devotional",
     size: "12 x 18 in / Matte archival print",
   })),
   {
     id: "temple-heritage-gopuram",
     slug: "temple-heritage-gopuram",
-    name: "Tamil Temple Gopuram Print",
+    name: "Sacred Temple Gopuram Print",
     category: "Temple Prints",
     price: 1199,
     originalPrice: 1699,
-    description: "A dramatic Tamil temple architecture print featuring gopuram forms, carved stone, and dawn light.",
+    description: "A dramatic sacred temple architecture print featuring gopuram forms, carved stone, and dawn light.",
     image: devotionalAssets.temple.src,
     imageAlt: devotionalAssets.temple.alt,
     badge: "Temple",
@@ -98,8 +98,34 @@ export const devotionalProducts: DevotionalProduct[] = [
   })),
 ];
 
-export function getDevotionalProduct(slug: string) {
-  return devotionalProducts.find((product) => product.slug === slug);
+import { products as catalogProducts } from "@/data/products";
+
+export function getDevotionalProduct(slug: string): DevotionalProduct | undefined {
+  const existing = devotionalProducts.find((product) => product.slug === slug || product.id === slug);
+  if (existing) return existing;
+
+  const catalogItem = catalogProducts.find(
+    (p) =>
+      p.id === slug ||
+      p.id === `prod-${slug}` ||
+      p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") === slug
+  );
+  if (catalogItem) {
+    return {
+      id: catalogItem.id,
+      slug,
+      name: catalogItem.name,
+      category: catalogItem.category,
+      price: catalogItem.price,
+      originalPrice: catalogItem.originalPrice || Math.round(catalogItem.price * 1.35),
+      description: catalogItem.description,
+      image: catalogItem.images?.[0] || "/assets/devotional/deity-gallery-montage.png",
+      imageAlt: catalogItem.name,
+      badge: catalogItem.brand || catalogItem.category,
+      size: catalogItem.sizes?.[0] || "12 x 18 in / Archival print",
+    };
+  }
+  return undefined;
 }
 
 export function getProductsByCategory(categorySlug: string) {

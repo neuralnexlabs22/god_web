@@ -11,7 +11,7 @@ export default function HinduDeitiesPage() {
           <p className="eyebrow text-grey-stone">Hindu Deities</p>
           <h1 className="section-title text-white-pure">Sacred Forms Across Devotion And Temple Art</h1>
           <p className="mt-7 text-sm leading-8 text-white-ivory/72">
-            Twelve featured deity pages with devotional context, Tamil names, symbols, and visual detail.
+            Twelve featured deity pages with devotional context, sacred titles, symbols, and visual detail.
           </p>
         </div>
         <div className="relative min-h-[440px] overflow-hidden border border-ornamental">
@@ -27,7 +27,9 @@ export default function HinduDeitiesPage() {
                 <DeityPortrait deity={deity} className="h-full w-full" imageClassName="group-hover:scale-110" />
               </div>
               <div className="border border-black-deep/15 p-6 transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
-                <p className="font-tamil text-sm text-grey-stone">{deity.tamilName}</p>
+                {deity.sacredTitle ? (
+                  <p className="text-xs uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
+                ) : null}
                 <h2 className="mt-2 font-serif text-3xl">{deity.name}</h2>
                 <p className="mt-4 text-sm leading-7 opacity-75">{deity.title}</p>
               </div>

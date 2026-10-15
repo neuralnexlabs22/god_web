@@ -184,7 +184,7 @@ export default function EditBrandPage() {
         </Link>
         <div>
           <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight font-serif">
-            Edit Brand
+            Edit Deity or Theme
           </h1>
           <p className="text-zinc-500 text-sm mt-0.5">
             {formData.name || "Loading..."}
@@ -213,11 +213,11 @@ export default function EditBrandPage() {
         
         {/* Basic Info */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white">Brand Information</h3>
+          <h3 className="text-lg font-bold text-white">Deity / Theme Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">Brand Name *</label>
+              <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">Deity / Theme Name *</label>
               <input
                 type="text"
                 name="name"

@@ -24,7 +24,9 @@ export default async function DeityDetailPage(props: PageProps<"/hindu-deities/[
           <Link href="/hindu-deities" className="mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-grey-stone hover:text-white-pure">
             <ArrowLeft className="h-4 w-4" /> All Deities
           </Link>
-          <p className="font-tamil text-lg text-grey-stone">{deity.tamilName}</p>
+          {deity.sacredTitle ? (
+            <p className="text-xs uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
+          ) : null}
           <h1 className="mt-4 font-serif text-5xl uppercase leading-none text-white-pure md:text-7xl">{deity.name}</h1>
           <p className="mt-7 text-xl leading-8 text-white-ivory">{deity.title}</p>
           <p className="mt-7 max-w-2xl text-sm leading-8 text-white-ivory/72">{deity.description}</p>

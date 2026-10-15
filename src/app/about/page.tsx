@@ -9,7 +9,7 @@ const sections = [
     text: "The gallery treats deity imagery with visual restraint, strong framing, and readable context so the site can serve as a premium devotional portfolio.",
   },
   {
-    title: "Tamil Temple Craft",
+    title: "Sacred Temple Craft",
     text: "Gopurams, yali pillars, mandapam corridors, and sacred stone reliefs shape the visual language across the experience.",
   },
   {
@@ -24,9 +24,9 @@ export default function AboutPage() {
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[0.9fr_1.1fr] md:px-8 md:items-center">
         <div>
           <p className="eyebrow text-grey-stone">About</p>
-          <h1 className="section-title text-black-deep">A Premium Tamil Devotional Visual Archive</h1>
+          <h1 className="section-title text-black-deep">A Premium Devotional Visual Archive</h1>
           <p className="mt-7 text-sm leading-8 text-black-charcoal/72">
-            Sacred Tamil Gallery presents Hindu deity imagery, South Indian temple architecture, and Dravidian sculpture with a refined black-and-white editorial rhythm.
+            Frames of Divine presents Hindu deity imagery, South Indian temple architecture, and sacred devotional art with a refined editorial rhythm and museum-quality framing.
           </p>
           <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
             Explore The Gallery <ArrowRight className="h-4 w-4" />

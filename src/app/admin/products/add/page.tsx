@@ -221,13 +221,19 @@ export default function AddProductPage() {
         images:
           validImages.length > 0
             ? validImages
-            : ["/images/chrono_watch.png"],
+            : ["/assets/devotional/deity-gallery-montage.png"],
         description:
           formData.fullDescription.trim() ||
           formData.shortDescription.trim() ||
           `${formData.name} — ${selectedBrand.name}`,
-        sizes: formData.sizes.length > 0 ? formData.sizes : ["One Size"],
-        colors: formData.colors.length > 0 ? formData.colors : ["Default"],
+        sizes:
+          formData.sizes.length > 0
+            ? formData.sizes
+            : ["12 x 18 in", "16 x 24 in"],
+        colors:
+          formData.colors.length > 0
+            ? formData.colors
+            : ["Teak Wood Frame", "Matte Gold Frame"],
         stock: parseInt(formData.stockQuantity) || 0,
         isNew: formData.featured,
         isTrending: formData.isTrending,
@@ -263,7 +269,7 @@ export default function AddProductPage() {
         </Link>
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-2xl md:text-3xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Add Devotional Print
@@ -378,7 +384,7 @@ export default function AddProductPage() {
                 name="sku"
                 value={formData.sku}
                 onChange={handleInputChange}
-                placeholder="e.g. WATCH-001"
+                placeholder="e.g. FOD-DEITY-001"
                 className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
               />
             </div>
@@ -391,7 +397,7 @@ export default function AddProductPage() {
                 name="collectionType"
                 value={formData.collectionType}
                 onChange={handleInputChange}
-                placeholder="e.g. Summer 2026"
+                placeholder="e.g. Sacred Tanjore Sanctum"
                 className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
               />
             </div>

@@ -142,7 +142,7 @@ export default function AddCategoryPage() {
               value={formData.name}
               onChange={handleInputChange}
               required
-              placeholder="e.g. Luxury Watches"
+              placeholder="e.g. Deity Prints"
               className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors"
             />
           </div>

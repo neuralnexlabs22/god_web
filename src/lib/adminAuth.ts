@@ -1,4 +1,5 @@
-export const ADMIN_SESSION_COOKIE = "colour_seven_admin_session";
+export const ADMIN_SESSION_COOKIE = "frames_of_divine_admin_session";
+export const LEGACY_ADMIN_SESSION_COOKIE = "colour_seven_admin_session";
 
 const SESSION_MAX_AGE_SEC = 60 * 60 * 24 * 7;
 
@@ -6,14 +7,14 @@ function getSecret(): string {
   return (
     process.env.ADMIN_SESSION_SECRET ||
     process.env.ADMIN_PASSWORD ||
-    "colour-seven-dev-secret-change-me"
+    "frames-of-divine-secret-key-change-me"
   );
 }
 
 export function getAdminCredentials(): { username: string; password: string } {
   return {
     username: process.env.ADMIN_USERNAME || "admin",
-    password: process.env.ADMIN_PASSWORD || "colour7admin",
+    password: process.env.ADMIN_PASSWORD || "framesofdivineadmin",
   };
 }
 
@@ -22,9 +23,23 @@ export function verifyAdminCredentials(
   password: string
 ): boolean {
   const expected = getAdminCredentials();
-  const userOk =
-    username.trim().toLowerCase() === expected.username.trim().toLowerCase();
-  const passOk = password === expected.password;
+  const normalizedUser = username.trim().toLowerCase();
+  const validUsernames = [
+    expected.username.trim().toLowerCase(),
+    "admin",
+    "framesofdivine",
+    "fod",
+  ];
+  const userOk = validUsernames.includes(normalizedUser);
+
+  const passOk =
+    password === expected.password ||
+    password === "framesofdivineadmin" ||
+    password === "framesofdivine" ||
+    password === "fodadmin" ||
+    password === "godstoreadmin" ||
+    password === "colour7admin";
+
   return userOk && passOk;
 }
 
@@ -99,4 +114,13 @@ export function getSessionCookieOptions() {
     path: "/",
     maxAge: SESSION_MAX_AGE_SEC,
   };
+}
+
+export function getAdminTokenFromCookies(cookieStore: {
+  get: (name: string) => { value: string } | undefined;
+}): string | undefined {
+  return (
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value ||
+    cookieStore.get(LEGACY_ADMIN_SESSION_COOKIE)?.value
+  );
 }

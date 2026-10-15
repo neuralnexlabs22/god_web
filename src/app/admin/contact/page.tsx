@@ -87,7 +87,7 @@ export default function AdminContactPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Contact & WhatsApp Ordering
@@ -173,7 +173,7 @@ export default function AdminContactPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="contact@colourseven.com"
+            placeholder="contact@framesofdivine.com"
             className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[var(--accent-1)] focus:outline-none"
           />
         </div>
@@ -250,7 +250,7 @@ export default function AdminContactPage() {
             type="text"
             value={instagram}
             onChange={(e) => setInstagram(e.target.value)}
-            placeholder="https://instagram.com/colourseven"
+            placeholder="https://instagram.com/framesofdivine"
             className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[var(--accent-1)] focus:outline-none"
           />
         </div>
@@ -263,7 +263,7 @@ export default function AdminContactPage() {
             type="text"
             value={twitter}
             onChange={(e) => setTwitter(e.target.value)}
-            placeholder="https://twitter.com/colourseven"
+            placeholder="https://twitter.com/framesofdivine"
             className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[var(--accent-1)] focus:outline-none"
           />
         </div>
@@ -276,7 +276,7 @@ export default function AdminContactPage() {
             type="text"
             value={facebook}
             onChange={(e) => setFacebook(e.target.value)}
-            placeholder="https://facebook.com/colourseven"
+            placeholder="https://facebook.com/framesofdivine"
             className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[var(--accent-1)] focus:outline-none"
           />
         </div>

@@ -8,7 +8,7 @@ export default function TamilTemplesPage() {
         <Image src={devotionalAssets.temple.src} alt={devotionalAssets.temple.alt} fill priority sizes="100vw" className="object-cover opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-r from-black-deep via-black-deep/55 to-transparent" />
         <div className="relative z-10 mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-center px-4 md:px-8">
-          <p className="eyebrow text-grey-stone">Tamil Temples</p>
+          <p className="eyebrow text-grey-stone">Sacred Temples</p>
           <h1 className="section-title max-w-5xl text-white-pure">Gopurams, Yali Pillars, And Dravidian Stone Rhythm</h1>
         </div>
       </section>

@@ -1,14 +1,14 @@
 // Devotional categories and sacred deities/themes
 export const devotionalCategories = [
   { name: "Deity Prints", slug: "deity-prints", description: "Premium framed and unframed Hindu deity photo prints" },
-  { name: "Temple Prints", slug: "temple-prints", description: "Tamil temple gopuram, corridor, and architecture artwork" },
+  { name: "Temple Prints", slug: "temple-prints", description: "Sacred temple gopuram, corridor, and architecture artwork" },
   { name: "Sculpture Prints", slug: "sculpture-prints", description: "Yali pillars, bronze icons, and sacred carving studies" },
   { name: "Premium Sets", slug: "premium-sets", description: "Curated devotional photo sets for pooja rooms and gifting" }
 ];
 
 export const allBrands = [
   { name: "Lord Shiva Nataraja", category: "deity-prints", description: "The cosmic dancer of time, rhythm, and renewal", featured: true },
-  { name: "Lord Murugan", category: "deity-prints", description: "Radiant Tamil deity of wisdom, courage, and the sacred Vel", featured: true },
+  { name: "Lord Murugan", category: "deity-prints", description: "Radiant divine deity of wisdom, courage, and the sacred Vel", featured: true },
   { name: "Lord Ganesha", category: "deity-prints", description: "Remover of obstacles and lord of auspicious beginnings", featured: true },
   { name: "Goddess Meenakshi", category: "deity-prints", description: "Divine queen and mother deity of Madurai", featured: true },
   { name: "Lord Venkateswara", category: "deity-prints", description: "Supreme protector and radiant manifestation of Vishnu", featured: true },
@@ -32,10 +32,6 @@ export const brandsByCategory = {
   "temple-prints": allBrands.filter((b) => b.category === "temple-prints"),
   "sculpture-prints": allBrands.filter((b) => b.category === "sculpture-prints"),
   "premium-sets": allBrands.filter((b) => b.category === "premium-sets"),
-  watches: [],
-  clothing: [],
-  accessories: [],
-  shoes: []
 };
 
 export const categories = devotionalCategories;

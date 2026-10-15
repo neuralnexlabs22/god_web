@@ -1,15 +1,39 @@
 import { products as defaultProducts } from "@/data/products";
 import type { Product } from "@/context/ProductContext";
 
-const STORAGE_KEY = "colour_seven_products";
+const STORAGE_KEY = "frames_of_divine_products";
+const LEGACY_STORAGE_KEY = "colour_seven_products";
 let memoryCache: Product[] | null = null;
+
+const FASHION_CATEGORIES = new Set(["Watches", "Shoes", "Clothing", "Accessories"]);
+const FASHION_NAMES = [
+  "OVERSIZED HOODIE",
+  "NIKE AIR FORCE 1 '07",
+  "OUTLAW CHRONO WATCH",
+  "OUTLAW CAP",
+  "GRAPHIC OVERSIZED TEE",
+  "CUBAN CHAIN SILVER",
+  "CLASSIC GOLDEN CHRONOGRAPH",
+  "STREETWEAR SNEAKERS",
+  "DISTRESSED STREETWEAR JOGGER",
+  "OUTLAW KNIT BEANIE",
+  "RETRO DIVE WATCH",
+  "OUTLAW DUFFLE BAG"
+];
+
+function isFashionProduct(product: Partial<Product>): boolean {
+  if (product.brand === "Colour Seven") return true;
+  if (product.category && FASHION_CATEGORIES.has(product.category)) return true;
+  if (product.name && FASHION_NAMES.some((n) => product.name?.toLowerCase().includes(n.toLowerCase()))) return true;
+  return false;
+}
 
 function buildDefaultProducts(): Product[] {
   return defaultProducts
     .map((product) => ({
       ...product,
-      brand: product.brand || "Colour Seven",
-      stock: product.stock ?? 10,
+      brand: product.brand || "Frames of Divine",
+      stock: product.stock ?? 15,
     }))
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base", numeric: true }));
 }
@@ -18,11 +42,33 @@ function readProducts(): Product[] {
   if (typeof window === "undefined") return buildDefaultProducts();
 
   try {
+    // Clean up legacy storage key
+    if (window.localStorage.getItem(LEGACY_STORAGE_KEY)) {
+      window.localStorage.removeItem(LEGACY_STORAGE_KEY);
+    }
+
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (!stored) return buildDefaultProducts();
+    if (!stored) {
+      const defaults = buildDefaultProducts();
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));
+      return defaults;
+    }
 
     const parsed: unknown = JSON.parse(stored);
-    if (Array.isArray(parsed)) return parsed as Product[];
+    if (Array.isArray(parsed)) {
+      // Purge any fashion products
+      const sanitized = (parsed as Product[]).filter((p) => !isFashionProduct(p));
+      if (sanitized.length === 0) {
+        const defaults = buildDefaultProducts();
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults));
+        return defaults;
+      }
+      // If we filtered out some fashion products, save the cleaned list
+      if (sanitized.length !== parsed.length) {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+      }
+      return sanitized;
+    }
   } catch {
     window.localStorage.removeItem(STORAGE_KEY);
   }

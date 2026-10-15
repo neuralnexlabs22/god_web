@@ -31,12 +31,7 @@ export default function AdminProductsPage() {
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.brand.toLowerCase().includes(search.toLowerCase());
     const matchesCategory =
-      category === "All" ||
-      p.category === category ||
-      (category === "Deity Prints" && p.category === "Watches") ||
-      (category === "Temple Prints" && p.category === "Shoes") ||
-      (category === "Sculpture Prints" && p.category === "Clothing") ||
-      (category === "Premium Sets" && p.category === "Accessories");
+      category === "All" || p.category === category;
     return matchesSearch && matchesCategory;
   });
 
@@ -190,6 +185,11 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="px-5 py-4 text-sm text-center text-zinc-400">
                       {product.sizes?.length ? `${product.sizes.length} sizes` : "Standard"}
+                      {product.colors?.length ? (
+                        <span className="block text-[10px] text-zinc-500">
+                          {product.colors.length} frame options
+                        </span>
+                      ) : null}
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end gap-2">

@@ -31,7 +31,7 @@ async function download(relativePath, url) {
   const dest = path.join(root, relativePath);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   const res = await fetch(url, {
-    headers: { "User-Agent": "SacredTamilGallery/1.0 (educational; asset download)" },
+    headers: { "User-Agent": "FramesOfDivine/1.0 (educational; asset download)" },
   });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   const buf = Buffer.from(await res.arrayBuffer());

@@ -17,11 +17,6 @@ const SLUG_TO_CATEGORY: Record<string, ProductCategory> = {
   "temple-prints": "Temple Prints",
   "sculpture-prints": "Sculpture Prints",
   "premium-sets": "Premium Sets",
-  watches: "Deity Prints",
-  shoes: "Temple Prints",
-  clothing: "Sculpture Prints",
-  clothes: "Sculpture Prints",
-  accessories: "Premium Sets",
 };
 
 const CATEGORY_TO_SLUG: Record<ProductCategory, string> = {

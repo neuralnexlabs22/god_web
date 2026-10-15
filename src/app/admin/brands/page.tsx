@@ -141,7 +141,7 @@ export default function AdminBrandsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Deities & Themes

@@ -14,6 +14,11 @@ import {
   Tag,
   Store,
   Phone,
+  Ticket,
+  MessageSquare,
+  BarChart3,
+  Send,
+  Users,
 } from "lucide-react";
 import { useProducts } from "@/context/ProductContext";
 import { useCatalog } from "@/context/CatalogContext";
@@ -24,10 +29,6 @@ const categoryIcons: Record<string, React.ComponentType<{ className?: string }>>
   "Temple Prints": Landmark,
   "Sculpture Prints": Crown,
   "Premium Sets": Layers,
-  Watches: Sparkles,
-  Shoes: Landmark,
-  Clothing: Crown,
-  Accessories: Layers,
 };
 
 const currency = new Intl.NumberFormat("en-IN", {
@@ -41,15 +42,60 @@ const categoryIconBySlug: Record<string, React.ComponentType<{ className?: strin
   "temple-prints": Landmark,
   "sculpture-prints": Crown,
   "premium-sets": Layers,
-  watches: Sparkles,
-  shoes: Landmark,
-  clothing: Crown,
-  accessories: Layers,
 };
 
 export default function AdminDashboard() {
   const { products, loaded } = useProducts();
   const { categories: catalogCategories, brands: catalogBrands } = useCatalog();
+
+  const [stats, setStats] = useState({
+    couponsCount: 0,
+    activeCoupons: 0,
+    reviewsCount: 0,
+    avgRating: "5.0",
+    todayViews: 0,
+    todayVisitors: 0,
+    enquiriesCount: 0,
+    newEnquiries: 0,
+  });
+
+  useEffect(() => {
+    // Fetch live counts from backend APIs
+    async function fetchStats() {
+      try {
+        const [couponsRes, reviewsRes, analyticsRes, enquiriesRes] = await Promise.all([
+          fetch("/api/coupons").then((r) => r.json()).catch(() => ({})),
+          fetch("/api/reviews?all=true").then((r) => r.json()).catch(() => ({})),
+          fetch("/api/analytics/stats").then((r) => r.json()).catch(() => ({})),
+          fetch("/api/enquiries").then((r) => r.json()).catch(() => ({})),
+        ]);
+
+        const coupons = couponsRes.coupons || [];
+        const reviews = reviewsRes.reviews || [];
+        const metrics = analyticsRes.metrics || {};
+        const enquiries = enquiriesRes.enquiries || [];
+
+        const avg =
+          reviews.length > 0
+            ? (reviews.reduce((sum: number, r: any) => sum + (r.rating || 5), 0) / reviews.length).toFixed(1)
+            : "5.0";
+
+        setStats({
+          couponsCount: coupons.length,
+          activeCoupons: coupons.filter((c: any) => c.is_active).length,
+          reviewsCount: reviews.length,
+          avgRating: avg,
+          todayViews: metrics.todayViews || 0,
+          todayVisitors: metrics.todayUniqueVisitors || 0,
+          enquiriesCount: enquiries.length,
+          newEnquiries: enquiries.filter((e: any) => e.status === "new").length,
+        });
+      } catch (err) {
+        console.warn("Could not load supplementary admin stats:", err);
+      }
+    }
+    fetchStats();
+  }, []);
 
   if (!loaded) {
     return (
@@ -60,18 +106,10 @@ export default function AdminDashboard() {
   }
 
   const categoryCounts: Record<string, number> = {
-    "Deity Prints": products.filter(
-      (p) => p.category === "Deity Prints" || p.category === "Watches"
-    ).length,
-    "Temple Prints": products.filter(
-      (p) => p.category === "Temple Prints" || p.category === "Shoes"
-    ).length,
-    "Sculpture Prints": products.filter(
-      (p) => p.category === "Sculpture Prints" || p.category === "Clothing"
-    ).length,
-    "Premium Sets": products.filter(
-      (p) => p.category === "Premium Sets" || p.category === "Accessories"
-    ).length,
+    "Deity Prints": products.filter((p) => p.category === "Deity Prints").length,
+    "Temple Prints": products.filter((p) => p.category === "Temple Prints").length,
+    "Sculpture Prints": products.filter((p) => p.category === "Sculpture Prints").length,
+    "Premium Sets": products.filter((p) => p.category === "Premium Sets").length,
   };
 
   const recentProducts = [...products].reverse().slice(0, 6);
@@ -87,13 +125,13 @@ export default function AdminDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery • Admin
+            Frames of Divine • Admin
           </span>
           <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-1">
             Devotional Store Dashboard
           </h1>
           <p className="text-zinc-400 mt-1 text-sm">
-            Manage deity photos, Tamil temple prints, sculpture artworks, and custom orders
+            Centralized management for prints, discount coupons, customer reviews, analytics, and custom orders
           </p>
         </div>
         <div className="flex gap-2">
@@ -115,7 +153,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Overview Cards */}
+      {/* Primary Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total Products */}
         <motion.div
@@ -126,7 +164,7 @@ export default function AdminDashboard() {
         >
           <div className="flex items-start justify-between mb-3">
             <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
-              Total Devotional Prints
+              Devotional Prints
             </span>
             <Package className="w-4 h-4 text-[#c9a227]" />
           </div>
@@ -134,28 +172,81 @@ export default function AdminDashboard() {
           <span className="text-[10px] text-zinc-500 mt-1 block">Live gallery catalog items</span>
         </motion.div>
 
-        {/* Category Cards */}
-        {Object.entries(categoryCounts).map(([cat, count], i) => {
-          const Icon = categoryIcons[cat] || Package;
-          return (
-            <motion.div
-              key={cat}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15 + i * 0.05 }}
-              className="bg-[#070707] border border-white/5 hover:border-[#c9a227]/30 transition-all rounded-2xl p-5"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
-                  {cat}
-                </span>
-                <Icon className="w-4 h-4 text-[#c9a227]" />
-              </div>
-              <p className="text-3xl font-black text-white">{count}</p>
-              <span className="text-[10px] text-zinc-500 mt-1 block">Archival fine art editions</span>
-            </motion.div>
-          );
-        })}
+        {/* Active Coupons */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.15 }}
+          className="bg-[#070707] border border-white/5 hover:border-[#c9a227]/30 transition-all rounded-2xl p-5"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+              Active Coupons
+            </span>
+            <Ticket className="w-4 h-4 text-[#c9a227]" />
+          </div>
+          <p className="text-3xl font-black text-white">{stats.activeCoupons}</p>
+          <span className="text-[10px] text-zinc-500 mt-1 block">
+            {stats.couponsCount} configured reverse-price offers
+          </span>
+        </motion.div>
+
+        {/* Customer Reviews */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-[#070707] border border-white/5 hover:border-[#c9a227]/30 transition-all rounded-2xl p-5"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+              Devotee Reviews
+            </span>
+            <MessageSquare className="w-4 h-4 text-green-400" />
+          </div>
+          <p className="text-3xl font-black text-white">{stats.reviewsCount}</p>
+          <span className="text-[10px] text-zinc-500 mt-1 block">
+            Average score: {stats.avgRating} / 5.0
+          </span>
+        </motion.div>
+
+        {/* Today's Traffic */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.25 }}
+          className="bg-[#070707] border border-white/5 hover:border-[#c9a227]/30 transition-all rounded-2xl p-5"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+              Today&apos;s Visitors
+            </span>
+            <BarChart3 className="w-4 h-4 text-purple-400" />
+          </div>
+          <p className="text-3xl font-black text-white">{stats.todayVisitors}</p>
+          <span className="text-[10px] text-zinc-500 mt-1 block">
+            {stats.todayViews} page views recorded
+          </span>
+        </motion.div>
+
+        {/* Custom Enquiries */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3 }}
+          className="bg-[#070707] border border-white/5 hover:border-[#c9a227]/30 transition-all rounded-2xl p-5"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+              Custom Orders
+            </span>
+            <Send className="w-4 h-4 text-yellow-400" />
+          </div>
+          <p className="text-3xl font-black text-white">{stats.enquiriesCount}</p>
+          <span className="text-[10px] text-yellow-500 mt-1 block">
+            {stats.newEnquiries} new requests pending
+          </span>
+        </motion.div>
       </div>
 
       {/* Catalog: Categories & Deities */}
@@ -239,49 +330,64 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {/* Quick Action Hub */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Quick Action Hub: 4 Key Sections */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
-          href="/admin/products/add"
+          href="/admin/coupons"
           className="group flex items-center gap-4 p-5 bg-[#070707] border border-white/5 rounded-2xl hover:border-[#c9a227]/40 transition-all"
         >
           <div className="w-12 h-12 rounded-xl bg-[#c9a227]/10 border border-[#c9a227]/20 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
-            <PlusCircle className="w-5 h-5 text-[#c9a227]" />
+            <Ticket className="w-5 h-5 text-[#c9a227]" />
           </div>
           <div>
-            <h3 className="font-bold text-white text-sm">Add Deity / Temple Print</h3>
-            <p className="text-xs text-zinc-500">Upload high-res devotional photo art</p>
+            <h3 className="font-bold text-white text-sm">Discount Coupons</h3>
+            <p className="text-xs text-zinc-500">Reverse-price formula & codes</p>
           </div>
         </Link>
+
         <Link
-          href="/admin/homepage"
+          href="/admin/reviews"
           className="group flex items-center gap-4 p-5 bg-[#070707] border border-white/5 rounded-2xl hover:border-[#c9a227]/40 transition-all"
         >
           <div className="w-12 h-12 rounded-xl bg-[#c9a227]/10 border border-[#c9a227]/20 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
-            <Store className="w-5 h-5 text-[#c9a227]" />
+            <MessageSquare className="w-5 h-5 text-[#c9a227]" />
           </div>
           <div>
-            <h3 className="font-bold text-white text-sm">Homepage Hero & Banners</h3>
-            <p className="text-xs text-zinc-500">Edit devotional titles and imagery</p>
+            <h3 className="font-bold text-white text-sm">Customer Reviews</h3>
+            <p className="text-xs text-zinc-500">Manage storefront testimonials</p>
           </div>
         </Link>
+
         <Link
-          href="/admin/contact"
+          href="/admin/analytics"
           className="group flex items-center gap-4 p-5 bg-[#070707] border border-white/5 rounded-2xl hover:border-[#c9a227]/40 transition-all"
         >
           <div className="w-12 h-12 rounded-xl bg-[#c9a227]/10 border border-[#c9a227]/20 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
-            <Phone className="w-5 h-5 text-[#c9a227]" />
+            <BarChart3 className="w-5 h-5 text-[#c9a227]" />
           </div>
           <div>
-            <h3 className="font-bold text-white text-sm">WhatsApp & Custom Orders</h3>
-            <p className="text-xs text-zinc-500">Configure phone and custom order info</p>
+            <h3 className="font-bold text-white text-sm">Visitor Analytics</h3>
+            <p className="text-xs text-zinc-500">Traffic trends & top pages</p>
+          </div>
+        </Link>
+
+        <Link
+          href="/admin/enquiries"
+          className="group flex items-center gap-4 p-5 bg-[#070707] border border-white/5 rounded-2xl hover:border-[#c9a227]/40 transition-all"
+        >
+          <div className="w-12 h-12 rounded-xl bg-[#c9a227]/10 border border-[#c9a227]/20 flex items-center justify-center group-hover:bg-[#c9a227]/20 transition-colors">
+            <Send className="w-5 h-5 text-[#c9a227]" />
+          </div>
+          <div>
+            <h3 className="font-bold text-white text-sm">Custom Enquiries</h3>
+            <p className="text-xs text-zinc-500">Bespoke devotional requests</p>
           </div>
         </Link>
       </div>
 
       {/* Recent Products */}
       <div>
-        <h2 className="text-lg font-bold mb-4 text-white">Recent Products</h2>
+        <h2 className="text-lg font-bold mb-4 text-white">Recent Devotional Prints</h2>
         {recentProducts.length === 0 ? (
           <p className="text-zinc-500 text-sm">No products yet.</p>
         ) : (
@@ -317,7 +423,7 @@ export default function AdminDashboard() {
                     {product.category} · {product.brand}
                   </p>
                 </div>
-                <span className="text-sm font-bold text-[var(--accent-1)]">
+                <span className="text-sm font-bold text-[#c9a227]">
                   {currency.format(product.price)}
                 </span>
               </Link>

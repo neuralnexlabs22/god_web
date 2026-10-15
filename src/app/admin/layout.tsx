@@ -16,6 +16,11 @@ import {
   Lock,
   Eye,
   EyeOff,
+  Ticket,
+  MessageSquare,
+  BarChart3,
+  Send,
+  Boxes,
 } from "lucide-react";
 import { useState } from "react";
 import { ProductProvider } from "@/context/ProductContext";
@@ -25,8 +30,13 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Devotional Prints", icon: Package },
   { href: "/admin/products/add", label: "Add Print", icon: PlusCircle },
+  { href: "/admin/inventory", label: "Inventory Stock", icon: Boxes },
   { href: "/admin/categories", label: "Categories", icon: Layers },
   { href: "/admin/brands", label: "Deities & Themes", icon: Tag },
+  { href: "/admin/coupons", label: "Discount Coupons", icon: Ticket },
+  { href: "/admin/reviews", label: "Customer Reviews", icon: MessageSquare },
+  { href: "/admin/analytics", label: "Visitor Analytics", icon: BarChart3 },
+  { href: "/admin/enquiries", label: "Custom Enquiries", icon: Send },
   { href: "/admin/homepage", label: "Homepage Hero", icon: Store },
   { href: "/admin/settings", label: "Store Settings", icon: Eye },
   { href: "/admin/contact", label: "Contact & WhatsApp", icon: Lock },
@@ -68,10 +78,10 @@ function AdminLoginScreen() {
             <Lock className="w-7 h-7 text-[#c9a227]" />
           </div>
           <h1 className="text-xl font-serif font-bold uppercase tracking-widest text-white">
-            Sacred Tamil
+            Frames of Divine
           </h1>
           <p className="text-[11px] text-[#c9a227] tracking-[0.25em] uppercase mt-1 font-semibold">
-            Devotional Prints Admin
+            Devotional Frames Admin
           </p>
         </div>
 
@@ -141,7 +151,7 @@ function AdminLoginScreen() {
             className="text-xs text-zinc-400 hover:text-[#c9a227] transition-colors inline-flex items-center gap-1.5"
           >
             <Store className="w-3 h-3" />
-            Back to Sacred Tamil Gallery
+            Back to Frames of Divine
           </Link>
         </div>
       </div>
@@ -182,7 +192,7 @@ function AdminLoadingScreen() {
       <div className="flex flex-col items-center gap-4">
         <div className="w-10 h-10 border-2 border-[#c9a227]/20 border-t-[#c9a227] rounded-full animate-spin" />
         <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">
-          Loading Sacred Tamil Admin...
+          Loading Frames of Divine Admin...
         </p>
       </div>
     </div>
@@ -224,10 +234,10 @@ function AdminDashboardShell({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <h1 className="text-sm font-serif font-black tracking-wider uppercase text-white">
-                SACRED TAMIL
+                FRAMES OF DIVINE
               </h1>
               <p className="text-[9px] tracking-[0.25em] uppercase text-[#c9a227] font-semibold">
-                Devotional Prints
+                Devotional Frames
               </p>
             </div>
           </Link>

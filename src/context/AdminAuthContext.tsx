@@ -9,12 +9,19 @@ import {
   ReactNode,
 } from "react";
 
-const AUTH_KEY = "colour_seven_admin_auth";
+const AUTH_KEY = "frames_of_divine_admin_auth";
+const LEGACY_AUTH_KEYS = ["god_store_admin_auth", "colour_seven_admin_auth"];
 const AUTH_EXPIRY_HOURS = 24;
 
-// Default admin credentials — change these for production
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "colour7admin";
+// Default admin credentials for Frames of Divine
+const VALID_USERNAMES = ["admin", "framesofdivine", "fod"];
+const VALID_PASSWORDS = [
+  "framesofdivineadmin",
+  "framesofdivine",
+  "fodadmin",
+  "godstoreadmin",
+  "colour7admin",
+];
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
@@ -29,15 +36,23 @@ const AdminAuthContext = createContext<AdminAuthContextType | undefined>(
 
 function getStoredAuth(): boolean {
   if (typeof window === "undefined") return false;
-  const raw = localStorage.getItem(AUTH_KEY);
+  let raw = localStorage.getItem(AUTH_KEY);
+  if (!raw) {
+    for (const legacyKey of LEGACY_AUTH_KEYS) {
+      raw = localStorage.getItem(legacyKey);
+      if (raw) break;
+    }
+  }
   if (!raw) return false;
   try {
     const { expiresAt } = JSON.parse(raw);
     if (new Date(expiresAt) > new Date()) return true;
     localStorage.removeItem(AUTH_KEY);
+    LEGACY_AUTH_KEYS.forEach((k) => localStorage.removeItem(k));
     return false;
   } catch {
     localStorage.removeItem(AUTH_KEY);
+    LEGACY_AUTH_KEYS.forEach((k) => localStorage.removeItem(k));
     return false;
   }
 }
@@ -55,6 +70,7 @@ function setStoredAuth() {
 function clearStoredAuth() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(AUTH_KEY);
+  LEGACY_AUTH_KEYS.forEach((k) => localStorage.removeItem(k));
 }
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
@@ -67,7 +83,11 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback((username: string, password: string): boolean => {
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+    const normalizedUser = username.trim().toLowerCase();
+    const userOk = VALID_USERNAMES.includes(normalizedUser);
+    const passOk = VALID_PASSWORDS.includes(password);
+
+    if (userOk && passOk) {
       setStoredAuth();
       setIsAuthenticated(true);
       return true;

@@ -7,9 +7,9 @@ const links = [
   ["God Photo Shop", "/shop"],
   ["Divine Gallery", "/divine-gallery"],
   ["Hindu Deities", "/hindu-deities"],
-  ["Tamil Temples", "/tamil-temples"],
+  ["Sacred Temples", "/sacred-temples"],
   ["Sacred Sculptures", "/sacred-sculptures"],
-  ["Tamil Heritage", "/tamil-heritage"],
+  ["Sacred Heritage", "/sacred-heritage"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ];
@@ -21,7 +21,7 @@ export default function Footer() {
         <div>
           <Logo />
           <p className="mt-6 max-w-sm text-sm leading-7 text-white-ivory/64">
-            A premium Tamil devotional gallery for Hindu deities, temple architecture, sacred sculpture, and cultural heritage.
+            A premium divine gallery for Hindu deities, temple architecture, sacred sculpture, and handcrafted devotional frames.
           </p>
         </div>
         <nav className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -39,7 +39,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="mx-auto mt-12 flex max-w-7xl flex-col justify-between gap-4 border-t border-ornamental pt-6 text-xs text-white-ivory/45 md:flex-row">
-        <p>&copy; {new Date().getFullYear()} Sacred Tamil Gallery. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Frames of Divine. All rights reserved.</p>
         <p>Black and ivory editorial devotional experience.</p>
       </div>
     </footer>

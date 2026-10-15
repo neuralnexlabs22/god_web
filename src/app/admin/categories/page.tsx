@@ -87,7 +87,7 @@ export default function AdminCategoriesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-3xl md:text-4xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Devotional Categories
@@ -158,7 +158,7 @@ export default function AdminCategoriesPage() {
               type="text"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
-              placeholder="e.g. Archival photographs and fine art reproductions of ancient Tamil temple art..."
+              placeholder="e.g. Archival photographs and fine art reproductions of ancient sacred temple art..."
               className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors"
             />
           </div>

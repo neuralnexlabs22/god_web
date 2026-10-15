@@ -7,8 +7,8 @@ export default function ContactPage() {
   const { contactInfo } = useContactInfo();
   const phone = contactInfo?.phone_number || "8122228386";
   const whatsapp = contactInfo?.whatsapp_number || phone;
-  const email = contactInfo?.email || "curation@sacredtamil.gallery";
-  const location = contactInfo?.address || [contactInfo?.city || "Chennai", contactInfo?.state || "Tamil Nadu"].join(", ");
+  const email = contactInfo?.email || "contact@framesofdivine.com";
+  const location = contactInfo?.address || (contactInfo?.city ? `${contactInfo.city}, India` : "India");
 
   return (
     <div className="theme-dark min-h-screen pt-28">

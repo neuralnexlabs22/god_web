@@ -11,7 +11,7 @@ export default function DivineGalleryPage() {
         <p className="eyebrow text-grey-stone">Divine Gallery</p>
         <h1 className="section-title max-w-5xl text-black-deep">Hindu Deities, Temple Forms, And Sacred Artwork</h1>
         <p className="mt-7 max-w-3xl text-sm leading-8 text-black-charcoal/70">
-          A curated visual archive of devotional forms, Tamil temple architecture, sculptural details, and artwork studies.
+          A curated visual archive of devotional forms, sacred temple architecture, sculptural details, and artwork studies.
         </p>
       </section>
 
@@ -59,7 +59,9 @@ export default function DivineGalleryPage() {
                   <DeityPortrait deity={deity} className="h-full w-full" imageClassName="group-hover:scale-110" />
                 </div>
                 <div className="p-4">
-                  <p className="font-tamil text-xs text-grey-stone">{deity.tamilName}</p>
+                  {deity.sacredTitle ? (
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
+                  ) : null}
                   <h3 className="mt-1 font-serif text-xl text-white-pure">{deity.name}</h3>
                 </div>
               </Link>

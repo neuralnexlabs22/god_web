@@ -47,10 +47,10 @@ function LoginForm() {
             🕉️
           </div>
           <h1 className="text-2xl font-serif font-black uppercase tracking-[0.2em] text-white">
-            Sacred Tamil
+            Frames of Divine
           </h1>
           <p className="text-[#c9a227] text-xs font-bold tracking-[0.35em] uppercase mt-2">
-            Devotional Prints Admin
+            Devotional Frames Admin
           </p>
         </div>
 

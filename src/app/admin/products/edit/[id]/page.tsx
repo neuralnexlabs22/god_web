@@ -255,7 +255,7 @@ export default function EditProductPage({
     try {
       await updateProduct(id, {
         name: name.trim(),
-        brand: finalBrand || "Colour Seven",
+        brand: finalBrand || "Frames of Divine",
         price: normalizedPrice,
         stock: parseInt(stock) || 0,
         category,
@@ -316,7 +316,7 @@ export default function EditProductPage({
         </Link>
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a227]">
-            Sacred Tamil Gallery
+            Frames of Divine
           </span>
           <h1 className="text-2xl md:text-3xl font-serif font-medium uppercase tracking-tight text-white mt-0.5">
             Edit Devotional Print
@@ -564,16 +564,16 @@ export default function EditProductPage({
           </div>
         </div>
 
-        {/* Colors */}
+        {/* Frames / Finishes */}
         <div className="space-y-2">
-          <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-            Colors (press Enter to add)
+          <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+            Frame / Finish Options (press Enter to add)
           </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {colors.map((color) => (
               <span
                 key={color}
-                className="flex items-center gap-1.5 text-xs bg-[var(--accent-1)]/10 text-[var(--accent-1)] px-3 py-1.5 rounded-lg font-medium"
+                className="flex items-center gap-1.5 text-xs bg-[#c9a227]/10 text-[#c9a227] border border-[#c9a227]/30 px-3 py-1.5 rounded-lg font-medium"
               >
                 {color}
                 <button
@@ -591,21 +591,21 @@ export default function EditProductPage({
             value={colorInput}
             onChange={(e) => setColorInput(e.target.value)}
             onKeyDown={handleColorKeyDown}
-            placeholder="Type a color and press Enter..."
-            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors text-sm"
+            placeholder="Type a frame option (e.g. Teak Wood Frame, 22KT Gold Foil) and press Enter..."
+            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors text-sm"
           />
         </div>
 
-        {/* Sizes */}
+        {/* Dimensions / Sizes */}
         <div className="space-y-2">
-          <label className="text-xs uppercase tracking-wider text-zinc-500 font-medium">
-            Sizes (press Enter to add)
+          <label className="text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+            Print Dimensions / Sizes (press Enter to add)
           </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {sizes.map((size) => (
               <span
                 key={size}
-                className="flex items-center gap-1.5 text-xs bg-[#c9a227]/10 text-[#c9a227] px-3 py-1.5 rounded-lg font-medium"
+                className="flex items-center gap-1.5 text-xs bg-[#c9a227]/10 text-[#c9a227] border border-[#c9a227]/30 px-3 py-1.5 rounded-lg font-medium"
               >
                 {size}
                 <button
@@ -623,8 +623,8 @@ export default function EditProductPage({
             value={sizeInput}
             onChange={(e) => setSizeInput(e.target.value)}
             onKeyDown={handleSizeKeyDown}
-            placeholder="Type a size and press Enter..."
-            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[var(--accent-1)] focus:outline-none transition-colors text-sm"
+            placeholder="Type a dimension (e.g. 12 x 18 in, 16 x 24 in) and press Enter..."
+            className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-600 focus:border-[#c9a227] focus:outline-none transition-colors text-sm"
           />
         </div>
 
