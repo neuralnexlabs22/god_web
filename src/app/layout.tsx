@@ -9,7 +9,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 
 export const metadata: Metadata = {
   title: "Frames of Divine | Devotional Art & Frames",
-  description: "Shop premium Hindu devotional photo prints, framed deities, temple art, and sacred Dravidian architecture photography.",
+  description: "Shop premium Hindu devotional photo paintings, framed deities, temple art, and sacred Dravidian architecture.",
 };
 
 export const viewport = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full antialiased ${inter.variable} ${playfair.variable} bg-black-deep text-white-pure`}>
+    <html lang="en" className={`h-full antialiased ${inter.variable} ${playfair.variable} bg-[#f4f0e8] text-black-deep`}>
       <body className="min-h-full flex flex-col font-sans transition-colors duration-700 ease-cinematic">
         <Providers>
           <SiteChrome>{children}</SiteChrome>

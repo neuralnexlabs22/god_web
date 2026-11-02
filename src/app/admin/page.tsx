@@ -19,6 +19,7 @@ import {
   BarChart3,
   Send,
   Users,
+  ShoppingBag,
 } from "lucide-react";
 import { useProducts } from "@/context/ProductContext";
 import { useCatalog } from "@/context/CatalogContext";
@@ -57,28 +58,36 @@ export default function AdminDashboard() {
     todayVisitors: 0,
     enquiriesCount: 0,
     newEnquiries: 0,
+    ordersCount: 0,
+    ordersRevenue: 0,
   });
 
   useEffect(() => {
     // Fetch live counts from backend APIs
     async function fetchStats() {
       try {
-        const [couponsRes, reviewsRes, analyticsRes, enquiriesRes] = await Promise.all([
+        const [couponsRes, reviewsRes, analyticsRes, enquiriesRes, ordersRes] = await Promise.all([
           fetch("/api/coupons").then((r) => r.json()).catch(() => ({})),
           fetch("/api/reviews?all=true").then((r) => r.json()).catch(() => ({})),
           fetch("/api/analytics/stats").then((r) => r.json()).catch(() => ({})),
           fetch("/api/enquiries").then((r) => r.json()).catch(() => ({})),
+          fetch("/api/orders").then((r) => r.json()).catch(() => ({})),
         ]);
 
         const coupons = couponsRes.coupons || [];
         const reviews = reviewsRes.reviews || [];
         const metrics = analyticsRes.metrics || {};
         const enquiries = enquiriesRes.enquiries || [];
+        const orders = ordersRes.orders || [];
 
         const avg =
           reviews.length > 0
             ? (reviews.reduce((sum: number, r: any) => sum + (r.rating || 5), 0) / reviews.length).toFixed(1)
             : "5.0";
+
+        const paidRevenue = orders
+          .filter((o: any) => o.payment_status === "captured" || o.payment_status === "paid")
+          .reduce((sum: number, o: any) => sum + (Number(o.total_amount) || 0), 0);
 
         setStats({
           couponsCount: coupons.length,
@@ -89,6 +98,8 @@ export default function AdminDashboard() {
           todayVisitors: metrics.todayUniqueVisitors || 0,
           enquiriesCount: enquiries.length,
           newEnquiries: enquiries.filter((e: any) => e.status === "new").length,
+          ordersCount: orders.length,
+          ordersRevenue: paidRevenue,
         });
       } catch (err) {
         console.warn("Could not load supplementary admin stats:", err);
@@ -106,9 +117,9 @@ export default function AdminDashboard() {
   }
 
   const categoryCounts: Record<string, number> = {
-    "Deity Prints": products.filter((p) => p.category === "Deity Prints").length,
-    "Temple Prints": products.filter((p) => p.category === "Temple Prints").length,
-    "Sculpture Prints": products.filter((p) => p.category === "Sculpture Prints").length,
+    "Deity Prints": products.filter((p) => p.category === "Deity Paintings" || (p.category as string) === "Deity Prints").length,
+    "Temple Prints": products.filter((p) => p.category === "Temple Paintings" || (p.category as string) === "Temple Prints").length,
+    "Sculpture Prints": products.filter((p) => p.category === "Sculpture Paintings" || (p.category as string) === "Sculpture Prints").length,
     "Premium Sets": products.filter((p) => p.category === "Premium Sets").length,
   };
 
@@ -154,7 +165,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Primary Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
         {/* Total Products */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -171,6 +182,27 @@ export default function AdminDashboard() {
           <p className="text-3xl font-black text-white">{products.length}</p>
           <span className="text-[10px] text-zinc-500 mt-1 block">Live gallery catalog items</span>
         </motion.div>
+
+        {/* Orders & Payments */}
+        <Link href="/admin/orders">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.12 }}
+            className="bg-[#070707] border border-[#c9a227]/30 hover:border-[#c9a227] transition-all rounded-2xl p-5 cursor-pointer h-full"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <span className="text-xs text-[#c9a227] uppercase tracking-wider font-semibold">
+                Orders & Payments
+              </span>
+              <ShoppingBag className="w-4 h-4 text-[#c9a227]" />
+            </div>
+            <p className="text-3xl font-black text-white">{stats.ordersCount}</p>
+            <span className="text-[10px] text-zinc-400 mt-1 block">
+              ₹{stats.ordersRevenue.toLocaleString("en-IN")} collected
+            </span>
+          </motion.div>
+        </Link>
 
         {/* Active Coupons */}
         <motion.div

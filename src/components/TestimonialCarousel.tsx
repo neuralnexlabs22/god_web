@@ -12,7 +12,7 @@ const fallbackReviews: CustomerReview[] = [
     customer_image: null,
     rating: 5,
     review_text:
-      "The Tanjore gold-foil Nataraja print is magnificent. Placed in our central pooja room, the subtle luster and Dravidian proportions bring absolute peace and sanctity.",
+      "The Tanjore gold-foil Nataraja painting is magnificent. Placed in our central pooja room, the subtle luster and Dravidian proportions bring absolute peace and sanctity.",
     designation: "Art Historian, Chennai",
     is_published: true,
     review_date: "2026-10-08",
@@ -38,7 +38,7 @@ const fallbackReviews: CustomerReview[] = [
     customer_image: null,
     rating: 5,
     review_text:
-      "The Thanjavur Brihadisvara Vimana architectural print captures the golden dawn light of the Chola era with breathtaking detail. Worth every rupee.",
+      "The Thanjavur Brihadisvara Vimana architectural painting captures the golden dawn light of the Chola era with breathtaking detail. Worth every rupee.",
     designation: "Devotee & Architect, Bengaluru",
     is_published: true,
     review_date: "2026-09-28",
@@ -121,7 +121,7 @@ export default function TestimonialCarousel() {
 
   return (
     <section
-      className="theme-dark section-pad border-b border-ornamental bg-[#060606] text-white-pure overflow-hidden relative"
+      className="section-pad border-b border-black-deep/10 bg-[#ede7db] text-black-deep overflow-hidden relative"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -130,9 +130,9 @@ export default function TestimonialCarousel() {
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="eyebrow text-[#c9a227]">Devotee Testimonials</p>
-            <h2 className="section-title text-white-pure">Words of Reverence</h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white-ivory/70">
-              Read authentic experiences from art collectors, temple lovers, and families who have consecrated our devotional prints.
+            <h2 className="section-title text-black-deep">Words of Reverence</h2>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-black-charcoal/70">
+              Read authentic experiences from art collectors, temple lovers, and families who have consecrated our devotional paintings.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -146,14 +146,14 @@ export default function TestimonialCarousel() {
               <button
                 onClick={prevSlide}
                 aria-label="Previous testimonial"
-                className="flex h-11 w-11 items-center justify-center border border-white-pure/20 text-white-pure transition-all hover:bg-white-pure hover:text-black-deep"
+                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white-pure"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={nextSlide}
                 aria-label="Next testimonial"
-                className="flex h-11 w-11 items-center justify-center border border-white-pure/20 text-white-pure transition-all hover:bg-white-pure hover:text-black-deep"
+                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white-pure"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -165,10 +165,10 @@ export default function TestimonialCarousel() {
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="relative min-h-[280px] sm:min-h-[240px] border border-white/10 bg-[#0c0c0c] p-8 md:p-12 transition-all duration-700"
+          className="relative min-h-[280px] sm:min-h-[240px] border border-black-deep/15 bg-[#fbf9f5] p-8 md:p-12 shadow-sm transition-all duration-700"
         >
           {/* Subtle gold quote mark ornament */}
-          <div className="absolute right-8 top-6 font-serif text-8xl text-white/5 select-none pointer-events-none">
+          <div className="absolute right-8 top-6 font-serif text-8xl text-black-deep/5 select-none pointer-events-none">
             &ldquo;
           </div>
 
@@ -189,7 +189,7 @@ export default function TestimonialCarousel() {
             </div>
 
             {/* Testimonial Quote */}
-            <p className="font-serif text-xl md:text-2xl leading-relaxed text-white-pure italic">
+            <p className="font-serif text-xl md:text-2xl leading-relaxed text-black-deep italic">
               &ldquo;{activeReview.review_text}&rdquo;
             </p>
 
@@ -199,7 +199,7 @@ export default function TestimonialCarousel() {
                 {activeReview.customer_name.charAt(0)}
               </div>
               <div>
-                <p className="font-serif text-base font-semibold text-white-pure">
+                <p className="font-serif text-base font-semibold text-black-deep">
                   {activeReview.customer_name}
                 </p>
                 {activeReview.designation && (
@@ -212,14 +212,14 @@ export default function TestimonialCarousel() {
           </div>
 
           {/* Pagination dots */}
-          <div className="mt-8 flex items-center gap-2 pt-4 border-t border-white/5">
+          <div className="mt-8 flex items-center gap-2 pt-4 border-t border-black-deep/10">
             {reviews.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
                 aria-label={`Go to review ${idx + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
-                  idx === currentIndex ? "w-8 bg-[#c9a227]" : "w-2 bg-white/20 hover:bg-white/40"
+                  idx === currentIndex ? "w-8 bg-[#c9a227]" : "w-2 bg-black-deep/20 hover:bg-black-deep/40"
                 }`}
               />
             ))}

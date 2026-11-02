@@ -1,8 +1,8 @@
 // Devotional categories and sacred deities/themes
 export const devotionalCategories = [
-  { name: "Deity Prints", slug: "deity-prints", description: "Premium framed and unframed Hindu deity photo prints" },
-  { name: "Temple Prints", slug: "temple-prints", description: "Sacred temple gopuram, corridor, and architecture artwork" },
-  { name: "Sculpture Prints", slug: "sculpture-prints", description: "Yali pillars, bronze icons, and sacred carving studies" },
+  { name: "Deity Paintings", slug: "deity-prints", description: "Premium framed and unframed Hindu deity Tanjore paintings" },
+  { name: "Temple Paintings", slug: "temple-prints", description: "Sacred temple gopuram, corridor, and architecture artwork" },
+  { name: "Sculpture Paintings", slug: "sculpture-prints", description: "Yali pillars, bronze icons, and sacred carving studies" },
   { name: "Premium Sets", slug: "premium-sets", description: "Curated devotional photo sets for pooja rooms and gifting" }
 ];
 
@@ -24,7 +24,7 @@ export const allBrands = [
   { name: "Sacred Reliefs", category: "sculpture-prints", description: "Intricate granite reliefs of celestial dancers and sacred lore", featured: false },
   { name: "Pooja Room Sanctum Set", category: "premium-sets", description: "Complete five-piece framed devotional gallery for pooja rooms", featured: true },
   { name: "Dravidian Heritage Series", category: "premium-sets", description: "Curated fine art archival collection of sacred temple corridors", featured: true },
-  { name: "Festival & Gifting Edits", category: "premium-sets", description: "Gold-accented devotional prints suited for housewarmings and gifts", featured: false }
+  { name: "Festival & Gifting Edits", category: "premium-sets", description: "Gold-accented devotional paintings suited for housewarmings and gifts", featured: false }
 ];
 
 export const brandsByCategory = {

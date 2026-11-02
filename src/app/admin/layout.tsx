@@ -21,6 +21,7 @@ import {
   BarChart3,
   Send,
   Boxes,
+  ShoppingBag,
 } from "lucide-react";
 import { useState } from "react";
 import { ProductProvider } from "@/context/ProductContext";
@@ -28,6 +29,7 @@ import { AdminAuthProvider, useAdminAuth } from "@/context/AdminAuthContext";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/orders", label: "Orders & Payments", icon: ShoppingBag },
   { href: "/admin/products", label: "Devotional Prints", icon: Package },
   { href: "/admin/products/add", label: "Add Print", icon: PlusCircle },
   { href: "/admin/inventory", label: "Inventory Stock", icon: Boxes },

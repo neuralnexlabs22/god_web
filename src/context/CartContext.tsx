@@ -73,7 +73,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed.items)) setItems(parsed.items);
+        if (Array.isArray(parsed.items)) {
+          const sanitized = parsed.items.map((i: any, index: number) => ({
+            ...i,
+            cartItemId:
+              i.cartItemId ||
+              `${i.id || "item"}-${i.size || "standard"}-${i.frame || "unframed"}-${Date.now()}-${index}`,
+          }));
+          setItems(sanitized);
+        }
         if (parsed.coupon) setAppliedCoupon(parsed.coupon);
       }
     } catch (e) {

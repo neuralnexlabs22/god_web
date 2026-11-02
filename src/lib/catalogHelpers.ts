@@ -4,30 +4,30 @@ import type { Brand } from "@/types/catalog";
 export { brandOptionKey } from "@/lib/catalogStore";
 
 export const PRODUCT_CATEGORIES = [
-  "Deity Prints",
-  "Temple Prints",
-  "Sculpture Prints",
+  "Deity Paintings",
+  "Temple Paintings",
+  "Sculpture Paintings",
   "Premium Sets",
 ] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
 const SLUG_TO_CATEGORY: Record<string, ProductCategory> = {
-  "deity-prints": "Deity Prints",
-  "temple-prints": "Temple Prints",
-  "sculpture-prints": "Sculpture Prints",
+  "deity-prints": "Deity Paintings",
+  "temple-prints": "Temple Paintings",
+  "sculpture-prints": "Sculpture Paintings",
   "premium-sets": "Premium Sets",
 };
 
 const CATEGORY_TO_SLUG: Record<ProductCategory, string> = {
-  "Deity Prints": "deity-prints",
-  "Temple Prints": "temple-prints",
-  "Sculpture Prints": "sculpture-prints",
+  "Deity Paintings": "deity-prints",
+  "Temple Paintings": "temple-prints",
+  "Sculpture Paintings": "sculpture-prints",
   "Premium Sets": "premium-sets",
 };
 
 export function slugToProductCategory(slug: string): ProductCategory {
-  return SLUG_TO_CATEGORY[slug] || "Deity Prints";
+  return SLUG_TO_CATEGORY[slug] || "Deity Paintings";
 }
 
 export function productCategoryToSlug(category: ProductCategory): string {

@@ -7,7 +7,7 @@ export default function Logo({ className = "" }: { className?: string }) {
         FRAMES OF DIVINE
       </span>
       <span className="text-[9px] tracking-[0.3em] uppercase text-current opacity-60 font-medium mt-1">
-        DEVOTIONAL FRAMES & PRINTS
+        DEVOTIONAL TANJORE PAINTINGS
       </span>
     </Link>
   );

@@ -16,7 +16,7 @@ export default function DivineGalleryPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-24 md:grid-cols-3 md:px-8">
-        <Link href="/hindu-deities" className="gallery-card group block bg-black-deep text-white-pure md:col-span-2">
+        <Link href="/hindu-deities" className="gallery-card group block bg-black-deep text-black-deep md:col-span-2">
           <div className="relative min-h-[520px] overflow-hidden">
             <Image src={devotionalAssets.deityMontage.src} alt={devotionalAssets.deityMontage.alt} fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover transition-transform duration-[1400ms] group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/88 to-transparent" />
@@ -41,14 +41,14 @@ export default function DivineGalleryPage() {
         </div>
       </section>
 
-      <section className="theme-dark px-4 py-20 md:px-8">
+      <section className="px-4 py-20 md:px-8 bg-[#ede7db] text-black-deep">
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
               <p className="eyebrow text-grey-stone">Featured Deities</p>
-              <h2 className="font-serif text-4xl uppercase text-white-pure">Explore Every Form</h2>
+              <h2 className="font-serif text-4xl uppercase text-black-deep">Explore Every Form</h2>
             </div>
-            <Link href="/hindu-deities" className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-white-ivory">
+            <Link href="/hindu-deities" className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-black-deep/80">
               View All <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -62,7 +62,7 @@ export default function DivineGalleryPage() {
                   {deity.sacredTitle ? (
                     <p className="text-[10px] uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
                   ) : null}
-                  <h3 className="mt-1 font-serif text-xl text-white-pure">{deity.name}</h3>
+                  <h3 className="mt-1 font-serif text-xl text-black-deep">{deity.name}</h3>
                 </div>
               </Link>
             ))}

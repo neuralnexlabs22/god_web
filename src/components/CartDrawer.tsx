@@ -17,9 +17,25 @@ import {
   MessageSquare,
   ShieldCheck,
   Check,
+  CreditCard,
+  Lock,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useContactInfo } from "@/context/ContactInfoContext";
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(false);
+    if ((window as any).Razorpay) return resolve(true);
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
 
 export default function CartDrawer() {
   const {
@@ -48,7 +64,9 @@ export default function CartDrawer() {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "cod">("razorpay");
   const [orderSubmitting, setOrderSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
 
@@ -66,12 +84,12 @@ export default function CartDrawer() {
     const itemsList = items
       .map(
         (i, idx) =>
-          `${idx + 1}. *${i.name}*\n   Options: ${i.size || "Standard"} | ${i.frame || "Fine Art Print"}\n   Qty: ${i.quantity} × ₹${i.price.toLocaleString("en-IN")}`
+          `${idx + 1}. *${i.name}*\n   Options: ${i.size || "Standard"} | ${i.frame || "22KT Gold Tanjore Painting"}\n   Qty: ${i.quantity} × ₹${i.price.toLocaleString("en-IN")}`
       )
       .join("\n\n");
 
     let message = `*🕉️ NEW ORDER REQUEST — FRAMES OF DIVINE*\n\n`;
-    message += `Hello! I would like to order the following devotional prints:\n\n`;
+    message += `Hello! I would like to order the following devotional paintings:\n\n`;
     message += `${itemsList}\n\n`;
     message += `──────────────────\n`;
     message += `*Subtotal:* ₹${subtotal.toLocaleString("en-IN")}\n`;
@@ -113,6 +131,117 @@ export default function CartDrawer() {
     }
 
     window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
+  const handleRazorpayCheckout = async () => {
+    if (!customerName.trim() || !customerPhone.trim() || !customerAddress.trim()) {
+      alert("Please fill in your name, mobile number, and delivery address.");
+      return;
+    }
+
+    setOrderSubmitting(true);
+    try {
+      // 1. Ensure Razorpay Checkout SDK is loaded
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        alert("Unable to load Razorpay payment gateway. Please check your network connection.");
+        setOrderSubmitting(false);
+        return;
+      }
+
+      // 2. Request backend to calculate authoritative total & create Razorpay order
+      const createRes = await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items,
+          customer_name: customerName.trim(),
+          customer_phone: customerPhone.trim(),
+          customer_email: customerEmail.trim() || undefined,
+          shipping_address: customerAddress.trim(),
+          coupon_code: appliedCoupon?.code,
+        }),
+      });
+
+      const orderData = await createRes.json();
+      if (!createRes.ok || !orderData.success) {
+        alert(orderData.error || "Could not initialize payment with server.");
+        setOrderSubmitting(false);
+        return;
+      }
+
+      // 3. Open Razorpay Standard Checkout modal
+      const options = {
+        key: orderData.keyId,
+        amount: orderData.amount,
+        currency: orderData.currency || "INR",
+        name: "Frames of Divine",
+        description: "Devotional Tanjore Paintings & Sacred Frames",
+        order_id: orderData.razorpayOrderId,
+        prefill: {
+          name: customerName.trim(),
+          contact: customerPhone.trim(),
+          email: customerEmail.trim() || undefined,
+        },
+        notes: {
+          internal_order_id: orderData.orderId,
+        },
+        theme: {
+          color: "#c9a227",
+        },
+        modal: {
+          ondismiss: () => {
+            setOrderSubmitting(false);
+          },
+        },
+        handler: async function (response: {
+          razorpay_order_id: string;
+          razorpay_payment_id: string;
+          razorpay_signature: string;
+        }) {
+          try {
+            // 4. Verify signature cryptographically on server
+            const verifyRes = await fetch("/api/payments/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                internal_order_id: orderData.orderId,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+
+            const verifyResult = await verifyRes.json();
+            if (verifyRes.ok && verifyResult.success) {
+              setOrderSuccess(orderData.orderId);
+              clearCart();
+            } else {
+              alert(
+                verifyResult.error ||
+                  "Payment verification pending. Our team will verify and dispatch your order."
+              );
+            }
+          } catch (verErr) {
+            console.error("Payment verification network error:", verErr);
+            alert("Payment processed. Your order will be confirmed shortly via our secure webhook.");
+          } finally {
+            setOrderSubmitting(false);
+          }
+        },
+      };
+
+      const razorpayInstance = new (window as any).Razorpay(options);
+      razorpayInstance.on("payment.failed", function (failResponse: any) {
+        console.error("Payment failure:", failResponse.error);
+        alert(`Payment failed: ${failResponse.error?.description || "Transaction was declined."}`);
+        setOrderSubmitting(false);
+      });
+      razorpayInstance.open();
+    } catch (err: any) {
+      alert(err?.message || "Failed to initiate payment. Please try again.");
+      setOrderSubmitting(false);
+    }
   };
 
   const handleDirectOrder = async (e: React.FormEvent) => {
@@ -158,7 +287,7 @@ export default function CartDrawer() {
   return (
     <AnimatePresence>
       {isCartOpen && (
-        <div className="fixed inset-0 z-[120] flex justify-end">
+        <div key="cart-drawer-overlay" className="fixed inset-0 z-[120] flex justify-end">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -174,10 +303,10 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 280 }}
-            className="relative z-10 flex h-full w-full max-w-md flex-col bg-[#070707] text-white border-l border-white/10 shadow-2xl"
+            className="relative z-10 flex h-full w-full max-w-md flex-col bg-[#070707] text-white border-l border-black-deep/10 shadow-2xl"
           >
             {/* Top Bar */}
-            <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+            <div className="flex items-center justify-between border-b border-black-deep/10 px-6 py-5">
               <div className="flex items-center gap-2.5">
                 <ShoppingBag className="h-5 w-5 text-[#c9a227]" />
                 <h2 className="font-serif text-lg uppercase tracking-wider text-white">
@@ -199,14 +328,14 @@ export default function CartDrawer() {
             {/* Content Area */}
             {items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-zinc-600">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 border border-black-deep/10 text-zinc-600">
                   <ShoppingBag className="h-8 w-8 text-[#c9a227]/40" />
                 </div>
                 <h3 className="font-serif text-xl uppercase tracking-wider text-white">
                   Your Cart Is Empty
                 </h3>
                 <p className="mt-2 text-xs leading-5 text-zinc-400 max-w-xs">
-                  Discover curated Hindu deities, sacred temples, and devotional art prints.
+                  Discover curated Hindu deities, sacred temples, and devotional Tanjore paintings.
                 </p>
                 <button
                   onClick={closeCart}
@@ -219,10 +348,14 @@ export default function CartDrawer() {
               <>
                 {/* Scrollable Item List */}
                 <div className="flex-1 overflow-y-auto px-6 py-4 divide-y divide-white/5">
-                  {items.map((item) => (
-                    <div key={item.cartItemId} className="py-4 flex gap-4 items-start">
+                  {items.map((item, idx) => {
+                    const uniqueKey =
+                      item.cartItemId ||
+                      `${item.id || item.slug || "cart-item"}-${item.size || "std"}-${item.frame || "frame"}-${idx}`;
+                    return (
+                      <div key={uniqueKey} className="py-4 flex gap-4 items-start">
                       {/* Image Thumbnail */}
-                      <div className="relative h-20 w-16 flex-shrink-0 overflow-hidden border border-white/10 bg-black">
+                      <div className="relative h-20 w-16 flex-shrink-0 overflow-hidden border border-black-deep/10 bg-black">
                         {item.image ? (
                           <img
                             src={item.image}
@@ -260,7 +393,7 @@ export default function CartDrawer() {
                           )}
 
                           {/* Quantity Controls */}
-                          <div className="flex items-center border border-white/10 rounded-lg overflow-hidden bg-black">
+                          <div className="flex items-center border border-black-deep/10 rounded-lg overflow-hidden bg-black">
                             <button
                               onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                               aria-label="Decrease quantity"
@@ -289,11 +422,12 @@ export default function CartDrawer() {
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
 
                 {/* Footer Section: Coupon & Totals */}
-                <div className="border-t border-white/10 bg-[#040404] p-6 space-y-4">
+                <div className="border-t border-black-deep/10 bg-[#040404] p-6 space-y-4">
                   {/* Coupon Application Box */}
                   <div className="space-y-2">
                     {appliedCoupon ? (
@@ -325,7 +459,7 @@ export default function CartDrawer() {
                             placeholder="Enter coupon code..."
                             value={couponCodeInput}
                             onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
-                            className="w-full rounded-xl bg-black border border-white/10 pl-9 pr-3 py-2 text-xs uppercase text-white placeholder-zinc-500 focus:border-[#c9a227] focus:outline-none"
+                            className="w-full rounded-xl bg-black border border-black-deep/10 pl-9 pr-3 py-2 text-xs uppercase text-white placeholder-zinc-500 focus:border-[#c9a227] focus:outline-none"
                           />
                         </div>
                         <button
@@ -368,7 +502,7 @@ export default function CartDrawer() {
                       <span>Packaging & Delivery</span>
                       <span className="text-zinc-500">Free Insured Packaging</span>
                     </div>
-                    <div className="flex justify-between border-t border-white/10 pt-2 text-base font-serif font-bold text-white">
+                    <div className="flex justify-between border-t border-black-deep/10 pt-2 text-base font-serif font-bold text-white">
                       <span>Final Total</span>
                       <span className="text-[#c9a227]">
                         ₹{finalTotal.toLocaleString("en-IN")}
@@ -379,17 +513,30 @@ export default function CartDrawer() {
                   {/* Action Buttons */}
                   <div className="space-y-2 pt-2">
                     <button
-                      onClick={handleWhatsAppCheckout}
+                      onClick={() => {
+                        setPaymentMethod("razorpay");
+                        setShowCheckoutModal(true);
+                      }}
                       className="w-full flex items-center justify-center gap-2.5 rounded-xl border border-[#c9a227] bg-[#c9a227] px-4 py-3.5 text-xs font-black uppercase tracking-widest text-black hover:brightness-110 transition-all shadow-lg shadow-[#c9a227]/20"
                     >
-                      <MessageSquare className="h-4 w-4" />
+                      <Lock className="h-4 w-4" />
+                      Pay Securely with Razorpay
+                    </button>
+                    <button
+                      onClick={handleWhatsAppCheckout}
+                      className="w-full flex items-center justify-center gap-2.5 rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10 hover:border-white/30 transition-all"
+                    >
+                      <MessageSquare className="h-4 w-4 text-[#25D366]" />
                       Order via WhatsApp
                     </button>
                     <button
-                      onClick={() => setShowCheckoutModal(true)}
-                      className="w-full flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10 hover:border-white/30 transition-all"
+                      onClick={() => {
+                        setPaymentMethod("cod");
+                        setShowCheckoutModal(true);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 rounded-xl text-zinc-400 hover:text-white py-1.5 text-[11px] font-semibold tracking-wider hover:underline transition-all"
                     >
-                      Direct Checkout (Cash on Delivery)
+                      Cash on Delivery Available
                     </button>
                   </div>
                 </div>
@@ -401,7 +548,7 @@ export default function CartDrawer() {
 
       {/* Direct Checkout Modal */}
       {showCheckoutModal && (
-        <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div key="checkout-modal-overlay" className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -460,7 +607,17 @@ export default function CartDrawer() {
                   </button>
                 </div>
 
-                <form onSubmit={handleDirectOrder} className="space-y-4">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (paymentMethod === "razorpay") {
+                      handleRazorpayCheckout();
+                    } else {
+                      handleDirectOrder(e);
+                    }
+                  }}
+                  className="space-y-4"
+                >
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
                       Full Name *
@@ -471,22 +628,36 @@ export default function CartDrawer() {
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       placeholder="e.g. Rohith Lakshman"
-                      className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none"
+                      className="w-full bg-black border border-black-deep/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none"
                     />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
-                      WhatsApp / Mobile Phone *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      placeholder="e.g. +91 98765 43210"
-                      className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                        WhatsApp / Mobile Phone *
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        placeholder="e.g. +91 98765 43210"
+                        className="w-full bg-black border border-black-deep/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                        Email Address (Optional)
+                      </label>
+                      <input
+                        type="email"
+                        value={customerEmail}
+                        onChange={(e) => setCustomerEmail(e.target.value)}
+                        placeholder="For digital payment receipt"
+                        className="w-full bg-black border border-black-deep/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-1.5">
@@ -494,13 +665,64 @@ export default function CartDrawer() {
                       Delivery Address & Pincode *
                     </label>
                     <textarea
-                      rows={3}
+                      rows={2}
                       required
                       value={customerAddress}
                       onChange={(e) => setCustomerAddress(e.target.value)}
-                      placeholder="House / Flat No, Street, City, State, Pincode"
-                      className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none resize-none"
+                      placeholder="House / Flat No, Street, Landmark, City, State, Pincode"
+                      className="w-full bg-black border border-black-deep/10 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#c9a227] focus:outline-none resize-none"
                     />
+                  </div>
+
+                  {/* Payment Method Selector */}
+                  <div className="space-y-2 pt-1">
+                    <label className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">
+                      Select Payment Method *
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("razorpay")}
+                        className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                          paymentMethod === "razorpay"
+                            ? "border-[#c9a227] bg-[#c9a227]/10 text-white"
+                            : "border-white/10 bg-white/[0.02] text-zinc-400 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full mb-1">
+                          <span className="text-xs font-bold flex items-center gap-1.5 text-white">
+                            <CreditCard className="h-3.5 w-3.5 text-[#c9a227]" />
+                            Razorpay
+                          </span>
+                          {paymentMethod === "razorpay" && (
+                            <span className="h-2 w-2 rounded-full bg-[#c9a227]" />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-zinc-400">
+                          UPI, GPay, Cards, NetBanking
+                        </span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("cod")}
+                        className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                          paymentMethod === "cod"
+                            ? "border-[#c9a227] bg-[#c9a227]/10 text-white"
+                            : "border-white/10 bg-white/[0.02] text-zinc-400 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full mb-1">
+                          <span className="text-xs font-bold text-white">Cash on Delivery</span>
+                          {paymentMethod === "cod" && (
+                            <span className="h-2 w-2 rounded-full bg-[#c9a227]" />
+                          )}
+                        </div>
+                        <span className="text-[10px] text-zinc-400">
+                          Pay upon parcel delivery
+                        </span>
+                      </button>
+                    </div>
                   </div>
 
                   {/* Summary */}
@@ -519,8 +741,11 @@ export default function CartDrawer() {
                       <span>Total Payable:</span>
                       <span className="text-[#c9a227]">₹{finalTotal.toLocaleString("en-IN")}</span>
                     </div>
-                    <p className="text-[10px] text-zinc-500 pt-1">
-                      Payment method: Cash on delivery / UPI on delivery. Insured transit.
+                    <p className="text-[10px] text-zinc-500 pt-1 flex items-center gap-1">
+                      <ShieldCheck className="h-3.5 w-3.5 text-[#c9a227]" />
+                      {paymentMethod === "razorpay"
+                        ? "256-Bit SSL Secured by Razorpay. 100% Buyer Protection."
+                        : "Pay cash or UPI at the time of insured doorstep delivery."}
                     </p>
                   </div>
 
@@ -528,14 +753,23 @@ export default function CartDrawer() {
                     <button
                       type="submit"
                       disabled={orderSubmitting}
-                      className="flex-1 bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs py-3.5 rounded-xl hover:brightness-110 disabled:opacity-50 transition-all shadow-md shadow-[#c9a227]/20"
+                      className="flex-1 bg-[#c9a227] text-black font-black uppercase tracking-widest text-xs py-3.5 rounded-xl hover:brightness-110 disabled:opacity-50 transition-all shadow-md shadow-[#c9a227]/20 flex items-center justify-center gap-2"
                     >
-                      {orderSubmitting ? "Placing Order..." : "Confirm & Place Order"}
+                      {orderSubmitting ? (
+                        "Processing..."
+                      ) : paymentMethod === "razorpay" ? (
+                        <>
+                          <Lock className="h-3.5 w-3.5" />
+                          Pay ₹{finalTotal.toLocaleString("en-IN")} with Razorpay
+                        </>
+                      ) : (
+                        "Confirm Cash on Delivery Order"
+                      )}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowCheckoutModal(false)}
-                      className="px-5 py-3.5 border border-white/10 rounded-xl text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-wider"
+                      className="px-5 py-3.5 border border-black-deep/10 rounded-xl text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-wider"
                     >
                       Cancel
                     </button>

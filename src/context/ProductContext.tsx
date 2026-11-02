@@ -25,7 +25,7 @@ export interface Product {
   brand: string;
   price: number;
   originalPrice?: number;
-  category: "Deity Prints" | "Temple Prints" | "Sculpture Prints" | "Premium Sets";
+  category: "Deity Paintings" | "Temple Paintings" | "Sculpture Paintings" | "Premium Sets";
   images: string[];
   description: string;
   sizes: string[];

@@ -7,16 +7,17 @@ import { useCart } from "@/context/CartContext";
 import { useContactInfo } from "@/context/ContactInfoContext";
 import type { DevotionalProduct } from "@/data/devotionalProducts";
 
-const sizeOptions = [
-  { label: "12 x 18 in", subtitle: "Pooja Room Classic", priceDelta: 0 },
-  { label: "16 x 24 in", subtitle: "Fine Art Living Room", priceDelta: 400 },
-  { label: "20 x 30 in", subtitle: "Grand Sanctum Edition", priceDelta: 900 },
+const materialOptions = [
+  { label: "22 Carat Exclusive", priceDelta: 0 },
+  { label: "24 Carat Exclusive", priceDelta: 2000 },
 ];
 
-const frameOptions = [
-  { label: "Teak Wood Frame", subtitle: "Seasoned wood & matte glass", priceDelta: 600 },
-  { label: "22KT Gold Foil Accent", subtitle: "Traditional gold border", priceDelta: 1100 },
-  { label: "Archival Print Only", subtitle: "Unframed 310 GSM canvas", priceDelta: 0 },
+const sizeOptions = [
+  { label: "13 × 15 inches", priceDelta: 0 },
+  { label: "15 × 18 inches", priceDelta: 500 },
+  { label: "17 × 21 inches", priceDelta: 1200 },
+  { label: "20 × 24 inches", priceDelta: 2200 },
+  { label: "22 × 28 inches", priceDelta: 3400 },
 ];
 
 export default function ProductDetailActions({ product }: { product: DevotionalProduct }) {
@@ -24,14 +25,14 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
   const { contactInfo } = useContactInfo();
   const whatsappNumber = contactInfo?.whatsapp_number || "8122228386";
 
+  const [selectedMaterial, setSelectedMaterial] = useState(materialOptions[0]);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-  const [selectedFrame, setSelectedFrame] = useState(frameOptions[0]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  const unitPrice = product.price + selectedSize.priceDelta + selectedFrame.priceDelta;
+  const unitPrice = product.price + selectedMaterial.priceDelta + selectedSize.priceDelta;
   const originalPrice = product.originalPrice
-    ? product.originalPrice + selectedSize.priceDelta + selectedFrame.priceDelta
+    ? product.originalPrice + selectedMaterial.priceDelta + selectedSize.priceDelta
     : undefined;
 
   const handleAddToCart = () => {
@@ -44,7 +45,7 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
       originalPrice,
       image: product.image,
       size: selectedSize.label,
-      frame: selectedFrame.label,
+      frame: selectedMaterial.label,
       quantity,
     });
     setAdded(true);
@@ -53,10 +54,10 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
 
   const handleWhatsAppOrder = () => {
     const cleanPhone = whatsappNumber.replace(/[^0-9]/g, "");
-    const msg = `*🕉️ DEVOTIONAL ORDER INQUIRY — FRAMES OF DIVINE*\n\n` +
+    const msg = `*🕉️ ORDER INQUIRY — TANJORE PAINTINGS*\n\n` +
       `Product: *${product.name}*\n` +
-      `Size: ${selectedSize.label} (${selectedSize.subtitle})\n` +
-      `Framing: ${selectedFrame.label}\n` +
+      `Material: ${selectedMaterial.label}\n` +
+      `Size: ${selectedSize.label}\n` +
       `Quantity: ${quantity}\n` +
       `Price: ₹${(unitPrice * quantity).toLocaleString("en-IN")}\n\n` +
       `Please let me know about dispatch timeline and order confirmation. Thank you! 🙏`;
@@ -76,58 +77,45 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
             ₹{originalPrice.toLocaleString("en-IN")}
           </span>
         )}
-        <span className="pb-1 text-[10px] text-green-700 font-bold uppercase tracking-wider bg-green-50 px-2 py-0.5 border border-green-200">
-          In Stock · Archival Quality
-        </span>
       </div>
 
-      {/* Size Option Selector */}
+      {/* Material Selector */}
       <div className="space-y-2">
-        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold block">
-          Select Dimensions
-        </span>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          {sizeOptions.map((opt) => (
+        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold block">Material</span>
+        <div className="flex flex-wrap gap-2">
+          {materialOptions.map((opt) => (
             <button
               key={opt.label}
               type="button"
-              onClick={() => setSelectedSize(opt)}
-              className={`p-3 text-left border text-xs transition-all ${
-                selectedSize.label === opt.label
-                  ? "border-black-deep bg-black-deep text-white-pure"
-                  : "border-black-deep/15 text-black-deep hover:border-black-deep/40 bg-white-pure"
+              onClick={() => setSelectedMaterial(opt)}
+              className={`px-4 py-2 text-sm border rounded-sm transition-all ${
+                selectedMaterial.label === opt.label
+                  ? "border-black-deep bg-black-deep text-white-pure font-semibold"
+                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white-pure"
               }`}
             >
-              <span className="font-semibold block">{opt.label}</span>
-              <span className={`text-[10px] block mt-0.5 ${selectedSize.label === opt.label ? "text-white-ivory/70" : "text-grey-stone"}`}>
-                {opt.subtitle}
-              </span>
+              {opt.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Frame Option Selector */}
+      {/* Size Selector */}
       <div className="space-y-2">
-        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold block">
-          Select Frame & Finish
-        </span>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          {frameOptions.map((opt) => (
+        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold block">Size</span>
+        <div className="flex flex-wrap gap-2">
+          {sizeOptions.map((opt) => (
             <button
               key={opt.label}
               type="button"
-              onClick={() => setSelectedFrame(opt)}
-              className={`p-3 text-left border text-xs transition-all ${
-                selectedFrame.label === opt.label
-                  ? "border-black-deep bg-black-deep text-white-pure"
-                  : "border-black-deep/15 text-black-deep hover:border-black-deep/40 bg-white-pure"
+              onClick={() => setSelectedSize(opt)}
+              className={`px-4 py-2 text-sm border rounded-sm transition-all ${
+                selectedSize.label === opt.label
+                  ? "border-black-deep bg-black-deep text-white-pure font-semibold"
+                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white-pure"
               }`}
             >
-              <span className="font-semibold block">{opt.label}</span>
-              <span className={`text-[10px] block mt-0.5 ${selectedFrame.label === opt.label ? "text-white-ivory/70" : "text-grey-stone"}`}>
-                {opt.subtitle}
-              </span>
+              {opt.label}
             </button>
           ))}
         </div>
@@ -135,24 +123,22 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
 
       {/* Quantity Counter */}
       <div className="flex items-center gap-4 pt-2">
-        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold">
-          Quantity:
-        </span>
-        <div className="flex items-center border border-black-deep/20 bg-white-pure">
+        <span className="text-[10px] uppercase tracking-[0.25em] text-grey-stone font-bold">Quantity</span>
+        <div className="flex items-center border border-black-deep/20 bg-white-pure rounded-sm">
           <button
             type="button"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="px-3 py-2 text-black-deep hover:bg-black-deep/5 transition-colors"
+            className="px-4 py-2 text-black-deep hover:bg-black-deep/5 transition-colors"
           >
-            <Minus className="h-3.5 w-3.5" />
+            <Minus className="h-4 w-4" />
           </button>
-          <span className="px-4 text-xs font-bold text-black-deep">{quantity}</span>
+          <span className="px-5 text-sm font-bold text-black-deep">{quantity}</span>
           <button
             type="button"
             onClick={() => setQuantity(quantity + 1)}
-            className="px-3 py-2 text-black-deep hover:bg-black-deep/5 transition-colors"
+            className="px-4 py-2 text-black-deep hover:bg-black-deep/5 transition-colors"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -162,25 +148,29 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
         <button
           type="button"
           onClick={handleAddToCart}
-          className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:bg-white-pure hover:text-black-deep shadow-md"
+          className="inline-flex items-center justify-center gap-3 border border-black-deep px-6 py-4 text-sm font-semibold text-black-deep transition-cinematic hover:bg-black-deep hover:text-white-pure"
         >
           {added ? (
-            <>
-              <Check className="h-4 w-4 text-[#c9a227]" /> Added To Cart!
-            </>
+            <><Check className="h-4 w-4 text-[#c9a227]" /> Added To Cart!</>
           ) : (
-            <>
-              <ShoppingBag className="h-4 w-4" /> Add To Cart
-            </>
+            <><ShoppingBag className="h-4 w-4" /> Add to cart</>
           )}
         </button>
 
         <button
           type="button"
-          onClick={handleWhatsAppOrder}
-          className="inline-flex items-center justify-center gap-3 border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-black-deep hover:text-white-pure"
+          onClick={() => { handleAddToCart(); openCart(); }}
+          className="inline-flex items-center justify-center gap-3 bg-[#c47a2b] px-6 py-4 text-sm font-semibold text-white-pure transition-cinematic hover:bg-[#a8661f]"
         >
-          <MessageSquare className="h-4 w-4" /> Order via WhatsApp
+          Buy it now
+        </button>
+
+        <button
+          type="button"
+          onClick={handleWhatsAppOrder}
+          className="inline-flex items-center justify-center gap-3 bg-[#25D366] px-6 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white-pure transition-cinematic hover:bg-[#1ebe5b]"
+        >
+          <MessageSquare className="h-4 w-4" /> Order on WhatsApp
         </button>
       </div>
 

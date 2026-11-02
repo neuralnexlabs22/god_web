@@ -91,3 +91,70 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get("limit") || "50", 10);
+    const paymentStatus = searchParams.get("payment_status");
+    const status = searchParams.get("status");
+
+    let query = `order=created_at.desc&limit=${limit}`;
+    if (paymentStatus && paymentStatus !== "all") {
+      query += `&payment_status=eq.${encodeURIComponent(paymentStatus)}`;
+    }
+    if (status && status !== "all") {
+      query += `&status=eq.${encodeURIComponent(status)}`;
+    }
+
+    const { data: orders, error } = await supabaseQuery<any[]>("orders", {
+      query,
+      useServiceRole: true,
+    });
+
+    if (error) {
+      console.warn("Orders fetch fallback:", error);
+      return NextResponse.json({ orders: [] });
+    }
+
+    return NextResponse.json({ orders: orders || [] });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to fetch orders" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { order_id, fulfillment_status, status } = body;
+
+    if (!order_id) {
+      return NextResponse.json({ error: "Missing order_id" }, { status: 400 });
+    }
+
+    const updates: Record<string, any> = { updated_at: new Date().toISOString() };
+    if (fulfillment_status) updates.fulfillment_status = fulfillment_status;
+    if (status) updates.status = status;
+
+    const { data, error } = await supabaseQuery("orders", {
+      method: "PATCH",
+      query: `id=eq.${encodeURIComponent(order_id)}`,
+      body: updates,
+      useServiceRole: true,
+    });
+
+    if (error) {
+      return NextResponse.json({ error }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, updated: data });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to update order" },
+      { status: 500 }
+    );
+  }
+}

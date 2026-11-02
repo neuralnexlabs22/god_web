@@ -8,19 +8,19 @@ import { motion } from "framer-motion";
 
 export default function Collections() {
   return (
-    <div className="pt-24 pb-24 bg-black-deep min-h-screen text-white-pure">
+    <div className="pt-24 pb-24 bg-[#f4f0e8] min-h-screen text-black-deep">
       {/* Header Banner */}
-      <div className="bg-[#050505] border-b border-ornamental py-16 mb-16 relative overflow-hidden">
+      <div className="bg-[#ede7db] border-b border-black-deep/10 py-16 mb-16 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-[#c9a227]/5 rounded-full filter blur-[100px] pointer-events-none" />
         <div className="container mx-auto px-4 md:px-8 text-center relative z-10">
           <p className="text-[#c9a227] text-xs md:text-sm tracking-[0.3em] uppercase font-bold mb-3 flex items-center justify-center gap-2">
             <Sparkles className="w-4 h-4 text-[#c9a227]" />
             Frames of Divine &bull; Sacred Collections
           </p>
-          <h1 className="text-3xl md:text-5xl font-serif font-medium tracking-tight uppercase text-white-pure">
+          <h1 className="text-3xl md:text-5xl font-serif font-medium tracking-tight uppercase text-black-deep">
             Curated Devotional Collections
           </h1>
-          <p className="mt-4 text-white-ivory/70 text-xs md:text-sm max-w-xl mx-auto leading-relaxed">
+          <p className="mt-4 text-black-charcoal/70 text-xs md:text-sm max-w-xl mx-auto leading-relaxed">
             Explore authentic Hindu deity artwork, monumental temple corridors, sacred Dravidian sculpture studies, and complete pooja room sets.
           </p>
         </div>
@@ -40,7 +40,7 @@ export default function Collections() {
               }`}
             >
               {/* Collection Image */}
-              <div className="w-full lg:w-3/5 aspect-[4/3] relative overflow-hidden bg-zinc-950 group rounded-2xl border border-ornamental shadow-2xl">
+              <div className="w-full lg:w-3/5 aspect-[4/3] relative overflow-hidden bg-zinc-950 group rounded-2xl border border-black-deep/15 shadow-2xl">
                 <Image
                   src={collection.image}
                   alt={collection.name}
@@ -56,10 +56,10 @@ export default function Collections() {
                 <span className="text-[#c9a227] uppercase tracking-[0.25em] text-[10px] font-bold mb-3">
                   COLLECTION #0{index + 1}
                 </span>
-                <h2 className="font-serif text-3xl md:text-4xl text-white-pure mb-5 uppercase tracking-wide">
+                <h2 className="font-serif text-3xl md:text-4xl text-black-deep mb-5 uppercase tracking-wide">
                   {collection.name}
                 </h2>
-                <p className="text-white-ivory/70 font-normal leading-relaxed mb-8 text-sm">
+                <p className="text-black-charcoal/70 font-normal leading-relaxed mb-8 text-sm">
                   {collection.description} Handcrafted with archival paper, custom teak framing, and museum-grade color calibration.
                 </p>
                 <Link

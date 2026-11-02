@@ -36,13 +36,13 @@ export default function AboutPage() {
           <Image src={devotionalAssets.hero.src} alt={devotionalAssets.hero.alt} fill priority sizes="(max-width: 768px) 100vw, 55vw" className="object-cover" />
         </div>
       </section>
-      <section className="theme-dark px-4 py-20 md:px-8">
+      <section className="px-4 py-20 md:px-8 bg-[#ede7db] text-black-deep">
         <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
           {sections.map((section, index) => (
-            <article key={section.title} className="border border-ornamental p-7">
+            <article key={section.title} className="border border-black-deep/15 bg-[#fbf9f5] p-7">
               <p className="mb-4 text-[10px] uppercase tracking-[0.28em] text-grey-stone">0{index + 1}</p>
-              <h2 className="font-serif text-3xl text-white-pure">{section.title}</h2>
-              <p className="mt-5 text-sm leading-7 text-white-ivory/70">{section.text}</p>
+              <h2 className="font-serif text-3xl text-black-deep">{section.title}</h2>
+              <p className="mt-5 text-sm leading-7 text-black-charcoal/70">{section.text}</p>
             </article>
           ))}
         </div>

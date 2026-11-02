@@ -117,7 +117,7 @@ export default function CustomOrderPage() {
         </Link>
         <p className="eyebrow text-grey-stone">Custom Devotional Commissions</p>
         <div className="max-w-4xl">
-          <h1 className="section-title text-black-deep">Bespoke Devotional Photo Prints & Sanctum Sets</h1>
+          <h1 className="section-title text-black-deep">Bespoke Devotional Tanjore Paintings & Sanctum Sets</h1>
           <p className="mt-6 text-sm leading-8 text-black-charcoal/75 max-w-3xl">
             Whether you desire a specific ancestral deity, custom pooja room dimensions, rare sacred temple sanctum photography, or 22KT gold foil finishing, our master artisans curate each bespoke devotional commission with reverent craftsmanship.
           </p>
@@ -341,7 +341,7 @@ export default function CustomOrderPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-[#c9a227]">3.</span>
-                <span>Upon approval, prints are prepared using museum archival inks and seasoned teak wood.</span>
+                <span>Upon approval, paintings are prepared using museum archival inks and seasoned teak wood.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-bold text-[#c9a227]">4.</span>
@@ -366,7 +366,7 @@ export default function CustomOrderPage() {
               Need Immediate Guidance?
             </h3>
             <p className="mt-2 text-xs leading-6 text-black-charcoal/75">
-              Chat directly with our curation team on WhatsApp for prompt sizing recommendations and sample prints.
+              Chat directly with our curation team on WhatsApp for prompt sizing recommendations and sample paintings.
             </p>
             <button
               onClick={handleSendViaWhatsApp}

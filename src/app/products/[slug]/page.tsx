@@ -27,7 +27,7 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           <Link href="/shop" className="mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-grey-stone hover:text-black-deep">
             <ArrowLeft className="h-4 w-4" /> Shop
           </Link>
-          <div className="relative min-h-[680px] overflow-hidden border border-black-deep/15 bg-black-deep">
+          <div className="relative min-h-[680px] overflow-hidden border border-black-deep/15 bg-[#eae4d6]">
             {product.cropPosition ? (
               <div
                 className="absolute inset-0 bg-cover bg-no-repeat"
@@ -44,16 +44,18 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
             )}
           </div>
         </div>
-        <div className="sticky top-28 border border-black-deep/15 bg-white-pure p-7">
+        <div className="sticky top-28 border border-black-deep/15 bg-[#f4f0e8] p-7">
           <p className="mb-4 text-[10px] uppercase tracking-[0.28em] text-grey-stone">{product.category}</p>
-          <h1 className="font-serif text-4xl uppercase leading-none text-black-deep md:text-5xl">{product.name}</h1>
+          <h1 className="font-serif text-4xl uppercase leading-tight text-black-deep md:text-5xl">{product.name}</h1>
+          <p className="mt-2 text-xs text-grey-stone">Tax included. Shipping calculated at checkout.</p>
           <p className="mt-6 text-sm leading-8 text-black-charcoal/72">{product.description}</p>
           <div className="mt-6">
             <ProductDetailActions product={product} />
           </div>
-          <div className="mt-8 grid gap-3 text-xs leading-6 text-black-charcoal/65">
-            <p>Premium devotional print for home, pooja room, gifting, and wall decor.</p>
-            <p>Frame, size, and bulk order customization available on request.</p>
+          {/* Free Delivery Badge */}
+          <div className="mt-6 border-t border-black-deep/10 pt-4 flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-black-deep">FREE DELIVERY</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-black-deep underline">PAN INDIA</span>
           </div>
         </div>
       </section>
@@ -64,7 +66,7 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           <div className="mx-auto max-w-7xl">
             <div className="mb-8">
               <p className="eyebrow text-grey-stone">Sacred Collection</p>
-              <h2 className="font-serif text-3xl uppercase text-black-deep">Related Devotional Prints</h2>
+              <h2 className="font-serif text-3xl uppercase text-black-deep">Related Devotional Paintings</h2>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {relatedProducts.map((rel) => (

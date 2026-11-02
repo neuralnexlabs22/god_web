@@ -43,12 +43,12 @@ export default function HomePage() {
         image: p.images?.[0] || "/assets/devotional/deity-gallery-montage.png",
         imageAlt: p.name,
         badge: p.brand || p.category,
-        size: p.sizes?.[0] || "Archival Print",
+        size: p.sizes?.[0] || "22KT Gold Tanjore Painting",
       }))
     : devotionalProducts;
 
   return (
-    <div ref={containerRef} className="overflow-hidden bg-black-deep text-white-pure">
+    <div ref={containerRef} className="overflow-hidden bg-[#f4f0e8] text-black-deep">
       {/* HERO SECTION */}
       <section className="theme-light relative min-h-screen overflow-hidden border-b border-ornamental bg-[#f8f6f0]">
         <motion.div className="absolute inset-0" style={{ y: heroY, scale: heroScale }}>
@@ -73,14 +73,14 @@ export default function HomePage() {
                 heroConfig.title
               ) : (
                 <>
-                  22 KT GOLD
+                  <span className="inline-block text-[1.24em] leading-none align-baseline font-serif font-medium">22</span> KT GOLD
                   <span className="block italic text-white-ivory">TANJORE PAINTING</span>
                 </>
               )}
             </motion.h1>
             <motion.p variants={reveal} className="mt-8 max-w-2xl text-base leading-8 text-white-ivory/90 md:text-lg [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">
               {heroConfig?.subtitle ||
-                "Discover the sacred beauty of Hindu deities, divine temples, and centuries of sacred heritage craftsmanship."}
+                "100% Handmade and Authentic 22 Carat Gold Leaves, Jaipur Stones & Teakwood Frame with Authentication Certificate."}
             </motion.p>
             <motion.div variants={reveal} className="mt-11 flex flex-col gap-4 sm:flex-row">
               <Link href="/shop" className="group inline-flex w-fit items-center gap-3 border border-white-pure bg-white-pure px-8 py-4 text-xs font-bold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-transparent hover:text-white-pure shadow-xl">
@@ -97,18 +97,18 @@ export default function HomePage() {
       </section>
 
       {/* SHOPPING SECTION - FEATURED PRODUCTS */}
-      <section id="shop-section" className="theme-dark section-pad border-b border-ornamental bg-black-deep">
+      <section id="shop-section" className="section-pad border-b border-black-deep/10" style={{ background: '#f4f0e8' }}>
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div className="max-w-2xl">
               <p className="eyebrow text-[#c9a227]">Featured Collection</p>
-              <h2 className="section-title text-white-pure mb-6">Devotional Prints</h2>
-              <p className="text-white-ivory/70 text-base leading-relaxed">
-                Explore our curated selection of premium fine-art prints. Each piece is carefully restored, color-graded, and printed on archival museum-quality paper to preserve the divine essence and intricate craftsmanship of ancient Dravidian temple art.
+              <h2 className="section-title text-black-deep mb-6">Devotional Paintings</h2>
+              <p className="text-black-charcoal/70 text-base leading-relaxed">
+                Explore our curated selection of premium 22 KT Gold Tanjore paintings. Each piece is 100% handmade with authentic gold leaves, Jaipur stones and teakwood frame — crafted to preserve the divine essence of ancient Dravidian temple art.
               </p>
             </div>
-            <Link href="/shop" className="inline-flex w-fit items-center gap-3 border border-white-pure/30 px-6 py-4 text-xs uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:border-white-pure">
-              View All Prints <ArrowRight className="h-4 w-4" />
+            <Link href="/shop" className="inline-flex w-fit items-center gap-3 border border-black-deep/30 px-6 py-4 text-xs uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:border-black-deep hover:bg-black-deep hover:text-white-pure">
+              View All Paintings <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           

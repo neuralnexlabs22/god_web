@@ -30,7 +30,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
         image: p.images?.[0] || "/assets/devotional/deity-gallery-montage.png",
         imageAlt: p.name,
         badge: p.brand || p.category,
-        size: p.sizes?.[0] || "12 x 18 in / Archival print",
+        size: p.sizes?.[0] || "12 x 18 in / 22KT Gold Tanjore",
       }));
     }
     return initialProducts;
@@ -110,7 +110,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
                 : "bg-white-pure text-black-deep border-black-deep/20 hover:border-black-deep/40"
             }`}
           >
-            All Prints ({initialProducts.length})
+            All Paintings ({initialProducts.length})
           </button>
           {categories.map((cat) => (
             <button
@@ -132,7 +132,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
       {/* Results Header */}
       <div className="flex items-center justify-between text-xs text-grey-stone">
         <p>
-          Showing <span className="font-bold text-black-deep">{filteredAndSorted.length}</span> sacred devotional prints
+          Showing <span className="font-bold text-black-deep">{filteredAndSorted.length}</span> sacred devotional paintings
         </p>
         {search && (
           <button
@@ -149,7 +149,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
       {filteredAndSorted.length === 0 ? (
         <div className="text-center py-20 border border-dashed border-black-deep/20 p-8 bg-white-ivory/30">
           <Sparkles className="w-8 h-8 text-[#c9a227] mx-auto mb-3" />
-          <h3 className="font-serif text-xl uppercase text-black-deep">No devotional prints found</h3>
+          <h3 className="font-serif text-xl uppercase text-black-deep">No devotional paintings found</h3>
           <p className="text-xs text-grey-stone mt-1 max-w-sm mx-auto">
             Try adjusting your search keywords or browsing all categories.
           </p>

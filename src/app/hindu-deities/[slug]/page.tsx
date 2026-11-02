@@ -14,25 +14,25 @@ export default async function DeityDetailPage(props: PageProps<"/hindu-deities/[
   if (!deity) notFound();
 
   return (
-    <div className="theme-dark min-h-screen pt-28">
+    <div className="min-h-screen pt-28 bg-[#f4f0e8] text-black-deep">
       <section className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-[0.95fr_1.05fr] md:px-8 md:items-center">
-        <div className="relative min-h-[640px] overflow-hidden border border-ornamental">
+        <div className="relative min-h-[640px] overflow-hidden border border-black-deep/15">
           <DeityPortrait deity={deity} className="h-full min-h-[640px] w-full" />
           <div className="absolute inset-0 bg-gradient-to-t from-black-deep/45 to-transparent" />
         </div>
         <div>
-          <Link href="/hindu-deities" className="mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-grey-stone hover:text-white-pure">
+          <Link href="/hindu-deities" className="mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-grey-stone hover:text-black-deep">
             <ArrowLeft className="h-4 w-4" /> All Deities
           </Link>
           {deity.sacredTitle ? (
             <p className="text-xs uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
           ) : null}
-          <h1 className="mt-4 font-serif text-5xl uppercase leading-none text-white-pure md:text-7xl">{deity.name}</h1>
-          <p className="mt-7 text-xl leading-8 text-white-ivory">{deity.title}</p>
-          <p className="mt-7 max-w-2xl text-sm leading-8 text-white-ivory/72">{deity.description}</p>
-          <div className="mt-10 border border-ornamental p-6">
+          <h1 className="mt-4 font-serif text-5xl uppercase leading-none text-black-deep md:text-7xl">{deity.name}</h1>
+          <p className="mt-7 text-xl leading-8 text-black-charcoal/80">{deity.title}</p>
+          <p className="mt-7 max-w-2xl text-sm leading-8 text-black-charcoal/75">{deity.description}</p>
+          <div className="mt-10 border border-black-deep/15 p-6">
             <p className="text-[10px] uppercase tracking-[0.28em] text-grey-stone">Sacred Symbol</p>
-            <p className="mt-3 font-serif text-2xl text-white-pure">{deity.symbol}</p>
+            <p className="mt-3 font-serif text-2xl text-black-deep">{deity.symbol}</p>
           </div>
         </div>
       </section>

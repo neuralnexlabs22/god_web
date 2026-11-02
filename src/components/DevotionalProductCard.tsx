@@ -21,7 +21,7 @@ export default function DevotionalProductCard({ product }: { product: Devotional
       originalPrice: product.originalPrice,
       image: product.image,
       size: product.size.split(" / ")[0] || "12 x 18 in",
-      frame: "Fine Art Archival Print",
+      frame: "22KT Gold Tanjore Painting",
       quantity: 1,
     });
   };
@@ -38,7 +38,7 @@ export default function DevotionalProductCard({ product }: { product: Devotional
       originalPrice: product.originalPrice,
       image: product.image,
       size: product.size.split(" / ")[0] || "12 x 18 in",
-      frame: "Fine Art Archival Print",
+      frame: "22KT Gold Tanjore Painting",
       quantity: 1,
     });
     openCart();
@@ -46,7 +46,7 @@ export default function DevotionalProductCard({ product }: { product: Devotional
 
   return (
     <Link href={`/products/${product.slug}`} className="group block border border-black-deep/15 bg-white-pure">
-      <div className="relative aspect-[4/5] overflow-hidden bg-black-deep">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#eae4d6]">
         {product.cropPosition ? (
           <div
             className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-[1200ms] ease-cinematic group-hover:scale-110"
@@ -76,7 +76,7 @@ export default function DevotionalProductCard({ product }: { product: Devotional
           <span className="inline-flex h-9 w-9 items-center justify-center bg-white-pure text-black-deep"><HelpCircle className="h-4 w-4" /></span>
         </div>
       </div>
-      <div className="p-4 text-black-deep transition-cinematic group-hover:bg-black-deep group-hover:text-white-pure">
+      <div className="p-4 text-black-deep transition-cinematic group-hover:bg-[#1a1108] group-hover:text-[#f4f0e8]">
         <div className="flex items-center justify-between">
           <p className="text-[10px] uppercase tracking-[0.22em] text-grey-stone group-hover:text-white-ivory/60">{product.category}</p>
           <span className="text-[9px] font-semibold text-black-deep bg-black-deep/5 group-hover:text-white-ivory/60 group-hover:bg-white-pure/10 px-2 py-0.5 rounded-sm">{product.size.split(' / ')[0]}</span>

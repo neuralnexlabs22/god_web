@@ -3,7 +3,7 @@ import { devotionalAssets, templeCollections } from "@/data/devotional";
 
 export default function TamilTemplesPage() {
   return (
-    <div className="theme-dark min-h-screen pt-28">
+    <div className="min-h-screen pt-28 bg-[#f4f0e8] text-black-deep">
       <section className="relative min-h-[72vh] overflow-hidden">
         <Image src={devotionalAssets.temple.src} alt={devotionalAssets.temple.alt} fill priority sizes="100vw" className="object-cover opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-r from-black-deep via-black-deep/55 to-transparent" />

@@ -154,12 +154,12 @@ export default function PublicReviewsPage() {
           <div>
             <h1 className="section-title text-black-deep">Devotee Experiences & Reviews</h1>
             <p className="mt-6 max-w-2xl text-sm leading-8 text-black-charcoal/72">
-              Read authentic feedback from pooja room collectors, temple art lovers, and families who have welcomed our sacred prints into their homes.
+              Read authentic feedback from pooja room collectors, temple art lovers, and families who have welcomed our sacred paintings into their homes.
             </p>
           </div>
           <button
             onClick={() => setShowSubmitModal(true)}
-            className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:bg-white-pure hover:text-black-deep w-fit"
+            className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-white-pure hover:text-black-deep w-fit"
           >
             <Plus className="h-4 w-4" /> Share Your Review
           </button>
@@ -167,7 +167,7 @@ export default function PublicReviewsPage() {
       </section>
 
       {/* Ratings Breakdown Summary Card */}
-      <section className="theme-dark px-4 py-14 md:px-8 border-y border-ornamental bg-black-deep">
+      <section className="px-4 py-14 md:px-8 border-y border-black-deep/10 bg-[#ede7db] text-black-deep">
         <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-[1fr_1.8fr] gap-10 items-center">
           {/* Average Score */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -175,8 +175,8 @@ export default function PublicReviewsPage() {
               Overall Divine Rating
             </span>
             <div className="mt-2 flex items-baseline gap-3">
-              <span className="font-serif text-6xl text-white-pure">{stats.average}</span>
-              <span className="text-xl text-white-ivory/60 font-serif">/ 5.0</span>
+              <span className="font-serif text-6xl text-black-deep">{stats.average}</span>
+              <span className="text-xl text-black-charcoal/70 font-serif">/ 5.0</span>
             </div>
             <div className="mt-3 flex items-center gap-1.5 text-[#c9a227]">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -188,7 +188,7 @@ export default function PublicReviewsPage() {
                 />
               ))}
             </div>
-            <p className="mt-3 text-xs text-white-ivory/60">
+            <p className="mt-3 text-xs text-black-charcoal/70">
               Based on {stats.total} genuine customer review{stats.total === 1 ? "" : "s"}
             </p>
           </div>
@@ -197,14 +197,14 @@ export default function PublicReviewsPage() {
           <div className="space-y-2.5 max-w-md w-full">
             {[5, 4, 3, 2, 1].map((star) => (
               <div key={star} className="flex items-center gap-3 text-xs">
-                <span className="w-12 text-zinc-400 font-semibold">{star} Stars</span>
+                <span className="w-12 text-black-charcoal/70 font-semibold">{star} Stars</span>
                 <div className="flex-1 h-2.5 rounded-full bg-white/10 overflow-hidden">
                   <div
                     className="h-full bg-[#c9a227] rounded-full transition-all duration-700"
                     style={{ width: `${stats.percents[star as 1 | 2 | 3 | 4 | 5]}%` }}
                   />
                 </div>
-                <span className="w-10 text-right text-zinc-400 font-mono text-[11px]">
+                <span className="w-10 text-right text-black-charcoal/70 font-mono text-[11px]">
                   {stats.counts[star as 1 | 2 | 3 | 4 | 5]}
                 </span>
               </div>
@@ -239,7 +239,7 @@ export default function PublicReviewsPage() {
                 onClick={() => setRatingFilter(r)}
                 className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-all ${
                   ratingFilter === r
-                    ? "border-black-deep bg-black-deep text-white-pure"
+                    ? "border-black-deep bg-black-deep text-black-deep"
                     : "border-black-deep/15 text-black-deep/70 hover:border-black-deep"
                 }`}
               >
@@ -430,7 +430,7 @@ export default function PublicReviewsPage() {
                     required
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    placeholder="Share how the print looks in your home or pooja room, print finish, framing quality, and delivery experience..."
+                    placeholder="Share how the painting looks in your home or pooja room, painting finish, framing quality, and delivery experience..."
                     className="w-full border border-black-deep/20 bg-white-pure px-4 py-2.5 text-sm text-black-deep outline-none focus:border-black-deep resize-none leading-relaxed"
                   />
                 </div>
@@ -439,7 +439,7 @@ export default function PublicReviewsPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:bg-white-pure hover:text-black-deep disabled:opacity-50"
+                    className="flex-1 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-white-pure hover:text-black-deep disabled:opacity-50"
                   >
                     {submitting ? "Submitting..." : "Submit Review"}
                   </button>
