@@ -33,7 +33,7 @@ export async function GET() {
     }
 
     const { data: rows, error } = await supabaseQuery<any[]>("site_settings", {
-      query: `setting_key=eq.custom_devotional_enquiries&select=*`,
+      query: `key=eq.custom_devotional_enquiries&select=*`,
       useServiceRole: true,
     });
 
@@ -41,7 +41,7 @@ export async function GET() {
       return NextResponse.json({ error }, { status: 500 });
     }
 
-    const enquiries: CustomEnquiry[] = rows?.[0]?.setting_value?.enquiries || [];
+    const enquiries: CustomEnquiry[] = rows?.[0]?.value?.enquiries || [];
     return NextResponse.json({ enquiries });
   } catch (err) {
     return NextResponse.json(
@@ -97,13 +97,13 @@ export async function POST(request: NextRequest) {
 
     // Load existing enquiries
     const { data: rows } = await supabaseQuery<any[]>("site_settings", {
-      query: `setting_key=eq.custom_devotional_enquiries&select=*`,
+      query: `key=eq.custom_devotional_enquiries&select=*`,
       useServiceRole: true,
     });
 
     let currentList: CustomEnquiry[] = [];
-    if (rows && rows[0]?.setting_value?.enquiries) {
-      currentList = rows[0].setting_value.enquiries;
+    if (rows && rows[0]?.value?.enquiries) {
+      currentList = rows[0].value.enquiries;
     }
 
     const updatedList = [newEnquiry, ...currentList];
@@ -112,10 +112,9 @@ export async function POST(request: NextRequest) {
     if (rows && rows.length > 0) {
       await supabaseQuery("site_settings", {
         method: "PATCH",
-        query: `setting_key=eq.custom_devotional_enquiries`,
+        query: `key=eq.custom_devotional_enquiries`,
         body: {
-          setting_value: { enquiries: updatedList },
-          description: "Persistent custom devotional photo enquiries",
+          value: { enquiries: updatedList },
           updated_at: timestamp,
         },
       });
@@ -123,9 +122,8 @@ export async function POST(request: NextRequest) {
       await supabaseQuery("site_settings", {
         method: "POST",
         body: {
-          setting_key: "custom_devotional_enquiries",
-          setting_value: { enquiries: updatedList },
-          description: "Persistent custom devotional photo enquiries",
+          key: "custom_devotional_enquiries",
+          value: { enquiries: updatedList },
           updated_at: timestamp,
         },
       });

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { data: summaryRows, error } = await supabaseQuery<any[]>("site_settings", {
-      query: `setting_key=eq.analytics_summary&select=*`,
+      query: `key=eq.analytics_summary&select=*`,
       useServiceRole: true,
     });
 
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error }, { status: 500 });
     }
 
-    const summary = summaryRows?.[0]?.setting_value || {
+    const summary = summaryRows?.[0]?.value || {
       totalViews: 0,
       uniqueVisitors: [],
       dailyViews: {},

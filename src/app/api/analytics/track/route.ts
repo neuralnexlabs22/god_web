@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     // Load existing summary from site_settings table in Supabase
     const { data: summaryRows } = await supabaseQuery<any[]>("site_settings", {
-      query: `setting_key=eq.analytics_summary&select=*`,
+      query: `key=eq.analytics_summary&select=*`,
       useServiceRole: true,
     });
 
@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
       recentEvents: [],
     };
 
-    if (summaryRows && summaryRows[0]?.setting_value) {
-      summary = { ...summary, ...summaryRows[0].setting_value };
+    if (summaryRows && summaryRows[0]?.value) {
+      summary = { ...summary, ...summaryRows[0].value };
     }
 
     // Increment totals
@@ -90,10 +90,9 @@ export async function POST(request: NextRequest) {
     if (summaryRows && summaryRows.length > 0) {
       await supabaseQuery("site_settings", {
         method: "PATCH",
-        query: `setting_key=eq.analytics_summary`,
+        query: `key=eq.analytics_summary`,
         body: {
-          setting_value: summary,
-          description: "Persistent website visitor analytics aggregate",
+          value: summary,
           updated_at: timestamp,
         },
       });
@@ -101,9 +100,8 @@ export async function POST(request: NextRequest) {
       await supabaseQuery("site_settings", {
         method: "POST",
         body: {
-          setting_key: "analytics_summary",
-          setting_value: summary,
-          description: "Persistent website visitor analytics aggregate",
+          key: "analytics_summary",
+          value: summary,
           updated_at: timestamp,
         },
       });
