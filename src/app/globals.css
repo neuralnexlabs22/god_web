@@ -75,17 +75,6 @@ body {
   -webkit-text-stroke: 1px rgba(26, 17, 8, 0.2);
 }
 
-/* Text visibility guarantees across beige theme */
-.theme-dark .text-white-pure:not([class*="text-shadow"]),
-.theme-light .text-white-pure:not([class*="text-shadow"]) {
-  color: #1a1108;
-}
-
-.theme-dark .text-white-ivory:not([class*="text-shadow"]),
-.theme-light .text-white-ivory:not([class*="text-shadow"]) {
-  color: #3b2c1d;
-}
-
 /* Cinematic Utilities */
 .transition-cinematic {
   transition: all 0.7s cubic-bezier(0.65, 0, 0.35, 1);

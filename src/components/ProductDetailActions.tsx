@@ -90,8 +90,8 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
               onClick={() => setSelectedMaterial(opt)}
               className={`px-4 py-2 text-sm border rounded-sm transition-all ${
                 selectedMaterial.label === opt.label
-                  ? "border-black-deep bg-black-deep text-white-pure font-semibold"
-                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white-pure"
+                  ? "border-black-deep bg-black-deep !text-white font-semibold shadow-sm"
+                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white"
               }`}
             >
               {opt.label}
@@ -111,8 +111,8 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
               onClick={() => setSelectedSize(opt)}
               className={`px-4 py-2 text-sm border rounded-sm transition-all ${
                 selectedSize.label === opt.label
-                  ? "border-black-deep bg-black-deep text-white-pure font-semibold"
-                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white-pure"
+                  ? "border-black-deep bg-black-deep !text-white font-semibold shadow-sm"
+                  : "border-black-deep/20 text-black-deep hover:border-black-deep/60 bg-white"
               }`}
             >
               {opt.label}

@@ -54,9 +54,9 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed left-0 top-0 z-50 w-full transition-cinematic ${isSolid ? "py-3 bg-[#f4f0e8]/95 shadow-md border-b border-black-deep/10 backdrop-blur-lg text-black-deep" : "py-4 bg-transparent border-b border-transparent text-white-pure"}`}>
+      <header className={`fixed left-0 top-0 z-50 w-full transition-cinematic ${isSolid ? "py-3 bg-[#f4f0e8]/95 shadow-md border-b border-black-deep/10 backdrop-blur-lg text-black-deep" : "py-4 bg-transparent border-b border-transparent text-white"}`}>
         {announcementEnabled && (
-          <div className={`hidden border-b px-4 py-2 text-center text-[10px] uppercase tracking-[0.18em] transition-colors md:block ${isSolid ? "border-black-deep/10 text-black-deep/70" : "border-white/20 text-white/80"}`}>
+          <div className={`hidden border-b px-4 py-2 text-center text-[10px] uppercase tracking-[0.18em] transition-colors md:block ${isSolid ? "border-black-deep/10 text-black-deep/70" : "border-white/20 text-white/95"}`}>
             {announcementText}
           </div>
         )}
@@ -69,7 +69,7 @@ export default function Navbar() {
             {navLinks.map((link) => {
               const active = pathname === link.href || (link.href !== "/" && pathname.startsWith(`${link.href}/`));
               return (
-                <Link key={link.href} href={link.href} className={`group relative py-2 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${active ? "text-[#c9a227]" : (isSolid ? "text-black-deep/75 hover:text-black-deep" : "text-white/85 hover:text-white")}`}>
+                <Link key={link.href} href={link.href} className={`group relative py-2 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${active ? "text-[#c9a227]" : (isSolid ? "text-black-deep/75 hover:text-black-deep" : "text-white/95 hover:text-[#c9a227]")}`}>
                   {link.name}
                   <span className={`absolute bottom-0 left-0 h-px transition-cinematic ${active ? "bg-[#c9a227]" : (isSolid ? "bg-black-deep" : "bg-white")} ${active ? "w-full" : "w-0 group-hover:w-full"}`} />
                 </Link>
@@ -87,7 +87,7 @@ export default function Navbar() {
               className={`inline-flex items-center gap-2 border px-3 py-2 text-[10px] uppercase tracking-[0.18em] transition-cinematic ${
                 isSolid
                   ? "border-[#c9a227] bg-[#c9a227]/10 text-black-deep hover:bg-[#c9a227] hover:text-black-deep"
-                  : "border-white/40 text-white hover:bg-white hover:text-black-deep"
+                  : "border-white/60 text-white hover:bg-white hover:text-black-deep"
               }`}
             >
               <ShoppingCart className="h-4 w-4" />
@@ -95,10 +95,10 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-        <nav className={`hidden border-t md:block ${isSolid ? "border-black-deep/10" : "border-white/10"}`}>
+        <nav className={`hidden border-t md:block ${isSolid ? "border-black-deep/10" : "border-white/15"}`}>
           <div className="mx-auto flex max-w-7xl items-center gap-8 overflow-x-auto px-8 py-3">
             {categoryLinks.map(([label, href]) => (
-              <Link key={href} href={href} className={`shrink-0 text-[10px] font-semibold uppercase tracking-[0.22em] transition-colors ${isSolid ? "text-black-deep/70 hover:text-black-deep" : "text-white/80 hover:text-white"}`}>
+              <Link key={href} href={href} className={`shrink-0 text-[10px] font-semibold uppercase tracking-[0.22em] transition-colors ${isSolid ? "text-black-deep/70 hover:text-black-deep" : "text-white/90 hover:text-[#c9a227]"}`}>
                 {label}
               </Link>
             ))}
