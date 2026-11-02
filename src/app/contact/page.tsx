@@ -50,7 +50,7 @@ export default function ContactPage() {
             <span className="mb-2 block text-[10px] uppercase tracking-[0.25em] text-grey-stone">Message</span>
             <textarea rows={6} className="w-full resize-none border border-black-deep/20 bg-white-pure px-4 py-3 text-sm text-black-deep outline-none transition-cinematic focus:border-black-deep" />
           </label>
-          <button type="submit" className="mt-6 w-full border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+          <button type="submit" className="mt-6 w-full border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white">
             Send Inquiry
           </button>
         </form>

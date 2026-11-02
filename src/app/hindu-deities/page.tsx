@@ -26,7 +26,7 @@ export default function HinduDeitiesPage() {
               <div className="relative aspect-[4/5] overflow-hidden bg-black-deep">
                 <DeityPortrait deity={deity} className="h-full w-full" imageClassName="group-hover:scale-110" />
               </div>
-              <div className="border border-black-deep/15 p-6 transition-cinematic group-hover:bg-black-deep group-hover:text-black-deep">
+              <div className="border border-black-deep/15 p-6 transition-cinematic group-hover:bg-black-deep group-hover:text-white">
                 {deity.sacredTitle ? (
                   <p className="text-xs uppercase tracking-[0.25em] text-[#c9a227] font-semibold">{deity.sacredTitle}</p>
                 ) : null}

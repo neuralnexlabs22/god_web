@@ -106,7 +106,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
             onClick={() => setSelectedCategory("all")}
             className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap border ${
               selectedCategory === "all"
-                ? "bg-black-deep text-white-pure border-black-deep"
+                ? "bg-black-deep text-white border-black-deep shadow-sm"
                 : "bg-white-pure text-black-deep border-black-deep/20 hover:border-black-deep/40"
             }`}
           >
@@ -119,7 +119,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
               onClick={() => setSelectedCategory(cat.slug)}
               className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all whitespace-nowrap border ${
                 selectedCategory === cat.slug
-                  ? "bg-black-deep text-white-pure border-black-deep"
+                  ? "bg-black-deep text-white border-black-deep shadow-sm"
                   : "bg-white-pure text-black-deep border-black-deep/20 hover:border-black-deep/40"
               }`}
             >
@@ -159,7 +159,7 @@ export default function ShopProductGrid({ initialProducts, categories }: ShopPro
               setSearch("");
               setSelectedCategory("all");
             }}
-            className="mt-4 px-5 py-2.5 bg-black-deep text-white-pure text-xs uppercase tracking-widest font-bold"
+            className="mt-4 px-5 py-2.5 bg-black-deep text-white text-xs uppercase tracking-widest font-bold hover:bg-black-charcoal transition-colors"
           >
             Reset Filters
           </button>

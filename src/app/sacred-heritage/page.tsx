@@ -14,7 +14,7 @@ export default function SacredHeritagePage() {
             Sacred devotional culture is not a single object. It is architecture, music, inscription, sculpture, ritual movement,
             local memory, and the devotional imagination carried across generations.
           </p>
-          <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep/30 px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+          <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep/30 px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white">
             Visit Gallery <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

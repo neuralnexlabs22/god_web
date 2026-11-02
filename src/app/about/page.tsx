@@ -28,7 +28,7 @@ export default function AboutPage() {
           <p className="mt-7 text-sm leading-8 text-black-charcoal/72">
             Frames of Divine presents Hindu deity imagery, South Indian temple architecture, and sacred devotional art with a refined editorial rhythm and museum-quality framing.
           </p>
-          <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+          <Link href="/divine-gallery" className="mt-9 inline-flex items-center gap-3 border border-black-deep px-6 py-4 text-xs uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white">
             Explore The Gallery <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

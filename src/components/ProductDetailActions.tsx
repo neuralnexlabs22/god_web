@@ -148,7 +148,7 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
         <button
           type="button"
           onClick={handleAddToCart}
-          className="inline-flex items-center justify-center gap-3 border border-black-deep px-6 py-4 text-sm font-semibold text-black-deep transition-cinematic hover:bg-black-deep hover:text-white-pure"
+          className="inline-flex items-center justify-center gap-3 border border-black-deep px-6 py-4 text-sm font-semibold text-black-deep transition-cinematic hover:bg-black-deep hover:text-white"
         >
           {added ? (
             <><Check className="h-4 w-4 text-[#c9a227]" /> Added To Cart!</>
@@ -160,7 +160,7 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
         <button
           type="button"
           onClick={() => { handleAddToCart(); openCart(); }}
-          className="inline-flex items-center justify-center gap-3 bg-[#c47a2b] px-6 py-4 text-sm font-semibold text-white-pure transition-cinematic hover:bg-[#a8661f]"
+          className="inline-flex items-center justify-center gap-3 bg-[#c47a2b] px-6 py-4 text-sm font-semibold text-white transition-cinematic hover:bg-[#a8661f]"
         >
           Buy it now
         </button>
@@ -168,7 +168,7 @@ export default function ProductDetailActions({ product }: { product: DevotionalP
         <button
           type="button"
           onClick={handleWhatsAppOrder}
-          className="inline-flex items-center justify-center gap-3 bg-[#25D366] px-6 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white-pure transition-cinematic hover:bg-[#1ebe5b]"
+          className="inline-flex items-center justify-center gap-3 bg-[#25D366] px-6 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition-cinematic hover:bg-[#1ebe5b]"
         >
           <MessageSquare className="h-4 w-4" /> Order on WhatsApp
         </button>

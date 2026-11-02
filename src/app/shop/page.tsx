@@ -17,7 +17,7 @@ export default function ShopPage() {
             Shop authentic 22KT gold Tanjore paintings, sacred temple artwork, and curated pooja room sanctum collections.
           </p>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Link href="#products" className="inline-flex w-fit items-center gap-3 border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white-pure">
+            <Link href="#products" className="inline-flex w-fit items-center gap-3 border border-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:bg-black-deep hover:text-white">
               Shop Paintings <ArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/contact" className="inline-flex w-fit items-center gap-3 border border-black-deep/25 px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-cinematic hover:border-black-deep">

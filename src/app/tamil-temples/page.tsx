@@ -9,7 +9,7 @@ export default function TamilTemplesPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-black-deep via-black-deep/55 to-transparent" />
         <div className="relative z-10 mx-auto flex min-h-[72vh] max-w-7xl flex-col justify-center px-4 md:px-8">
           <p className="eyebrow text-grey-stone">Sacred Temples</p>
-          <h1 className="section-title max-w-5xl text-white-pure">Gopurams, Yali Pillars, And Dravidian Stone Rhythm</h1>
+          <h1 className="section-title max-w-5xl text-white">Gopurams, Yali Pillars, And Dravidian Stone Rhythm</h1>
         </div>
       </section>
       <section className="theme-light px-4 py-20 md:px-8">

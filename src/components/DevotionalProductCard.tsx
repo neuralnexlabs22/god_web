@@ -102,7 +102,7 @@ export default function DevotionalProductCard({ product }: { product: Devotional
           <button
             type="button"
             onClick={handleBuyNow}
-            className="inline-flex items-center justify-center gap-2 bg-black-deep px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white-pure group-hover:bg-white-pure group-hover:text-black-deep transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-black-deep px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white group-hover:bg-white-pure group-hover:text-black-deep transition-colors"
           >
             <Zap className="h-3.5 w-3.5" /> Buy
           </button>

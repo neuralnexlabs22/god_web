@@ -159,7 +159,7 @@ export default function PublicReviewsPage() {
           </div>
           <button
             onClick={() => setShowSubmitModal(true)}
-            className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-white-pure hover:text-black-deep w-fit"
+            className="inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition-cinematic hover:bg-white hover:text-black-deep w-fit shadow-sm"
           >
             <Plus className="h-4 w-4" /> Share Your Review
           </button>
@@ -239,7 +239,7 @@ export default function PublicReviewsPage() {
                 onClick={() => setRatingFilter(r)}
                 className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-all ${
                   ratingFilter === r
-                    ? "border-black-deep bg-black-deep text-black-deep"
+                    ? "border-black-deep bg-black-deep text-white"
                     : "border-black-deep/15 text-black-deep/70 hover:border-black-deep"
                 }`}
               >
@@ -439,7 +439,7 @@ export default function PublicReviewsPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:bg-white-pure hover:text-black-deep disabled:opacity-50"
+                    className="flex-1 border border-black-deep bg-black-deep px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition-cinematic hover:bg-white hover:text-black-deep disabled:opacity-50"
                   >
                     {submitting ? "Submitting..." : "Submit Review"}
                   </button>

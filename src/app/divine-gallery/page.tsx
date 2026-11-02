@@ -16,7 +16,7 @@ export default function DivineGalleryPage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-24 md:grid-cols-3 md:px-8">
-        <Link href="/hindu-deities" className="gallery-card group block bg-black-deep text-black-deep md:col-span-2">
+        <Link href="/hindu-deities" className="gallery-card group block bg-black-deep text-white md:col-span-2">
           <div className="relative min-h-[520px] overflow-hidden">
             <Image src={devotionalAssets.deityMontage.src} alt={devotionalAssets.deityMontage.alt} fill sizes="(max-width: 768px) 100vw, 66vw" className="object-cover transition-transform duration-[1400ms] group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/88 to-transparent" />

@@ -305,7 +305,7 @@ export default function CustomOrderPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-8 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white-pure transition-cinematic hover:bg-white-pure hover:text-black-deep disabled:opacity-50"
+                  className="flex-1 inline-flex items-center justify-center gap-3 border border-black-deep bg-black-deep px-8 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition-cinematic hover:bg-white hover:text-black-deep disabled:opacity-50"
                 >
                   <Send className="h-4 w-4" />
                   {submitting ? "Submitting..." : "Submit Custom Enquiry"}

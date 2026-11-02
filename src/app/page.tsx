@@ -107,7 +107,7 @@ export default function HomePage() {
                 Explore our curated selection of premium 22 KT Gold Tanjore paintings. Each piece is 100% handmade with authentic gold leaves, Jaipur stones and teakwood frame — crafted to preserve the divine essence of ancient Dravidian temple art.
               </p>
             </div>
-            <Link href="/shop" className="inline-flex w-fit items-center gap-3 border border-black-deep/30 px-6 py-4 text-xs uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:border-black-deep hover:bg-black-deep hover:text-white-pure">
+            <Link href="/shop" className="inline-flex w-fit items-center gap-3 border border-black-deep/30 px-6 py-4 text-xs uppercase tracking-[0.22em] text-black-deep transition-cinematic hover:border-black-deep hover:bg-black-deep hover:text-white">
               View All Paintings <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

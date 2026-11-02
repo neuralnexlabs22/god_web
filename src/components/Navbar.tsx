@@ -110,7 +110,7 @@ export default function Navbar() {
         {isOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] bg-[#f4f0e8] text-black-deep p-6 md:hidden overflow-y-auto">
             <div className="mb-10 flex items-center justify-between border-b border-ornamental pb-6">
-              <div className="text-white-pure">
+              <div className="text-black-deep">
                 <Logo />
               </div>
               <button onClick={() => setIsOpen(false)} aria-label="Close navigation">

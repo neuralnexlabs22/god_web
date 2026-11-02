@@ -54,7 +54,7 @@ function ProductCard({ product }: ProductCardProps) {
           <button
             type="button"
             onClick={() => setIsWishlisted(!isWishlisted)}
-            className="p-3 bg-black-deep/90 text-white-pure hover:bg-white-pure hover:text-black-deep transition-cinematic border border-ornamental"
+            className="p-3 bg-black-deep/90 text-white hover:bg-white hover:text-black-deep transition-cinematic border border-ornamental"
             aria-label="Wishlist"
           >
             <Heart

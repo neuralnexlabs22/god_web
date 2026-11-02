@@ -138,7 +138,7 @@ export default function TestimonialCarousel() {
           <div className="flex items-center gap-3">
             <Link
               href="/reviews"
-              className="inline-flex items-center gap-2 border border-white-pure/20 px-5 py-3 text-xs uppercase tracking-[0.2em] text-white-pure transition-cinematic hover:border-[#c9a227] hover:text-[#c9a227]"
+              className="inline-flex items-center gap-2 border border-black-deep/30 px-5 py-3 text-xs uppercase tracking-[0.2em] text-black-deep transition-cinematic hover:bg-black-deep hover:text-white"
             >
               All Reviews <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -146,14 +146,14 @@ export default function TestimonialCarousel() {
               <button
                 onClick={prevSlide}
                 aria-label="Previous testimonial"
-                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white-pure"
+                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={nextSlide}
                 aria-label="Next testimonial"
-                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white-pure"
+                className="flex h-11 w-11 items-center justify-center border border-black-deep/20 text-black-deep transition-all hover:bg-black-deep hover:text-white"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -179,7 +179,7 @@ export default function TestimonialCarousel() {
                 <Star
                   key={i}
                   className={`w-4 h-4 ${
-                    i < activeReview.rating ? "fill-[#c9a227]" : "text-zinc-700"
+                    i < activeReview.rating ? "fill-[#c9a227]" : "text-black-deep/15"
                   }`}
                 />
               ))}

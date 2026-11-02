@@ -20,7 +20,7 @@ export default function SacredSculpturesPage() {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {artworks.map((artwork) => (
-            <Link href={`/artworks/${artwork.slug}`} key={artwork.slug} className="border border-black-deep/15 p-6 transition-cinematic hover:bg-black-deep hover:text-white-pure">
+            <Link href={`/artworks/${artwork.slug}`} key={artwork.slug} className="border border-black-deep/15 p-6 transition-cinematic hover:bg-black-deep hover:text-white">
               <p className="mb-3 text-[10px] uppercase tracking-[0.25em] text-grey-stone">{artwork.type}</p>
               <h2 className="font-serif text-2xl">{artwork.title}</h2>
               <p className="mt-4 text-sm leading-7 opacity-70">{artwork.description}</p>
